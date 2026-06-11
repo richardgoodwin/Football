@@ -56,8 +56,10 @@ export function Wheel({ slots, landingIndex, spinToken, onSpinEnd }: WheelProps)
       className="relative h-32 overflow-hidden rounded-2xl border border-white/10 bg-stadium-900/60"
     >
       <motion.div
-        className="absolute top-0 left-1/2 flex h-full items-center gap-3 will-change-transform"
-        style={{ paddingLeft: `calc(50% - ${CARD_WIDTH / 2}px)` }}
+        className="absolute top-0 flex h-full items-center gap-3 will-change-transform"
+        // Position the strip so that at x=0 the FIRST card is centered in the
+        // parent. Translating by -targetIndex * stride then centers card[targetIndex].
+        style={{ left: `calc(50% - ${CARD_WIDTH / 2}px)` }}
         animate={controls}
         initial={{ x: 0 }}
       >
