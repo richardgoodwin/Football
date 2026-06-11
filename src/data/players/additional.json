@@ -1,0 +1,1352 @@
+[
+  {
+    "id": "schmeichel-man-utd-1993-94",
+    "name": "Peter Schmeichel",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "GK",
+    "rating": 94,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "bruce-man-utd-1993-94",
+    "name": "Steve Bruce",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "pallister-man-utd-1993-94",
+    "name": "Gary Pallister",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "DEF",
+    "rating": 87,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "irwin-man-utd-1993-94",
+    "name": "Denis Irwin",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "ince-man-utd-1993-94",
+    "name": "Paul Ince",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "MID",
+    "rating": 87,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "keane-man-utd-1993-94",
+    "name": "Roy Keane",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "MID",
+    "rating": 88,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "giggs-man-utd-1993-94",
+    "name": "Ryan Giggs",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "MID",
+    "rating": 89,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "cantona-man-utd-1993-94",
+    "name": "Eric Cantona",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "FWD",
+    "rating": 94,
+    "goals": 18,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "hughes-man-utd-1993-94",
+    "name": "Mark Hughes",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "FWD",
+    "rating": 86,
+    "tags": ["double-winners"]
+  },
+
+  {
+    "id": "flowers-blackburn-1994-95",
+    "name": "Tim Flowers",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "GK",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "hendry-blackburn-1994-95",
+    "name": "Colin Hendry",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "le-saux-blackburn-1994-95",
+    "name": "Graeme Le Saux",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "berg-blackburn-1994-95",
+    "name": "Henning Berg",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "DEF",
+    "rating": 83,
+    "tags": ["champions"]
+  },
+  {
+    "id": "sherwood-blackburn-1994-95",
+    "name": "Tim Sherwood",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "MID",
+    "rating": 84,
+    "tags": ["champions", "captain"]
+  },
+  {
+    "id": "ripley-blackburn-1994-95",
+    "name": "Stuart Ripley",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "MID",
+    "rating": 80,
+    "tags": ["champions"]
+  },
+  {
+    "id": "wilcox-blackburn-1994-95",
+    "name": "Jason Wilcox",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "MID",
+    "rating": 80,
+    "tags": ["champions"]
+  },
+  {
+    "id": "shearer-blackburn-1994-95",
+    "name": "Alan Shearer",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "FWD",
+    "rating": 96,
+    "goals": 34,
+    "tags": ["champions", "golden-boot"]
+  },
+  {
+    "id": "sutton-blackburn-1994-95",
+    "name": "Chris Sutton",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "FWD",
+    "rating": 87,
+    "goals": 15,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "schmeichel-man-utd-1998-99",
+    "name": "Peter Schmeichel",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "GK",
+    "rating": 93,
+    "tags": ["treble"]
+  },
+  {
+    "id": "stam-man-utd-1998-99",
+    "name": "Jaap Stam",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "DEF",
+    "rating": 91,
+    "tags": ["treble"]
+  },
+  {
+    "id": "neville-g-man-utd-1998-99",
+    "name": "Gary Neville",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["treble"]
+  },
+  {
+    "id": "irwin-man-utd-1998-99",
+    "name": "Denis Irwin",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["treble"]
+  },
+  {
+    "id": "keane-man-utd-1998-99",
+    "name": "Roy Keane",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "MID",
+    "rating": 94,
+    "tags": ["treble", "captain"]
+  },
+  {
+    "id": "scholes-man-utd-1998-99",
+    "name": "Paul Scholes",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["treble"]
+  },
+  {
+    "id": "beckham-man-utd-1998-99",
+    "name": "David Beckham",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["treble"]
+  },
+  {
+    "id": "giggs-man-utd-1998-99",
+    "name": "Ryan Giggs",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["treble"]
+  },
+  {
+    "id": "yorke-man-utd-1998-99",
+    "name": "Dwight Yorke",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "FWD",
+    "rating": 91,
+    "goals": 18,
+    "tags": ["treble", "golden-boot"]
+  },
+  {
+    "id": "cole-man-utd-1998-99",
+    "name": "Andy Cole",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "FWD",
+    "rating": 89,
+    "goals": 17,
+    "tags": ["treble"]
+  },
+  {
+    "id": "solskjaer-man-utd-1998-99",
+    "name": "Ole Gunnar Solskjær",
+    "club": "Manchester United",
+    "season": "1998-99",
+    "position": "FWD",
+    "rating": 85,
+    "goals": 12,
+    "tags": ["treble", "super-sub"]
+  },
+
+  {
+    "id": "barthez-man-utd-2000-01",
+    "name": "Fabien Barthez",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "GK",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "neville-g-man-utd-2000-01",
+    "name": "Gary Neville",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "stam-man-utd-2000-01",
+    "name": "Jaap Stam",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "DEF",
+    "rating": 89,
+    "tags": ["champions"]
+  },
+  {
+    "id": "silvestre-man-utd-2000-01",
+    "name": "Mikael Silvestre",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "DEF",
+    "rating": 83,
+    "tags": ["champions"]
+  },
+  {
+    "id": "irwin-man-utd-2000-01",
+    "name": "Denis Irwin",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "keane-man-utd-2000-01",
+    "name": "Roy Keane",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "MID",
+    "rating": 93,
+    "tags": ["champions", "captain"]
+  },
+  {
+    "id": "scholes-man-utd-2000-01",
+    "name": "Paul Scholes",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "beckham-man-utd-2000-01",
+    "name": "David Beckham",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "MID",
+    "rating": 91,
+    "tags": ["champions"]
+  },
+  {
+    "id": "giggs-man-utd-2000-01",
+    "name": "Ryan Giggs",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "MID",
+    "rating": 89,
+    "tags": ["champions"]
+  },
+  {
+    "id": "sheringham-man-utd-2000-01",
+    "name": "Teddy Sheringham",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "FWD",
+    "rating": 89,
+    "goals": 15,
+    "tags": ["champions", "pfa-poty"]
+  },
+  {
+    "id": "yorke-man-utd-2000-01",
+    "name": "Dwight Yorke",
+    "club": "Manchester United",
+    "season": "2000-01",
+    "position": "FWD",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "carroll-man-utd-2002-03",
+    "name": "Roy Carroll",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "GK",
+    "rating": 79,
+    "tags": ["champions"]
+  },
+  {
+    "id": "ferdinand-man-utd-2002-03",
+    "name": "Rio Ferdinand",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "DEF",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "brown-man-utd-2002-03",
+    "name": "Wes Brown",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "DEF",
+    "rating": 82,
+    "tags": ["champions"]
+  },
+  {
+    "id": "scholes-man-utd-2002-03",
+    "name": "Paul Scholes",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "beckham-man-utd-2002-03",
+    "name": "David Beckham",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "veron-man-utd-2002-03",
+    "name": "Juan Sebastián Verón",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "MID",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "van-nistelrooy-man-utd-2002-03",
+    "name": "Ruud van Nistelrooy",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "FWD",
+    "rating": 95,
+    "goals": 25,
+    "tags": ["champions", "golden-boot"]
+  },
+  {
+    "id": "solskjaer-man-utd-2002-03",
+    "name": "Ole Gunnar Solskjær",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "FWD",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "giggs-man-utd-2002-03",
+    "name": "Ryan Giggs",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "MID",
+    "rating": 88,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "cech-chelsea-2004-05",
+    "name": "Petr Čech",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "GK",
+    "rating": 93,
+    "appearances": 35,
+    "cleanSheets": 24,
+    "tags": ["champions", "golden-glove"]
+  },
+  {
+    "id": "ferreira-chelsea-2004-05",
+    "name": "Paulo Ferreira",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "terry-chelsea-2004-05",
+    "name": "John Terry",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "DEF",
+    "rating": 92,
+    "tags": ["champions", "captain", "pfa-poty"]
+  },
+  {
+    "id": "carvalho-chelsea-2004-05",
+    "name": "Ricardo Carvalho",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "DEF",
+    "rating": 88,
+    "tags": ["champions"]
+  },
+  {
+    "id": "gallas-chelsea-2004-05",
+    "name": "William Gallas",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "makelele-chelsea-2004-05",
+    "name": "Claude Makélélé",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "lampard-chelsea-2004-05",
+    "name": "Frank Lampard",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "MID",
+    "rating": 93,
+    "goals": 13,
+    "tags": ["champions", "fwa-poty"]
+  },
+  {
+    "id": "duff-chelsea-2004-05",
+    "name": "Damien Duff",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "MID",
+    "rating": 85,
+    "tags": ["champions"]
+  },
+  {
+    "id": "robben-chelsea-2004-05",
+    "name": "Arjen Robben",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "MID",
+    "rating": 88,
+    "tags": ["champions"]
+  },
+  {
+    "id": "drogba-chelsea-2004-05",
+    "name": "Didier Drogba",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "FWD",
+    "rating": 88,
+    "tags": ["champions"]
+  },
+  {
+    "id": "gudjohnsen-chelsea-2004-05",
+    "name": "Eiður Guðjohnsen",
+    "club": "Chelsea",
+    "season": "2004-05",
+    "position": "FWD",
+    "rating": 85,
+    "goals": 12,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "cech-chelsea-2009-10",
+    "name": "Petr Čech",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "GK",
+    "rating": 91,
+    "tags": ["champions", "double-winners"]
+  },
+  {
+    "id": "ivanovic-chelsea-2009-10",
+    "name": "Branislav Ivanović",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "terry-chelsea-2009-10",
+    "name": "John Terry",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "DEF",
+    "rating": 90,
+    "tags": ["champions", "captain"]
+  },
+  {
+    "id": "carvalho-chelsea-2009-10",
+    "name": "Ricardo Carvalho",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "cole-chelsea-2009-10",
+    "name": "Ashley Cole",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "DEF",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "mikel-chelsea-2009-10",
+    "name": "John Obi Mikel",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "MID",
+    "rating": 82,
+    "tags": ["champions"]
+  },
+  {
+    "id": "lampard-chelsea-2009-10",
+    "name": "Frank Lampard",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "MID",
+    "rating": 93,
+    "goals": 22,
+    "assists": 13,
+    "tags": ["champions"]
+  },
+  {
+    "id": "ballack-chelsea-2009-10",
+    "name": "Michael Ballack",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "MID",
+    "rating": 85,
+    "tags": ["champions"]
+  },
+  {
+    "id": "malouda-chelsea-2009-10",
+    "name": "Florent Malouda",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "MID",
+    "rating": 85,
+    "tags": ["champions"]
+  },
+  {
+    "id": "drogba-chelsea-2009-10",
+    "name": "Didier Drogba",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "FWD",
+    "rating": 94,
+    "goals": 29,
+    "tags": ["champions", "golden-boot"]
+  },
+  {
+    "id": "anelka-chelsea-2009-10",
+    "name": "Nicolas Anelka",
+    "club": "Chelsea",
+    "season": "2009-10",
+    "position": "FWD",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "courtois-chelsea-2016-17",
+    "name": "Thibaut Courtois",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "GK",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "azpilicueta-chelsea-2016-17",
+    "name": "César Azpilicueta",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 87,
+    "tags": ["champions"]
+  },
+  {
+    "id": "cahill-chelsea-2016-17",
+    "name": "Gary Cahill",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "luiz-chelsea-2016-17",
+    "name": "David Luiz",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "moses-chelsea-2016-17",
+    "name": "Victor Moses",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 82,
+    "tags": ["champions"]
+  },
+  {
+    "id": "alonso-chelsea-2016-17",
+    "name": "Marcos Alonso",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["champions"]
+  },
+  {
+    "id": "kante-chelsea-2016-17",
+    "name": "N'Golo Kanté",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 93,
+    "tags": ["champions", "pfa-poty"]
+  },
+  {
+    "id": "matic-chelsea-2016-17",
+    "name": "Nemanja Matić",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "hazard-chelsea-2016-17",
+    "name": "Eden Hazard",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 93,
+    "goals": 16,
+    "tags": ["champions"]
+  },
+  {
+    "id": "pedro-chelsea-2016-17",
+    "name": "Pedro",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "costa-chelsea-2016-17",
+    "name": "Diego Costa",
+    "club": "Chelsea",
+    "season": "2016-17",
+    "position": "FWD",
+    "rating": 90,
+    "goals": 20,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "ederson-man-city-2018-19",
+    "name": "Ederson",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "GK",
+    "rating": 90,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "walker-man-city-2018-19",
+    "name": "Kyle Walker",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "DEF",
+    "rating": 87,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "stones-man-city-2018-19",
+    "name": "John Stones",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "laporte-man-city-2018-19",
+    "name": "Aymeric Laporte",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "DEF",
+    "rating": 89,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "zinchenko-man-city-2018-19",
+    "name": "Oleksandr Zinchenko",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "DEF",
+    "rating": 82,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "fernandinho-man-city-2018-19",
+    "name": "Fernandinho",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "MID",
+    "rating": 89,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "bernardo-man-city-2018-19",
+    "name": "Bernardo Silva",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "MID",
+    "rating": 92,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "silva-man-city-2018-19",
+    "name": "David Silva",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "MID",
+    "rating": 91,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "sterling-man-city-2018-19",
+    "name": "Raheem Sterling",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "MID",
+    "rating": 92,
+    "goals": 17,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "aguero-man-city-2018-19",
+    "name": "Sergio Agüero",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "FWD",
+    "rating": 95,
+    "goals": 21,
+    "tags": ["champions", "domestic-treble"]
+  },
+  {
+    "id": "sane-man-city-2018-19",
+    "name": "Leroy Sané",
+    "club": "Manchester City",
+    "season": "2018-19",
+    "position": "FWD",
+    "rating": 86,
+    "tags": ["champions", "domestic-treble"]
+  },
+
+  {
+    "id": "ederson-man-city-2022-23",
+    "name": "Ederson",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "GK",
+    "rating": 91,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "walker-man-city-2022-23",
+    "name": "Kyle Walker",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "DEF",
+    "rating": 87,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "stones-man-city-2022-23",
+    "name": "John Stones",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "DEF",
+    "rating": 89,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "dias-man-city-2022-23",
+    "name": "Rúben Dias",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "DEF",
+    "rating": 92,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "akanji-man-city-2022-23",
+    "name": "Manuel Akanji",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "rodri-man-city-2022-23",
+    "name": "Rodri",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "MID",
+    "rating": 94,
+    "tags": ["champions", "treble", "ucl-final-winner"]
+  },
+  {
+    "id": "de-bruyne-man-city-2022-23",
+    "name": "Kevin De Bruyne",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "MID",
+    "rating": 94,
+    "assists": 16,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "bernardo-man-city-2022-23",
+    "name": "Bernardo Silva",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "grealish-man-city-2022-23",
+    "name": "Jack Grealish",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "MID",
+    "rating": 87,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "foden-man-city-2022-23",
+    "name": "Phil Foden",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "MID",
+    "rating": 88,
+    "tags": ["champions", "treble"]
+  },
+  {
+    "id": "haaland-man-city-2022-23",
+    "name": "Erling Haaland",
+    "club": "Manchester City",
+    "season": "2022-23",
+    "position": "FWD",
+    "rating": 97,
+    "goals": 36,
+    "tags": ["champions", "treble", "golden-boot", "pfa-poty", "record"]
+  },
+
+  {
+    "id": "salah-liverpool-2017-18",
+    "name": "Mohamed Salah",
+    "club": "Liverpool",
+    "season": "2017-18",
+    "position": "FWD",
+    "rating": 97,
+    "goals": 32,
+    "tags": ["golden-boot", "pfa-poty", "fwa-poty"]
+  },
+  {
+    "id": "kane-tottenham-2016-17",
+    "name": "Harry Kane",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "FWD",
+    "rating": 93,
+    "goals": 29,
+    "tags": ["golden-boot"]
+  },
+  {
+    "id": "kane-tottenham-2017-18",
+    "name": "Harry Kane",
+    "club": "Tottenham",
+    "season": "2017-18",
+    "position": "FWD",
+    "rating": 92,
+    "goals": 30,
+    "tags": ["runner-up-boot"]
+  },
+  {
+    "id": "ronaldo-man-utd-2007-08",
+    "name": "Cristiano Ronaldo",
+    "club": "Manchester United",
+    "season": "2007-08",
+    "position": "FWD",
+    "rating": 97,
+    "goals": 31,
+    "tags": ["champions", "golden-boot", "pfa-poty", "ballon-dor"]
+  },
+  {
+    "id": "rooney-man-utd-2009-10",
+    "name": "Wayne Rooney",
+    "club": "Manchester United",
+    "season": "2009-10",
+    "position": "FWD",
+    "rating": 93,
+    "goals": 26,
+    "tags": ["pfa-poty", "fwa-poty"]
+  },
+  {
+    "id": "bale-tottenham-2012-13",
+    "name": "Gareth Bale",
+    "club": "Tottenham",
+    "season": "2012-13",
+    "position": "MID",
+    "rating": 93,
+    "goals": 21,
+    "tags": ["pfa-poty", "fwa-poty"]
+  },
+  {
+    "id": "suarez-liverpool-2013-14",
+    "name": "Luis Suárez",
+    "club": "Liverpool",
+    "season": "2013-14",
+    "position": "FWD",
+    "rating": 96,
+    "goals": 31,
+    "tags": ["golden-boot", "pfa-poty", "fwa-poty"]
+  },
+  {
+    "id": "gerrard-liverpool-2013-14",
+    "name": "Steven Gerrard",
+    "club": "Liverpool",
+    "season": "2013-14",
+    "position": "MID",
+    "rating": 91,
+    "tags": ["captain"]
+  },
+  {
+    "id": "van-persie-arsenal-2011-12",
+    "name": "Robin van Persie",
+    "club": "Arsenal",
+    "season": "2011-12",
+    "position": "FWD",
+    "rating": 95,
+    "goals": 30,
+    "tags": ["golden-boot", "fwa-poty"]
+  },
+  {
+    "id": "drogba-chelsea-2006-07",
+    "name": "Didier Drogba",
+    "club": "Chelsea",
+    "season": "2006-07",
+    "position": "FWD",
+    "rating": 93,
+    "goals": 20,
+    "tags": ["golden-boot"]
+  },
+  {
+    "id": "henry-arsenal-2001-02",
+    "name": "Thierry Henry",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "FWD",
+    "rating": 96,
+    "goals": 24,
+    "tags": ["champions", "double-winners", "golden-boot"]
+  },
+  {
+    "id": "bergkamp-arsenal-2001-02",
+    "name": "Dennis Bergkamp",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "FWD",
+    "rating": 90,
+    "tags": ["champions", "double-winners"]
+  },
+  {
+    "id": "vieira-arsenal-2001-02",
+    "name": "Patrick Vieira",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 92,
+    "tags": ["champions", "double-winners", "captain"]
+  },
+  {
+    "id": "pires-arsenal-2001-02",
+    "name": "Robert Pirès",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions", "double-winners", "fwa-poty"]
+  },
+  {
+    "id": "campbell-arsenal-2001-02",
+    "name": "Sol Campbell",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 89,
+    "tags": ["champions", "double-winners"]
+  },
+  {
+    "id": "seaman-arsenal-2001-02",
+    "name": "David Seaman",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "GK",
+    "rating": 87,
+    "tags": ["champions", "double-winners"]
+  },
+  {
+    "id": "cole-arsenal-2001-02",
+    "name": "Ashley Cole",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions", "double-winners"]
+  },
+
+  {
+    "id": "shearer-newcastle-2001-02",
+    "name": "Alan Shearer",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "FWD",
+    "rating": 91,
+    "goals": 23,
+    "tags": ["captain"]
+  },
+  {
+    "id": "bellamy-newcastle-2001-02",
+    "name": "Craig Bellamy",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "FWD",
+    "rating": 84,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "speed-newcastle-2001-02",
+    "name": "Gary Speed",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 84,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "robert-newcastle-2001-02",
+    "name": "Laurent Robert",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 83,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "given-newcastle-2001-02",
+    "name": "Shay Given",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "GK",
+    "rating": 86,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "solano-newcastle-2001-02",
+    "name": "Nolberto Solano",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 82,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "dyer-newcastle-2001-02",
+    "name": "Kieron Dyer",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 83,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "distin-newcastle-2001-02",
+    "name": "Sylvain Distin",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 82,
+    "tags": ["robson-era"]
+  },
+
+  {
+    "id": "lloris-tottenham-2016-17",
+    "name": "Hugo Lloris",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "GK",
+    "rating": 89,
+    "tags": ["captain"]
+  },
+  {
+    "id": "alderweireld-tottenham-2016-17",
+    "name": "Toby Alderweireld",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 89,
+    "tags": ["runners-up"]
+  },
+  {
+    "id": "vertonghen-tottenham-2016-17",
+    "name": "Jan Vertonghen",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 87,
+    "tags": ["runners-up"]
+  },
+  {
+    "id": "walker-tottenham-2016-17",
+    "name": "Kyle Walker",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["runners-up"]
+  },
+  {
+    "id": "rose-tottenham-2016-17",
+    "name": "Danny Rose",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["runners-up"]
+  },
+  {
+    "id": "dier-tottenham-2016-17",
+    "name": "Eric Dier",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 82,
+    "tags": ["runners-up"]
+  },
+  {
+    "id": "wanyama-tottenham-2016-17",
+    "name": "Victor Wanyama",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 83,
+    "tags": ["runners-up"]
+  },
+  {
+    "id": "eriksen-tottenham-2016-17",
+    "name": "Christian Eriksen",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["runners-up"]
+  },
+  {
+    "id": "alli-tottenham-2016-17",
+    "name": "Dele Alli",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "MID",
+    "rating": 88,
+    "goals": 18,
+    "tags": ["runners-up", "pfa-young-player"]
+  },
+  {
+    "id": "son-tottenham-2016-17",
+    "name": "Son Heung-min",
+    "club": "Tottenham",
+    "season": "2016-17",
+    "position": "FWD",
+    "rating": 87,
+    "goals": 14,
+    "tags": ["runners-up"]
+  },
+
+  {
+    "id": "schmeichel-leicester-2023-24",
+    "name": "Kasper Schmeichel",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "GK",
+    "rating": 87,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "vardy-leicester-2019-20",
+    "name": "Jamie Vardy",
+    "club": "Leicester City",
+    "season": "2019-20",
+    "position": "FWD",
+    "rating": 91,
+    "goals": 23,
+    "tags": ["golden-boot"]
+  },
+
+  {
+    "id": "salah-liverpool-2021-22",
+    "name": "Mohamed Salah",
+    "club": "Liverpool",
+    "season": "2021-22",
+    "position": "FWD",
+    "rating": 96,
+    "goals": 23,
+    "tags": ["golden-boot", "fwa-poty", "pfa-poty"]
+  },
+  {
+    "id": "son-tottenham-2021-22",
+    "name": "Son Heung-min",
+    "club": "Tottenham",
+    "season": "2021-22",
+    "position": "FWD",
+    "rating": 92,
+    "goals": 23,
+    "tags": ["shared-golden-boot"]
+  },
+  {
+    "id": "kane-tottenham-2020-21",
+    "name": "Harry Kane",
+    "club": "Tottenham",
+    "season": "2020-21",
+    "position": "FWD",
+    "rating": 95,
+    "goals": 23,
+    "assists": 14,
+    "tags": ["golden-boot", "playmaker"]
+  }
+]

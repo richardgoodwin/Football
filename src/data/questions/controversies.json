@@ -1,0 +1,83 @@
+[
+  {
+    "id": "con-bloodgate",
+    "format": "true-false",
+    "category": "controversies",
+    "difficulty": "hard",
+    "yearStart": 2010,
+    "yearEnd": 2011,
+    "tags": ["calciopoli"],
+    "prompt": "Juventus were stripped of two Serie A titles as part of the Calciopoli scandal.",
+    "correct": true,
+    "explanation": "The 2005 and 2006 titles were revoked; Juve were also relegated to Serie B for 2006-07.",
+    "popularity": 65
+  },
+  {
+    "id": "con-suarez-handball-uruguay-ghana",
+    "format": "true-false",
+    "category": "controversies",
+    "difficulty": "medium",
+    "yearStart": 2010,
+    "yearEnd": 2010,
+    "tags": ["suarez", "uruguay", "ghana", "world-cup"],
+    "prompt": "Luis Suárez handled the ball on the line in a 2010 World Cup quarter-final against Ghana.",
+    "correct": true,
+    "explanation": "Suárez was sent off; Asamoah Gyan missed the resulting penalty and Uruguay won the shootout.",
+    "popularity": 70
+  },
+  {
+    "id": "con-thierry-henry-handball-france",
+    "format": "multiple-choice",
+    "category": "controversies",
+    "difficulty": "medium",
+    "yearStart": 2009,
+    "yearEnd": 2009,
+    "tags": ["henry", "france", "ireland"],
+    "prompt": "Whose handball helped France qualify for the 2010 World Cup at Ireland's expense?",
+    "correct": "Thierry Henry",
+    "distractors": ["Nicolas Anelka", "Patrice Evra", "Florent Malouda"],
+    "explanation": "Henry handled the ball before crossing for William Gallas to score the decisive goal.",
+    "popularity": 75
+  },
+  {
+    "id": "con-var-introduced-pl",
+    "format": "multiple-choice",
+    "category": "controversies",
+    "difficulty": "medium",
+    "yearStart": 2019,
+    "yearEnd": 2019,
+    "tags": ["var", "premier-league"],
+    "prompt": "In which season was VAR first introduced to the Premier League?",
+    "correct": "2019-20",
+    "distractors": ["2017-18", "2018-19", "2020-21"],
+    "explanation": "VAR was rolled out to the Premier League from 2019-20 after trials in domestic cups.",
+    "popularity": 78
+  },
+  {
+    "id": "con-super-league-2021",
+    "format": "true-false",
+    "category": "controversies",
+    "difficulty": "easy",
+    "yearStart": 2021,
+    "yearEnd": 2021,
+    "tags": ["super-league"],
+    "prompt": "The European Super League proposal of April 2021 collapsed within 72 hours.",
+    "correct": true,
+    "explanation": "Fan backlash forced English clubs to withdraw, ending the breakaway league.",
+    "popularity": 80
+  },
+  {
+    "id": "con-luis-suarez-bite-ivanovic",
+    "format": "multiple-choice",
+    "category": "controversies",
+    "difficulty": "medium",
+    "yearStart": 2013,
+    "yearEnd": 2013,
+    "tags": ["suarez", "liverpool", "chelsea"],
+    "prompt": "Who did Luis Suárez bite during a Liverpool vs Chelsea match in 2013?",
+    "correct": "Branislav Ivanović",
+    "distractors": ["John Terry", "Gary Cahill", "César Azpilicueta"],
+    "explanation": "Suárez bit Ivanović on the arm and was banned for 10 matches.",
+    "popularity": 72
+  }
+]

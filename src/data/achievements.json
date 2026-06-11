@@ -1,0 +1,74 @@
+[
+  {
+    "id": "first-blood",
+    "name": "First Touch",
+    "description": "Answer your first question correctly.",
+    "rarity": "common"
+  },
+  {
+    "id": "perfect-quick-play",
+    "name": "Clean Sheet",
+    "description": "Complete a Quick Play with all answers correct.",
+    "rarity": "rare"
+  },
+  {
+    "id": "streak-10",
+    "name": "On Fire",
+    "description": "Hit a 10-question streak in any mode.",
+    "rarity": "rare"
+  },
+  {
+    "id": "survival-15",
+    "name": "Survivor",
+    "description": "Reach a 15 streak in Survival mode.",
+    "rarity": "epic"
+  },
+  {
+    "id": "survival-30",
+    "name": "Invincible",
+    "description": "Reach a 30 streak in Survival mode.",
+    "rarity": "legendary"
+  },
+  {
+    "id": "daily-streak-7",
+    "name": "Weekly Habit",
+    "description": "Play the Daily Challenge 7 days in a row.",
+    "rarity": "epic"
+  },
+  {
+    "id": "career-tier-3",
+    "name": "Going Pro",
+    "description": "Complete the Professional Tier of Career Mode.",
+    "rarity": "rare"
+  },
+  {
+    "id": "career-tier-6",
+    "name": "Ultimate Football Nerd",
+    "description": "Complete the Legendary tier of Career Mode.",
+    "rarity": "legendary"
+  },
+  {
+    "id": "transfer-guru",
+    "name": "Transfer Guru",
+    "description": "Get every Transfers category question correct in a run.",
+    "rarity": "rare"
+  },
+  {
+    "id": "ucl-historian",
+    "name": "Champions League Historian",
+    "description": "Get every Champions League hard/legendary question correct in a run.",
+    "rarity": "epic"
+  },
+  {
+    "id": "level-10",
+    "name": "Reserve Team",
+    "description": "Reach level 10.",
+    "rarity": "common"
+  },
+  {
+    "id": "level-25",
+    "name": "First Team",
+    "description": "Reach level 25.",
+    "rarity": "epic"
+  }
+]

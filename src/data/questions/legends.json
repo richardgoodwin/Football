@@ -1,0 +1,114 @@
+[
+  {
+    "id": "leg-messi-ballon-dor-count",
+    "format": "multiple-choice",
+    "category": "legends",
+    "difficulty": "easy",
+    "yearStart": 2009,
+    "yearEnd": 2023,
+    "tags": ["messi", "ballon-dor"],
+    "prompt": "How many Ballon d'Or awards has Lionel Messi won (through 2023)?",
+    "correct": "8",
+    "distractors": ["6", "7", "9"],
+    "explanation": "Messi has won the Ballon d'Or eight times, the most in history.",
+    "popularity": 95
+  },
+  {
+    "id": "leg-ronaldo-ballon-dor-count",
+    "format": "multiple-choice",
+    "category": "legends",
+    "difficulty": "easy",
+    "yearStart": 2008,
+    "yearEnd": 2017,
+    "tags": ["ronaldo", "ballon-dor"],
+    "prompt": "How many Ballon d'Or awards has Cristiano Ronaldo won?",
+    "correct": "5",
+    "distractors": ["4", "6", "7"],
+    "explanation": "Ronaldo won the Ballon d'Or in 2008, 2013, 2014, 2016 and 2017.",
+    "popularity": 92
+  },
+  {
+    "id": "leg-zidane-clubs",
+    "format": "guess-the-player",
+    "category": "legends",
+    "difficulty": "medium",
+    "yearStart": 1992,
+    "yearEnd": 2006,
+    "tags": ["zidane"],
+    "clues": [
+      "French midfielder, born 1972 in Marseille.",
+      "World Cup winner in 1998, Euro winner in 2000.",
+      "Played for Cannes, Bordeaux, Juventus and Real Madrid.",
+      "Famous for a Champions League final volley in 2002.",
+      "Headbutted Materazzi in his last ever match."
+    ],
+    "correct": "Zinedine Zidane",
+    "acceptedAnswers": ["zinedine zidane", "zidane", "zizou"],
+    "explanation": "Zidane: three-time FIFA World Player of the Year and one of football's all-time greats."
+  },
+  {
+    "id": "leg-rooney-united-top-scorer",
+    "format": "true-false",
+    "category": "legends",
+    "difficulty": "medium",
+    "yearStart": 2017,
+    "yearEnd": 2017,
+    "tags": ["rooney", "man-united"],
+    "prompt": "Wayne Rooney is Manchester United's all-time top scorer.",
+    "correct": true,
+    "explanation": "Rooney broke Bobby Charlton's 44-year record in 2017 with 250 goals.",
+    "popularity": 75
+  },
+  {
+    "id": "leg-pirlo-careers",
+    "format": "career-path",
+    "category": "legends",
+    "difficulty": "hard",
+    "yearStart": 1995,
+    "yearEnd": 2017,
+    "tags": ["pirlo"],
+    "timeline": [
+      { "years": "1995-1998", "club": "Brescia" },
+      { "years": "1998-2001", "club": "Inter Milan" },
+      { "years": "2001-2011", "club": "AC Milan" },
+      { "years": "2011-2015", "club": "Juventus" },
+      { "years": "2015-2017", "club": "New York City FC" }
+    ],
+    "correct": "Andrea Pirlo",
+    "acceptedAnswers": ["andrea pirlo", "pirlo"],
+    "explanation": "Pirlo: World Cup winner with Italy, two-time Champions League winner with Milan."
+  },
+  {
+    "id": "leg-buffon-club-career",
+    "format": "guess-the-player",
+    "category": "legends",
+    "difficulty": "medium",
+    "yearStart": 1995,
+    "yearEnd": 2021,
+    "tags": ["buffon", "goalkeeper", "italy"],
+    "clues": [
+      "Italian goalkeeper, born 1978.",
+      "Made his Serie A debut as a teenager for Parma.",
+      "Won the 2006 World Cup with Italy.",
+      "Joined Juventus in 2001 for a then world-record fee for a keeper.",
+      "Holds the record for most Serie A appearances."
+    ],
+    "correct": "Gianluigi Buffon",
+    "acceptedAnswers": ["gianluigi buffon", "gigi buffon", "buffon"],
+    "explanation": "Buffon: one of the greatest goalkeepers of all time."
+  },
+  {
+    "id": "leg-iniesta-final-goal",
+    "format": "multiple-choice",
+    "category": "legends",
+    "difficulty": "medium",
+    "yearStart": 2010,
+    "yearEnd": 2010,
+    "tags": ["iniesta", "spain", "world-cup"],
+    "prompt": "Whose extra-time goal won Spain the 2010 World Cup Final?",
+    "correct": "Andrés Iniesta",
+    "distractors": ["Xavi", "David Villa", "Cesc Fàbregas"],
+    "explanation": "Iniesta's strike against the Netherlands in extra time clinched Spain's first World Cup.",
+    "popularity": 88
+  }
+]

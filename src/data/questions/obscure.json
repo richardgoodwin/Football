@@ -1,0 +1,69 @@
+[
+  {
+    "id": "obs-intertoto-2008",
+    "format": "true-false",
+    "category": "controversies",
+    "difficulty": "legendary",
+    "yearStart": 2008,
+    "yearEnd": 2008,
+    "tags": ["intertoto"],
+    "prompt": "The UEFA Intertoto Cup was discontinued after the 2008 edition.",
+    "correct": true,
+    "explanation": "UEFA scrapped the Intertoto Cup after 2008 and absorbed it into the Europa League qualifying.",
+    "popularity": 30
+  },
+  {
+    "id": "obs-portsmouth-2008-fa-cup-team",
+    "format": "multiple-choice",
+    "category": "controversies",
+    "difficulty": "legendary",
+    "yearStart": 2008,
+    "yearEnd": 2008,
+    "tags": ["portsmouth", "fa-cup"],
+    "prompt": "Who scored the winning goal for Portsmouth in the 2008 FA Cup Final?",
+    "correct": "Nwankwo Kanu",
+    "distractors": ["Jermain Defoe", "John Utaka", "Niko Kranjčar"],
+    "explanation": "Kanu's first-half strike was enough to win Pompey the 2008 FA Cup.",
+    "popularity": 35
+  },
+  {
+    "id": "obs-championship-mascherano",
+    "format": "true-false",
+    "category": "transfers",
+    "difficulty": "legendary",
+    "yearStart": 2006,
+    "yearEnd": 2007,
+    "tags": ["mascherano", "west-ham", "tevez"],
+    "prompt": "Javier Mascherano and Carlos Tevez both played for West Ham in the 2006-07 season.",
+    "correct": true,
+    "explanation": "Both joined West Ham in a famously controversial third-party-ownership deal.",
+    "popularity": 40
+  },
+  {
+    "id": "obs-deportivo-2000-laliga",
+    "format": "multiple-choice",
+    "category": "records",
+    "difficulty": "legendary",
+    "yearStart": 1999,
+    "yearEnd": 2000,
+    "tags": ["deportivo", "la-liga", "title"],
+    "prompt": "Which club won their first and only La Liga title in 1999-2000?",
+    "correct": "Deportivo La Coruña",
+    "distractors": ["Real Sociedad", "Valencia", "Sevilla"],
+    "explanation": "Deportivo won their only La Liga title in 1999-2000 under Javier Irureta.",
+    "popularity": 35
+  },
+  {
+    "id": "obs-leyton-orient-cup-run",
+    "format": "true-false",
+    "category": "records",
+    "difficulty": "legendary",
+    "yearStart": 2011,
+    "yearEnd": 2011,
+    "tags": ["leyton-orient", "fa-cup", "arsenal"],
+    "prompt": "Leyton Orient earned a 1-1 draw against Arsenal in the 2011 FA Cup fifth round.",
+    "correct": true,
+    "explanation": "Leyton Orient drew the first leg before losing the replay 5-0 at the Emirates.",
+    "popularity": 25
+  }
+]

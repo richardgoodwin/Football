@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --accent: 34 211 238; /* cyan */
+  --accent-secondary: 163 230 53; /* lime */
+  --bg-stadium-from: 5 8 22;
+  --bg-stadium-to: 17 26 48;
+  --font-scale: 1;
+  color-scheme: dark;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+html {
+  font-size: calc(16px * var(--font-scale));
+}
+
+body {
+  @apply font-body bg-stadium-950 text-slate-100 antialiased;
+  background:
+    radial-gradient(60% 80% at 50% 0%, rgba(34, 211, 238, 0.08) 0%, transparent 70%),
+    linear-gradient(180deg, rgb(var(--bg-stadium-from)) 0%, rgb(var(--bg-stadium-to)) 100%);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+
+/* Focus ring */
+:focus-visible {
+  outline: 2px solid rgb(var(--accent));
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+/* Reduced motion override (set by useReducedMotion hook + settings) */
+[data-reduced-motion='true'] *,
+[data-reduced-motion='true'] *::before,
+[data-reduced-motion='true'] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+}
+
+/* Colourblind palette overrides */
+[data-colourblind='deuteranopia'] {
+  --correct: 56 189 248; /* sky-400 */
+  --wrong: 251 146 60; /* orange-400 */
+}
+[data-colourblind='protanopia'] {
+  --correct: 14 165 233; /* sky-500 */
+  --wrong: 217 70 239; /* fuchsia-500 */
+}
+[data-colourblind='tritanopia'] {
+  --correct: 132 204 22; /* lime-500 */
+  --wrong: 244 63 94; /* rose-500 */
+}
+[data-colourblind='none'] {
+  --correct: 34 197 94; /* green-500 */
+  --wrong: 239 68 68; /* red-500 */
+}
+
+.text-correct {
+  color: rgb(var(--correct));
+}
+.text-wrong {
+  color: rgb(var(--wrong));
+}
+.bg-correct {
+  background-color: rgb(var(--correct));
+}
+.bg-wrong {
+  background-color: rgb(var(--wrong));
+}
+.border-correct {
+  border-color: rgb(var(--correct));
+}
+.border-wrong {
+  border-color: rgb(var(--wrong));
+}
+
+/* Stadium spotlight effect (disabled under reduced motion) */
+.stadium-spotlight::before {
+  content: '';
+  position: absolute;
+  inset: -20% -20% auto -20%;
+  height: 60%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 255, 255, 0.08) 0%,
+    transparent 60%
+  );
+  pointer-events: none;
+  animation: spotlight 8s ease-in-out infinite;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}

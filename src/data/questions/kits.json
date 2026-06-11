@@ -1,0 +1,69 @@
+[
+  {
+    "id": "kit-man-united-grey-southampton",
+    "format": "true-false",
+    "category": "kits",
+    "difficulty": "hard",
+    "yearStart": 1996,
+    "yearEnd": 1996,
+    "tags": ["man-united", "kit", "ferguson"],
+    "prompt": "Sir Alex Ferguson famously made Manchester United change out of a grey away kit at half-time during a 1996 loss to Southampton, blaming the colour.",
+    "correct": true,
+    "explanation": "Ferguson claimed the grey shirts made players hard to see; United changed to blue and white at half-time but still lost 3-1.",
+    "popularity": 40
+  },
+  {
+    "id": "kit-italy-azzurri-meaning",
+    "format": "multiple-choice",
+    "category": "kits",
+    "difficulty": "easy",
+    "yearStart": 2000,
+    "yearEnd": 2026,
+    "tags": ["italy", "azzurri"],
+    "prompt": "What does the nickname 'Azzurri' refer to for Italy's national team?",
+    "correct": "Blues (the shirt colour)",
+    "distractors": ["Lions (the badge)", "Eagles (the crest)", "Stars (their title wins)"],
+    "explanation": "Azzurri means 'the blues' in reference to the Savoy blue Italy wears.",
+    "popularity": 65
+  },
+  {
+    "id": "kit-barca-sponsor-unicef",
+    "format": "true-false",
+    "category": "kits",
+    "difficulty": "medium",
+    "yearStart": 2006,
+    "yearEnd": 2010,
+    "tags": ["barcelona", "unicef"],
+    "prompt": "Barcelona paid UNICEF to display its logo on their shirt rather than the other way around in the late 2000s.",
+    "correct": true,
+    "explanation": "Barça donated to UNICEF for the privilege — a first in elite club football sponsorship.",
+    "popularity": 55
+  },
+  {
+    "id": "kit-three-stars-germany",
+    "format": "multiple-choice",
+    "category": "kits",
+    "difficulty": "medium",
+    "yearStart": 1990,
+    "yearEnd": 2014,
+    "tags": ["germany", "stars"],
+    "prompt": "How many stars did the Germany national team shirt have after their 2014 World Cup win?",
+    "correct": "4",
+    "distractors": ["3", "5", "2"],
+    "explanation": "Germany added a fourth star in 2014 after winning their fourth World Cup.",
+    "popularity": 60
+  },
+  {
+    "id": "kit-juve-stripe",
+    "format": "true-false",
+    "category": "kits",
+    "difficulty": "easy",
+    "yearStart": 2000,
+    "yearEnd": 2026,
+    "tags": ["juventus", "stripes"],
+    "prompt": "Juventus traditionally play in black-and-white stripes.",
+    "correct": true,
+    "explanation": "Juventus have worn black-and-white stripes since 1903.",
+    "popularity": 85
+  }
+]

@@ -1,0 +1,110 @@
+[
+  {
+    "id": "avatar-default",
+    "name": "Rookie",
+    "type": "avatar",
+    "rarity": "common",
+    "unlock": { "kind": "default" },
+    "description": "Your starter avatar."
+  },
+  {
+    "id": "avatar-rookie",
+    "name": "Amateur Boots",
+    "type": "avatar",
+    "rarity": "common",
+    "unlock": { "kind": "career-tier", "value": 1 },
+    "description": "Awarded for finishing the Amateur League tier."
+  },
+  {
+    "id": "avatar-ultra",
+    "name": "Ultra",
+    "type": "avatar",
+    "rarity": "rare",
+    "unlock": { "kind": "level", "value": 8 },
+    "description": "For the truly committed fan."
+  },
+  {
+    "id": "avatar-legend",
+    "name": "Legend",
+    "type": "avatar",
+    "rarity": "legendary",
+    "unlock": { "kind": "level", "value": 25 },
+    "description": "Worn only by those who have seen Sunday League and survived."
+  },
+  {
+    "id": "theme-default",
+    "name": "Stadium Night",
+    "type": "stadium-theme",
+    "rarity": "common",
+    "unlock": { "kind": "default" },
+    "description": "Default dark theme with cyan accents.",
+    "themeTokens": { "accent": "34 211 238", "bgFrom": "5 8 22", "bgTo": "17 26 48" }
+  },
+  {
+    "id": "theme-floodlight",
+    "name": "Floodlight",
+    "type": "stadium-theme",
+    "rarity": "rare",
+    "unlock": { "kind": "career-tier", "value": 3 },
+    "description": "Warm amber under-the-lights vibe.",
+    "themeTokens": { "accent": "251 191 36", "bgFrom": "20 14 4", "bgTo": "41 28 8" }
+  },
+  {
+    "id": "theme-anfield-night",
+    "name": "Kop End",
+    "type": "stadium-theme",
+    "rarity": "epic",
+    "unlock": { "kind": "career-tier", "value": 5 },
+    "description": "Deep red gradient. You'll never walk alone.",
+    "themeTokens": { "accent": "244 63 94", "bgFrom": "23 0 0", "bgTo": "60 7 12" }
+  },
+  {
+    "id": "theme-pitch-lime",
+    "name": "Pitch Lime",
+    "type": "stadium-theme",
+    "rarity": "rare",
+    "unlock": { "kind": "level", "value": 12 },
+    "description": "Fresh grass green tones.",
+    "themeTokens": { "accent": "163 230 53", "bgFrom": "5 22 8", "bgTo": "10 35 14" }
+  },
+  {
+    "id": "badge-frame-bronze",
+    "name": "Bronze Frame",
+    "type": "badge-frame",
+    "rarity": "common",
+    "unlock": { "kind": "career-tier", "value": 2 },
+    "description": "Bronze frame for your profile badge."
+  },
+  {
+    "id": "badge-frame-silver",
+    "name": "Silver Frame",
+    "type": "badge-frame",
+    "rarity": "rare",
+    "unlock": { "kind": "career-tier", "value": 4 },
+    "description": "Silver frame for your profile badge."
+  },
+  {
+    "id": "badge-frame-gold",
+    "name": "Gold Frame",
+    "type": "badge-frame",
+    "rarity": "epic",
+    "unlock": { "kind": "career-tier", "value": 6 },
+    "description": "Gold frame for absolute football brains."
+  },
+  {
+    "id": "quiz-effect-confetti",
+    "name": "Confetti Pop",
+    "type": "quiz-effect",
+    "rarity": "rare",
+    "unlock": { "kind": "achievement", "value": "perfect-quick-play" },
+    "description": "Extra confetti on correct answers."
+  },
+  {
+    "id": "sound-pack-classic",
+    "name": "Classic Stadium",
+    "type": "sound-pack",
+    "rarity": "common",
+    "unlock": { "kind": "default" },
+    "description": "Default crowd ambience and stings."
+  }
+]

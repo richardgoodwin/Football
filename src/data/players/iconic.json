@@ -1,0 +1,529 @@
+[
+  {
+    "id": "lehmann-arsenal-2003-04",
+    "name": "Jens Lehmann",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "GK",
+    "rating": 86,
+    "appearances": 38,
+    "cleanSheets": 15,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "lauren-arsenal-2003-04",
+    "name": "Lauren",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "toure-arsenal-2003-04",
+    "name": "Kolo Touré",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "DEF",
+    "rating": 88,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "campbell-arsenal-2003-04",
+    "name": "Sol Campbell",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "DEF",
+    "rating": 89,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "cole-arsenal-2003-04",
+    "name": "Ashley Cole",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "DEF",
+    "rating": 90,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "vieira-arsenal-2003-04",
+    "name": "Patrick Vieira",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "MID",
+    "rating": 93,
+    "tags": ["invincibles", "captain"]
+  },
+  {
+    "id": "gilberto-arsenal-2003-04",
+    "name": "Gilberto Silva",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "MID",
+    "rating": 87,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "pires-arsenal-2003-04",
+    "name": "Robert Pirès",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "MID",
+    "rating": 92,
+    "goals": 14,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "ljungberg-arsenal-2003-04",
+    "name": "Freddie Ljungberg",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "MID",
+    "rating": 87,
+    "tags": ["invincibles"]
+  },
+  {
+    "id": "henry-arsenal-2003-04",
+    "name": "Thierry Henry",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "FWD",
+    "rating": 99,
+    "goals": 30,
+    "assists": 6,
+    "tags": ["invincibles", "golden-boot", "pfa-poty"]
+  },
+  {
+    "id": "bergkamp-arsenal-2003-04",
+    "name": "Dennis Bergkamp",
+    "club": "Arsenal",
+    "season": "2003-04",
+    "position": "FWD",
+    "rating": 92,
+    "tags": ["invincibles"]
+  },
+
+  {
+    "id": "hart-man-city-2011-12",
+    "name": "Joe Hart",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "GK",
+    "rating": 89,
+    "appearances": 38,
+    "cleanSheets": 17,
+    "tags": ["champions", "golden-glove"]
+  },
+  {
+    "id": "richards-man-city-2011-12",
+    "name": "Micah Richards",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "DEF",
+    "rating": 82,
+    "tags": ["champions"]
+  },
+  {
+    "id": "kompany-man-city-2011-12",
+    "name": "Vincent Kompany",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "DEF",
+    "rating": 94,
+    "tags": ["champions", "captain", "pfa-poty"]
+  },
+  {
+    "id": "lescott-man-city-2011-12",
+    "name": "Joleon Lescott",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+  {
+    "id": "clichy-man-city-2011-12",
+    "name": "Gaël Clichy",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "DEF",
+    "rating": 82,
+    "tags": ["champions"]
+  },
+  {
+    "id": "yaya-toure-man-city-2011-12",
+    "name": "Yaya Touré",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "MID",
+    "rating": 92,
+    "goals": 6,
+    "tags": ["champions"]
+  },
+  {
+    "id": "barry-man-city-2011-12",
+    "name": "Gareth Barry",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "MID",
+    "rating": 83,
+    "tags": ["champions"]
+  },
+  {
+    "id": "silva-man-city-2011-12",
+    "name": "David Silva",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "MID",
+    "rating": 93,
+    "goals": 6,
+    "assists": 15,
+    "tags": ["champions"]
+  },
+  {
+    "id": "nasri-man-city-2011-12",
+    "name": "Samir Nasri",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "MID",
+    "rating": 85,
+    "tags": ["champions"]
+  },
+  {
+    "id": "tevez-man-city-2011-12",
+    "name": "Carlos Tevez",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "FWD",
+    "rating": 88,
+    "tags": ["champions"]
+  },
+  {
+    "id": "aguero-man-city-2011-12",
+    "name": "Sergio Agüero",
+    "club": "Manchester City",
+    "season": "2011-12",
+    "position": "FWD",
+    "rating": 96,
+    "goals": 23,
+    "tags": ["champions", "9320"]
+  },
+
+  {
+    "id": "schmeichel-leicester-2015-16",
+    "name": "Kasper Schmeichel",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "GK",
+    "rating": 87,
+    "appearances": 38,
+    "cleanSheets": 15,
+    "tags": ["champions", "underdogs"]
+  },
+  {
+    "id": "simpson-leicester-2015-16",
+    "name": "Danny Simpson",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "DEF",
+    "rating": 79,
+    "tags": ["champions", "underdogs"]
+  },
+  {
+    "id": "morgan-leicester-2015-16",
+    "name": "Wes Morgan",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions", "underdogs", "captain"]
+  },
+  {
+    "id": "huth-leicester-2015-16",
+    "name": "Robert Huth",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions", "underdogs"]
+  },
+  {
+    "id": "fuchs-leicester-2015-16",
+    "name": "Christian Fuchs",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "DEF",
+    "rating": 81,
+    "tags": ["champions", "underdogs"]
+  },
+  {
+    "id": "kante-leicester-2015-16",
+    "name": "N'Golo Kanté",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "MID",
+    "rating": 92,
+    "tags": ["champions", "underdogs"]
+  },
+  {
+    "id": "drinkwater-leicester-2015-16",
+    "name": "Danny Drinkwater",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "MID",
+    "rating": 83,
+    "tags": ["champions", "underdogs"]
+  },
+  {
+    "id": "mahrez-leicester-2015-16",
+    "name": "Riyad Mahrez",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "MID",
+    "rating": 93,
+    "goals": 17,
+    "assists": 11,
+    "tags": ["champions", "underdogs", "pfa-poty"]
+  },
+  {
+    "id": "albrighton-leicester-2015-16",
+    "name": "Marc Albrighton",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "MID",
+    "rating": 80,
+    "tags": ["champions", "underdogs"]
+  },
+  {
+    "id": "vardy-leicester-2015-16",
+    "name": "Jamie Vardy",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "FWD",
+    "rating": 95,
+    "goals": 24,
+    "tags": ["champions", "underdogs", "11-game-streak"]
+  },
+  {
+    "id": "okazaki-leicester-2015-16",
+    "name": "Shinji Okazaki",
+    "club": "Leicester City",
+    "season": "2015-16",
+    "position": "FWD",
+    "rating": 81,
+    "tags": ["champions", "underdogs"]
+  },
+
+  {
+    "id": "ederson-man-city-2017-18",
+    "name": "Ederson",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "GK",
+    "rating": 89,
+    "appearances": 36,
+    "cleanSheets": 16,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "walker-man-city-2017-18",
+    "name": "Kyle Walker",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "DEF",
+    "rating": 87,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "stones-man-city-2017-18",
+    "name": "John Stones",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "otamendi-man-city-2017-18",
+    "name": "Nicolás Otamendi",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "delph-man-city-2017-18",
+    "name": "Fabian Delph",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "DEF",
+    "rating": 81,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "fernandinho-man-city-2017-18",
+    "name": "Fernandinho",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "de-bruyne-man-city-2017-18",
+    "name": "Kevin De Bruyne",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "MID",
+    "rating": 96,
+    "goals": 8,
+    "assists": 16,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "silva-man-city-2017-18",
+    "name": "David Silva",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "MID",
+    "rating": 92,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "sterling-man-city-2017-18",
+    "name": "Raheem Sterling",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "MID",
+    "rating": 88,
+    "goals": 18,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "sane-man-city-2017-18",
+    "name": "Leroy Sané",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "FWD",
+    "rating": 88,
+    "goals": 10,
+    "tags": ["centurions"]
+  },
+  {
+    "id": "aguero-man-city-2017-18",
+    "name": "Sergio Agüero",
+    "club": "Manchester City",
+    "season": "2017-18",
+    "position": "FWD",
+    "rating": 92,
+    "goals": 21,
+    "tags": ["centurions"]
+  },
+
+  {
+    "id": "alisson-liverpool-2019-20",
+    "name": "Alisson",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "GK",
+    "rating": 92,
+    "appearances": 29,
+    "cleanSheets": 13,
+    "tags": ["champions"]
+  },
+  {
+    "id": "alexander-arnold-liverpool-2019-20",
+    "name": "Trent Alexander-Arnold",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "DEF",
+    "rating": 92,
+    "assists": 13,
+    "tags": ["champions"]
+  },
+  {
+    "id": "gomez-liverpool-2019-20",
+    "name": "Joe Gomez",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["champions"]
+  },
+  {
+    "id": "van-dijk-liverpool-2019-20",
+    "name": "Virgil van Dijk",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "DEF",
+    "rating": 97,
+    "tags": ["champions"]
+  },
+  {
+    "id": "robertson-liverpool-2019-20",
+    "name": "Andrew Robertson",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "DEF",
+    "rating": 91,
+    "tags": ["champions"]
+  },
+  {
+    "id": "henderson-liverpool-2019-20",
+    "name": "Jordan Henderson",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions", "captain", "fwa-poty"]
+  },
+  {
+    "id": "fabinho-liverpool-2019-20",
+    "name": "Fabinho",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "MID",
+    "rating": 90,
+    "tags": ["champions"]
+  },
+  {
+    "id": "wijnaldum-liverpool-2019-20",
+    "name": "Georginio Wijnaldum",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "MID",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "mane-liverpool-2019-20",
+    "name": "Sadio Mané",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "FWD",
+    "rating": 93,
+    "goals": 18,
+    "tags": ["champions"]
+  },
+  {
+    "id": "salah-liverpool-2019-20",
+    "name": "Mohamed Salah",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "FWD",
+    "rating": 95,
+    "goals": 19,
+    "tags": ["champions"]
+  },
+  {
+    "id": "firmino-liverpool-2019-20",
+    "name": "Roberto Firmino",
+    "club": "Liverpool",
+    "season": "2019-20",
+    "position": "FWD",
+    "rating": 89,
+    "tags": ["champions"]
+  }
+]

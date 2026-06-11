@@ -1,0 +1,113 @@
+[
+  {
+    "id": "cul-handlanov",
+    "format": "true-false",
+    "category": "culture",
+    "difficulty": "medium",
+    "yearStart": 2010,
+    "yearEnd": 2010,
+    "tags": ["henry", "france", "ireland", "controversy"],
+    "prompt": "Thierry Henry handled the ball in the build-up to a France goal against Ireland in a 2010 World Cup qualifier.",
+    "correct": true,
+    "explanation": "The handball wasn't given; France qualified and Ireland were eliminated, sparking outrage.",
+    "popularity": 75
+  },
+  {
+    "id": "cul-fa-cup-ribery",
+    "format": "true-false",
+    "category": "culture",
+    "difficulty": "hard",
+    "yearStart": 2013,
+    "yearEnd": 2013,
+    "tags": ["ribery", "ballon-dor"],
+    "prompt": "Franck Ribéry won the 2013 Ballon d'Or.",
+    "correct": false,
+    "explanation": "Ribéry finished third behind Ronaldo and Messi despite Bayern's treble; the snub remains controversial.",
+    "popularity": 55
+  },
+  {
+    "id": "cul-vinaigre",
+    "format": "true-false",
+    "category": "culture",
+    "difficulty": "easy",
+    "yearStart": 2002,
+    "yearEnd": 2002,
+    "tags": ["ronaldinho", "england", "world-cup"],
+    "prompt": "Ronaldinho's lobbed free-kick beat David Seaman at the 2002 World Cup.",
+    "correct": true,
+    "explanation": "Brazil eliminated England 2-1 with Ronaldinho's audacious 40-yard chip.",
+    "popularity": 80
+  },
+  {
+    "id": "cul-zlatan-confidence",
+    "format": "guess-the-player",
+    "category": "culture",
+    "difficulty": "medium",
+    "yearStart": 2001,
+    "yearEnd": 2023,
+    "tags": ["zlatan", "ibrahimovic"],
+    "clues": [
+      "Swedish striker known for his outsized personality.",
+      "Played for Ajax, Juventus, Inter, Barcelona, Milan, PSG and Manchester United.",
+      "Famous for a 30-yard overhead kick against England in 2012.",
+      "Once said 'Zlatan does not do auditions' to Arsenal.",
+      "Returned to AC Milan for a second spell in 2020."
+    ],
+    "correct": "Zlatan Ibrahimović",
+    "acceptedAnswers": ["zlatan", "zlatan ibrahimovic", "ibrahimovic"],
+    "explanation": "Zlatan: a goalscoring force at every top European club."
+  },
+  {
+    "id": "cul-balotelli-why-always-me",
+    "format": "multiple-choice",
+    "category": "culture",
+    "difficulty": "medium",
+    "yearStart": 2011,
+    "yearEnd": 2011,
+    "tags": ["balotelli", "man-city"],
+    "prompt": "Which striker famously revealed a 'Why Always Me?' t-shirt after scoring at Old Trafford in 2011?",
+    "correct": "Mario Balotelli",
+    "distractors": ["Sergio Agüero", "Carlos Tevez", "Edin Džeko"],
+    "explanation": "Balotelli celebrated his goal in the 6-1 derby win by lifting his shirt.",
+    "popularity": 78
+  },
+  {
+    "id": "cul-fifa-2010-vuvuzela-meme",
+    "format": "true-false",
+    "category": "culture",
+    "difficulty": "easy",
+    "yearStart": 2010,
+    "yearEnd": 2010,
+    "tags": ["world-cup", "vuvuzela", "culture"],
+    "prompt": "Vuvuzelas became a meme during the 2010 World Cup in South Africa.",
+    "correct": true,
+    "explanation": "The plastic horns produced a constant droning buzz throughout matches.",
+    "popularity": 70
+  },
+  {
+    "id": "cul-fifa-game-cover",
+    "format": "true-false",
+    "category": "culture",
+    "difficulty": "hard",
+    "yearStart": 2015,
+    "yearEnd": 2015,
+    "tags": ["fifa", "video-games"],
+    "prompt": "FIFA 16 was the first FIFA video game to feature female players.",
+    "correct": true,
+    "explanation": "FIFA 16 introduced 12 national women's teams playable in friendlies.",
+    "popularity": 50
+  },
+  {
+    "id": "cul-pep-tactics",
+    "format": "true-false",
+    "category": "culture",
+    "difficulty": "medium",
+    "yearStart": 2008,
+    "yearEnd": 2026,
+    "tags": ["guardiola", "tactics"],
+    "prompt": "Pep Guardiola popularised the 'false nine' role with Lionel Messi at Barcelona.",
+    "correct": true,
+    "explanation": "Guardiola moved Messi into a deep central role in 2009, transforming his Barcelona side.",
+    "popularity": 65
+  }
+]
