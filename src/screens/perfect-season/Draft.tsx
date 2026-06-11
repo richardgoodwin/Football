@@ -9,7 +9,7 @@ import { Wheel } from '@/components/perfect-season/Wheel';
 import { PlayerCard } from '@/components/perfect-season/PlayerCard';
 import { SquadView } from '@/components/perfect-season/SquadView';
 import { deriveDraftState, useDraft } from '@/store/draftStore';
-import { ALL_PLAYERS, uniqueClubSeasons } from '@/data/players';
+import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
 import { spinWheel, type WheelLanding } from '@/game/draft/wheel';
 import { eligiblePlayers, openPositionsFor, remaining } from '@/game/draft/draftState';
 import { useAudio } from '@/hooks/useAudio';
@@ -21,7 +21,7 @@ export function Draft() {
   const { picks, formationId, addPick, consumeRespin, respinsRemaining } = draftStore;
 
   const state = useMemo(() => deriveDraftState(draftStore), [draftStore]);
-  const slots = useMemo(() => uniqueClubSeasons(), []);
+  const slots = useMemo(() => uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS), []);
   const [landingIndex, setLandingIndex] = useState<number | null>(null);
   const [spinToken, setSpinToken] = useState(0);
   const [spinning, setSpinning] = useState(false);

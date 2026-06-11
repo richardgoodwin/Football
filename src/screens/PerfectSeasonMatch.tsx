@@ -16,7 +16,7 @@ import {
   submitDraftPick,
   type PerfectSeasonMatchDoc,
 } from '@/lib/matches';
-import { ALL_PLAYERS, uniqueClubSeasons } from '@/data/players';
+import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
 import { FORMATIONS, openPositions, remainingSlots } from '@/game/draft/constraints';
 import type { DraftPick, Player, Position } from '@/types/draft';
 import { Link } from 'react-router-dom';
@@ -257,7 +257,7 @@ function DraftPanel({
   }, [draft]);
 
   // Pre-build a quick slot list (for the wheel visual).
-  const allSlots = useMemo(() => uniqueClubSeasons(), []);
+  const allSlots = useMemo(() => uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS), []);
 
   // Spin state
   const [spinToken, setSpinToken] = useState(0);
