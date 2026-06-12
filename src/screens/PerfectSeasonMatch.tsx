@@ -259,21 +259,36 @@ function DraftPanel({
   // Pre-build a quick slot list (for the wheel visual).
   const allSlots = useMemo(() => uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS), []);
 
-  // Spin state
+  // Spin state. seqOffset advances within the shared wheel sequence when a
+  // landing offers no eligible players — otherwise re-spinning would hit the
+  // same deterministic slot forever.
   const [spinToken, setSpinToken] = useState(0);
   const [landingIndex, setLandingIndex] = useState<number | null>(null);
   const [showResults, setShowResults] = useState(false);
+  const [seqOffset, setSeqOffset] = useState(0);
 
-  const handleSpin = useCallback(() => {
-    if (draft.length >= 11) return;
-    // Use the next deterministic landing from the wheel sequence so both players
-    // see consistent options at the same pick index.
-    const next = match.wheelSequence[draft.length] ?? match.wheelSequence[draft.length % match.wheelSequence.length];
-    const idx = allSlots.findIndex((s) => s.club === next.club && s.season === next.season);
-    setLandingIndex(idx >= 0 ? idx : 0);
-    setSpinToken((t) => t + 1);
-    setShowResults(false);
-  }, [draft.length, match.wheelSequence, allSlots]);
+  const doSpin = useCallback(
+    (offset: number) => {
+      if (draft.length >= 11) return;
+      // Use the next deterministic landing from the wheel sequence so both players
+      // see consistent options at the same pick index.
+      const seqIdx = (draft.length + offset) % match.wheelSequence.length;
+      const next = match.wheelSequence[seqIdx];
+      const idx = allSlots.findIndex((s) => s.club === next.club && s.season === next.season);
+      setLandingIndex(idx >= 0 ? idx : 0);
+      setSpinToken((t) => t + 1);
+      setShowResults(false);
+    },
+    [draft.length, match.wheelSequence, allSlots],
+  );
+
+  const handleSpin = useCallback(() => doSpin(seqOffset), [doSpin, seqOffset]);
+
+  const handleRespin = useCallback(() => {
+    const next = seqOffset + 1;
+    setSeqOffset(next);
+    doSpin(next);
+  }, [seqOffset, doSpin]);
 
   const handleSpinEnd = useCallback(() => setShowResults(true), []);
 
@@ -293,8 +308,10 @@ function DraftPanel({
     async (player: Player) => {
       if (!landing) return;
       await onPick(player, landing);
+      // Hide the player list but keep landingIndex — resetting it would change
+      // the wheel's animate target and auto-animate an unrequested "spin".
       setShowResults(false);
-      setLandingIndex(null);
+      setSeqOffset(0);
     },
     [landing, onPick],
   );
@@ -330,7 +347,7 @@ function DraftPanel({
                   </div>
                 </div>
                 {eligible.length === 0 && (
-                  <Button variant="ghost" onClick={handleSpin}>
+                  <Button variant="ghost" onClick={handleRespin}>
                     <RotateCw size={16} className="inline-block mr-2" />
                     Re-spin
                   </Button>

@@ -64,8 +64,10 @@ export function Draft() {
       if (!player) return;
       audio.play('correct');
       addPick({ player, wheelLanding: landing });
+      // Hide the player list but leave landingIndex where it is — otherwise
+      // resetting it would change the wheel's `animate` target and framer
+      // would auto-animate the strip, looking like an unrequested re-spin.
       setShowResults(false);
-      setLandingIndex(null);
     },
     [state, landing, eligible, addPick, audio],
   );

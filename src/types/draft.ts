@@ -14,6 +14,8 @@ export interface Player {
   position: Position;
   /** Overall ability, 60-99. */
   rating: number;
+  /** Current age — set by the aging module in dynasty mode. */
+  age?: number;
   goals?: number;
   assists?: number;
   appearances?: number;
@@ -58,6 +60,8 @@ export interface MatchSimulation {
 export interface SeasonResult {
   squad: DraftPick[];
   formationId: FormationId;
+  /** Dynasty season number (1 = freshly drafted squad). */
+  seasonNumber?: number;
   played: number;
   wins: number;
   draws: number;

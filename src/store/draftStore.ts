@@ -12,6 +12,8 @@ interface DraftStore {
   respinsRemaining: number;
   /** Most recent simulated season (null until first sim). */
   lastResult: SeasonResult | null;
+  /** Dynasty season counter: 1 = first season with this squad, +1 per continue. */
+  dynastySeason: number;
   /** Lifetime stats — sync layer will pick these up via existing max-of merge. */
   totalAttempts: number;
   bestPoints: number;
@@ -23,6 +25,8 @@ interface DraftStore {
   clearDraft: () => void;
   setLastResult: (result: SeasonResult) => void;
   recordAttempt: (result: SeasonResult) => void;
+  /** Advance the dynasty to the next season (squad ages one year). */
+  continueDynasty: () => void;
 }
 
 export const useDraft = create<DraftStore>()(
@@ -32,6 +36,7 @@ export const useDraft = create<DraftStore>()(
       picks: [],
       respinsRemaining: 1,
       lastResult: null,
+      dynastySeason: 1,
       totalAttempts: 0,
       bestPoints: 0,
       perfectSeasons: 0,
@@ -41,6 +46,7 @@ export const useDraft = create<DraftStore>()(
           formationId,
           picks: [],
           respinsRemaining: 1,
+          dynastySeason: 1,
         }),
 
       addPick: (pick) =>
@@ -52,7 +58,7 @@ export const useDraft = create<DraftStore>()(
         set((s) => ({ respinsRemaining: Math.max(0, s.respinsRemaining - 1) })),
 
       clearDraft: () =>
-        set({ formationId: null, picks: [], respinsRemaining: 1 }),
+        set({ formationId: null, picks: [], respinsRemaining: 1, dynastySeason: 1 }),
 
       setLastResult: (result) => set({ lastResult: result }),
 
@@ -63,6 +69,9 @@ export const useDraft = create<DraftStore>()(
           bestPoints: Math.max(s.bestPoints, result.points),
           perfectSeasons: s.perfectSeasons + (result.perfect ? 1 : 0),
         })),
+
+      continueDynasty: () =>
+        set((s) => ({ dynastySeason: s.dynastySeason + 1 })),
     }),
     {
       name: 'fq:v1:draft',
@@ -72,6 +81,7 @@ export const useDraft = create<DraftStore>()(
         picks: s.picks,
         respinsRemaining: s.respinsRemaining,
         lastResult: s.lastResult,
+        dynastySeason: s.dynastySeason,
         totalAttempts: s.totalAttempts,
         bestPoints: s.bestPoints,
         perfectSeasons: s.perfectSeasons,

@@ -7,6 +7,7 @@ import { useDraft, deriveDraftState } from '@/store/draftStore';
 import { useProfile } from '@/store/profileStore';
 import { useAuth } from '@/store/authStore';
 import { simulateSeason } from '@/game/draft/simulation';
+import { agedPicks } from '@/game/draft/aging';
 import { mulberry32 } from '@/utils/rng';
 import { submitScore } from '@/lib/leaderboard';
 
@@ -31,7 +32,13 @@ export function Simulating() {
     if (submittedRef.current) return;
     submittedRef.current = true;
     const seed = Math.floor(Math.random() * 1_000_000);
-    const result = simulateSeason(state.picks, state.formation, mulberry32(seed));
+    // Dynasty: season N means the squad has aged N-1 years since drafting.
+    const seasonNumber = draftStore.dynastySeason;
+    const squad = agedPicks(state.picks, seasonNumber - 1);
+    const result = {
+      ...simulateSeason(squad, state.formation, mulberry32(seed)),
+      seasonNumber,
+    };
     draftStore.recordAttempt(result);
 
     // Submit to leaderboard (fire-and-forget)

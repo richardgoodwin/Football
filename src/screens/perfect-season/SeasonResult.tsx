@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { Trophy, RotateCw, Home, Share2 } from 'lucide-react';
+import { Trophy, RotateCw, Home, Share2, FastForward } from 'lucide-react';
 import { Screen } from '@/components/layout/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -11,7 +11,7 @@ import { FORMATIONS } from '@/game/draft/constraints';
 
 export function SeasonResult() {
   const navigate = useNavigate();
-  const { lastResult, clearDraft } = useDraft();
+  const { lastResult, clearDraft, continueDynasty } = useDraft();
 
   const formation = useMemo(
     () => (lastResult ? FORMATIONS[lastResult.formationId] : null),
@@ -33,9 +33,21 @@ export function SeasonResult() {
   const gd = r.goalsFor - r.goalsAgainst;
   const positionLabel = positionToLabel(r.position);
 
+  const seasonNumber = r.seasonNumber ?? 1;
+  const yearsAged = seasonNumber - 1;
+  const avgAge =
+    r.squad.length > 0
+      ? r.squad.reduce((sum, p) => sum + (p.player.age ?? 26), 0) / r.squad.length
+      : 0;
+
   function playAgain() {
     clearDraft();
     navigate('/perfect-season');
+  }
+
+  function nextSeason() {
+    continueDynasty();
+    navigate('/perfect-season/simulating');
   }
 
   function shareText() {
@@ -70,6 +82,10 @@ export function SeasonResult() {
           <h2 className={['font-display text-5xl mt-2', r.perfect ? 'text-neon-amber' : ''].join(' ')}>
             {r.perfect ? '38-0 PERFECT' : positionLabel}
           </h2>
+          <p className="text-xs uppercase tracking-wider text-slate-500 mt-1">
+            Dynasty season {seasonNumber}
+            {yearsAged > 0 && ` · squad has aged ${yearsAged} year${yearsAged === 1 ? '' : 's'}`}
+          </p>
           {!r.perfect && (
             <p className="text-slate-400 text-sm">
               {r.points >= 95
@@ -100,14 +116,16 @@ export function SeasonResult() {
 
         {/* Squad */}
         <Card className="p-5">
-          <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-3">Your XI</h3>
+          <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-3">
+            Your XI{avgAge > 0 && ` · avg age ${avgAge.toFixed(1)}`}
+          </h3>
           <SquadView picks={r.squad} formation={formation} />
         </Card>
 
         {/* Match log */}
         <Card className="p-5">
           <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-3">Match log</h3>
-          <div className="grid grid-cols-7 sm:grid-cols-10 lg:grid-cols-19 gap-1">
+          <div className="grid grid-cols-7 sm:grid-cols-10 lg:grid-cols-[repeat(19,minmax(0,1fr))] gap-1">
             {r.matches.map((m, i) => (
               <div
                 key={i}
@@ -127,7 +145,11 @@ export function SeasonResult() {
 
         {/* Actions */}
         <div className="flex flex-wrap gap-2 justify-center">
-          <Button onClick={playAgain}>
+          <Button onClick={nextSeason}>
+            <FastForward size={16} className="inline-block mr-2" />
+            Next season (squad ages)
+          </Button>
+          <Button variant="secondary" onClick={playAgain}>
             <RotateCw size={16} className="inline-block mr-2" />
             New draft
           </Button>

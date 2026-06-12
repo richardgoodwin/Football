@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import type { Player } from '@/types/draft';
+import { BIRTH_YEARS, snapshotAge } from '@/game/draft/aging';
 
 interface PlayerCardProps {
   player: Player;
@@ -43,6 +44,9 @@ function funStat(player: Player): string | null {
 export function PlayerCard({ player, onClick, selected, disabled, compact }: PlayerCardProps) {
   const tone = ratingTone(player.rating);
   const stat = funStat(player);
+  // age: set by the aging module in dynasty mode; otherwise derive the
+  // player's age in their snapshot season (only when birth year is known).
+  const age = player.age ?? (BIRTH_YEARS[player.name] ? snapshotAge(player) : null);
   return (
     <motion.button
       type="button"
@@ -71,6 +75,7 @@ export function PlayerCard({ player, onClick, selected, disabled, compact }: Pla
           <div className="font-semibold leading-tight truncate">{player.name}</div>
           <div className="text-xs text-slate-400">
             {player.club} · {player.season}
+            {age !== null && ` · age ${age}`}
           </div>
           {stat && !compact && <div className="text-xs text-slate-300 mt-1">{stat}</div>}
         </div>
