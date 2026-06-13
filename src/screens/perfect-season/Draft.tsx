@@ -10,7 +10,8 @@ import { PlayerCard } from '@/components/perfect-season/PlayerCard';
 import { SquadView } from '@/components/perfect-season/SquadView';
 import { deriveDraftState, useDraft } from '@/store/draftStore';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
-import { spinWheel, type WheelLanding } from '@/game/draft/wheel';
+import type { WheelLanding } from '@/game/draft/wheel';
+import { MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
 import { buildPick, eligiblePlayers, openSlots } from '@/game/draft/draftState';
 import { effectiveRating, playerRole, rolePenalty, ROLE_LABEL } from '@/game/draft/roles';
 import { useAudio } from '@/hooks/useAudio';
@@ -19,7 +20,7 @@ export function Draft() {
   const navigate = useNavigate();
   const audio = useAudio();
   const draftStore = useDraft();
-  const { picks, formationId, addPick, consumeRespin, respinsRemaining } = draftStore;
+  const { picks, formationId, addPick } = draftStore;
 
   const state = useMemo(() => deriveDraftState(draftStore), [draftStore]);
   const slots = useMemo(() => uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS), []);
@@ -52,8 +53,18 @@ export function Draft() {
 
   const handleSpin = useCallback(() => {
     if (!state) return;
-    const next = spinWheel(Math.random, ALL_PLAYERS);
-    const idx = slots.findIndex((s) => s.club === next.club && s.season === next.season);
+    // Only land on club-seasons you can actually use right now: club not at its
+    // pick cap, and at least one player from that season still unpicked. This
+    // guarantees a spin can never strand you on an unusable club.
+    const usable = slots.filter((s) => {
+      if ((state.picksByClub[s.club] ?? 0) >= MAX_PICKS_PER_CLUB) return false;
+      return ALL_PLAYERS.some(
+        (p) => p.club === s.club && p.season === s.season && !state.pickedPlayerIds.has(p.id),
+      );
+    });
+    const pool = usable.length > 0 ? usable : slots;
+    const choice = pool[Math.floor(Math.random() * pool.length)];
+    const idx = slots.findIndex((s) => s.club === choice.club && s.season === choice.season);
     setLandingIndex(idx >= 0 ? idx : 0);
     setSpinToken((t) => t + 1);
     setSpinning(true);
@@ -100,12 +111,6 @@ export function Draft() {
     setTriedSlot(null);
   }, [state, landing, selectedPlayer, triedSlot, addPick, audio]);
 
-  const handleRespin = useCallback(() => {
-    if (respinsRemaining <= 0) return;
-    consumeRespin();
-    handleSpin();
-  }, [respinsRemaining, consumeRespin, handleSpin]);
-
   if (!state) return null;
 
   const complete = picks.length >= 11;
@@ -125,7 +130,6 @@ export function Draft() {
           </div>
           <div className="text-right text-xs text-slate-400 max-w-[60%]">
             <div>Need: {openRoleSummary || 'Squad complete!'}</div>
-            <div>Respins: {respinsRemaining}</div>
           </div>
         </div>
 
@@ -168,10 +172,10 @@ export function Draft() {
                       {landing.club} <span className="text-slate-400">·</span> {landing.season}
                     </div>
                   </div>
-                  {noEligible && respinsRemaining > 0 && (
-                    <Button variant="ghost" onClick={handleRespin}>
+                  {noEligible && (
+                    <Button variant="ghost" onClick={handleSpin} disabled={spinning}>
                       <RotateCw size={16} className="inline-block mr-2" />
-                      Respin
+                      Spin again
                     </Button>
                   )}
                 </div>
@@ -179,7 +183,7 @@ export function Draft() {
                 {noEligible ? (
                   <p className="text-sm text-slate-400">
                     No available players from this club-season (all picked or club cap reached).
-                    Spin again{respinsRemaining > 0 ? ' or use your respin.' : '.'}
+                    Spin again — it's free, and the wheel will land somewhere you can use.
                   </p>
                 ) : !selectedPlayer ? (
                   <>
