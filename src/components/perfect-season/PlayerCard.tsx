@@ -1,6 +1,7 @@
 import { motion } from 'framer-motion';
 import type { Player } from '@/types/draft';
 import { BIRTH_YEARS, snapshotAge } from '@/game/draft/aging';
+import { playerRole, ROLE_LABEL } from '@/game/draft/roles';
 
 interface PlayerCardProps {
   player: Player;
@@ -81,11 +82,17 @@ export function PlayerCard({ player, onClick, selected, disabled, compact }: Pla
         </div>
         <span
           className={[
-            'shrink-0 text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full border',
+            'shrink-0 flex flex-col items-center gap-0.5 px-2 py-1 rounded-xl border',
             positionTone(player.position),
           ].join(' ')}
+          title={ROLE_LABEL[playerRole(player)]}
         >
-          {player.position}
+          <span className="text-xs font-bold uppercase tracking-wider leading-none">
+            {playerRole(player)}
+          </span>
+          <span className="text-[9px] uppercase tracking-wider opacity-60 leading-none">
+            {player.position}
+          </span>
         </span>
       </div>
     </motion.button>
