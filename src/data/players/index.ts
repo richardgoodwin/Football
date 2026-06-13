@@ -1,16 +1,25 @@
 import type { Player } from '@/types/draft';
 import iconic from './iconic.json';
 import additional from './additional.json';
+import squadDepth from './squad-depth.json';
 import { DEFAULT_ROLE_BY_POSITION, PLAYER_ROLES } from '@/game/draft/roles';
 
-// Dedupe by id so accidental overlaps between files don't double-count,
-// and attach each player's preferred role from the role map.
+// Curated files load first so they win any de-duplication. We drop both exact
+// id collisions and the same player appearing twice in one club-season (by
+// name) — squad-depth deliberately over-provisions and may re-list a starter.
 const _seenIds = new Set<string>();
-const _allRaw: Player[] = [...(iconic as Player[]), ...(additional as Player[])];
+const _seenPlayers = new Set<string>();
+const _allRaw: Player[] = [
+  ...(iconic as Player[]),
+  ...(additional as Player[]),
+  ...(squadDepth as Player[]),
+];
 export const ALL_PLAYERS: Player[] = _allRaw
   .filter((p) => {
-    if (_seenIds.has(p.id)) return false;
+    const nameKey = `${p.name}|${p.club}|${p.season}`;
+    if (_seenIds.has(p.id) || _seenPlayers.has(nameKey)) return false;
     _seenIds.add(p.id);
+    _seenPlayers.add(nameKey);
     return true;
   })
   .map((p) => ({

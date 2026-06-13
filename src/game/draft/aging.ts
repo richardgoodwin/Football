@@ -188,11 +188,12 @@ export function seasonStartYear(season: string): number {
 /** Default snapshot age used when a player's birth year is unknown. */
 const DEFAULT_SNAPSHOT_AGE = 26;
 
-/** A player's age during their snapshot season (null only if season unparsable). */
+/** A player's age during their snapshot season. */
 export function snapshotAge(player: Player): number {
   const start = seasonStartYear(player.season);
   if (Number.isNaN(start)) return DEFAULT_SNAPSHOT_AGE;
-  const born = BIRTH_YEARS[player.name];
+  // Inline birthYear takes precedence, then the shared map, then a default.
+  const born = player.birthYear ?? BIRTH_YEARS[player.name];
   if (!born) return DEFAULT_SNAPSHOT_AGE;
   return start - born;
 }

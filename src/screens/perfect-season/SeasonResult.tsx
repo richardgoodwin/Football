@@ -6,6 +6,7 @@ import { Screen } from '@/components/layout/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { PitchView } from '@/components/perfect-season/PitchView';
+import { OverallRating } from '@/components/perfect-season/OverallRating';
 import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
 import { useDraft, TRANSFER_SPINS_PER_SEASON } from '@/store/draftStore';
 import { FORMATIONS } from '@/game/draft/constraints';
@@ -131,6 +132,9 @@ export function SeasonResult() {
           <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-3">
             Your XI{avgAge > 0 && ` · avg age ${avgAge.toFixed(1)}`}
           </h3>
+          <div className="mb-4">
+            <OverallRating picks={r.squad} />
+          </div>
           <PitchView picks={r.squad} formation={formation} />
         </Card>
 

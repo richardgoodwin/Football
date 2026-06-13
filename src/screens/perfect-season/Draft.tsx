@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/Button';
 import { Wheel } from '@/components/perfect-season/Wheel';
 import { PlayerCard } from '@/components/perfect-season/PlayerCard';
 import { PitchView } from '@/components/perfect-season/PitchView';
+import { OverallRating } from '@/components/perfect-season/OverallRating';
 import { deriveDraftState, useDraft, BENCH_SIZE } from '@/store/draftStore';
 import { BenchManager } from '@/components/perfect-season/BenchManager';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
@@ -275,6 +276,9 @@ export function Draft() {
             </motion.div>
           )}
         </AnimatePresence>
+
+        {/* Overall team rating, once the XI is set */}
+        {xiComplete && <OverallRating picks={picks} />}
 
         {/* Current squad on the pitch */}
         <Card className="p-4 space-y-3">

@@ -43,10 +43,12 @@ export interface Player {
   club: string;
   season: string;
   position: Position;
-  /** Preferred role — attached at load time from the role map. */
+  /** Preferred role — attached at load time from the role map (or inline). */
   role?: Role;
   /** Overall ability, 60-99. */
   rating: number;
+  /** Birth year — lets a player carry its own age data inline. */
+  birthYear?: number;
   /** Current age — set by the aging module in dynasty mode. */
   age?: number;
   goals?: number;
