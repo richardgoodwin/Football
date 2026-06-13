@@ -233,4 +233,14 @@ export const PLAYER_ROLES: Record<string, Role> = {
   'Wayne Rooney': 'ST',
   'Luis Suárez': 'ST',
   'Robin van Persie': 'ST',
+  // Squad fill-ins
+  'Paul Parker': 'RB',
+  'Andrei Kanchelskis': 'RM',
+  'Jeff Kenna': 'RB',
+  'Mark Atkins': 'CM',
+  'Aaron Hughes': 'RB',
+  "Andy O'Brien": 'CB',
+  'Robbie Elliott': 'LB',
+  'Martin Keown': 'CB',
+  'Ray Parlour': 'CM',
 };

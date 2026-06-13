@@ -168,6 +168,16 @@ export const BIRTH_YEARS: Record<string, number> = {
   'Harry Kane': 1993,
   'Gareth Bale': 1989,
   'Robin van Persie': 1983,
+  // Squad fill-ins
+  'Paul Parker': 1964,
+  'Andrei Kanchelskis': 1969,
+  'Jeff Kenna': 1970,
+  'Mark Atkins': 1968,
+  'Aaron Hughes': 1979,
+  "Andy O'Brien": 1979,
+  'Robbie Elliott': 1973,
+  'Martin Keown': 1966,
+  'Ray Parlour': 1973,
 };
 
 /** First calendar year of a season string like '2003-04'. */

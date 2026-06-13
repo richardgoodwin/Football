@@ -1348,5 +1348,128 @@
     "goals": 23,
     "assists": 14,
     "tags": ["golden-boot", "playmaker"]
+  },
+
+  {
+    "id": "parker-man-utd-1993-94",
+    "name": "Paul Parker",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "DEF",
+    "rating": 83,
+    "tags": ["double-winners"]
+  },
+  {
+    "id": "kanchelskis-man-utd-1993-94",
+    "name": "Andrei Kanchelskis",
+    "club": "Manchester United",
+    "season": "1993-94",
+    "position": "MID",
+    "rating": 85,
+    "tags": ["double-winners"]
+  },
+
+  {
+    "id": "kenna-blackburn-1994-95",
+    "name": "Jeff Kenna",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "DEF",
+    "rating": 77,
+    "tags": ["champions"]
+  },
+  {
+    "id": "atkins-blackburn-1994-95",
+    "name": "Mark Atkins",
+    "club": "Blackburn Rovers",
+    "season": "1994-95",
+    "position": "MID",
+    "rating": 75,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "neville-g-man-utd-2002-03",
+    "name": "Gary Neville",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "DEF",
+    "rating": 86,
+    "tags": ["champions"]
+  },
+  {
+    "id": "silvestre-man-utd-2002-03",
+    "name": "Mikael Silvestre",
+    "club": "Manchester United",
+    "season": "2002-03",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions"]
+  },
+
+  {
+    "id": "hughes-a-newcastle-2001-02",
+    "name": "Aaron Hughes",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 76,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "obrien-newcastle-2001-02",
+    "name": "Andy O'Brien",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 75,
+    "tags": ["robson-era"]
+  },
+  {
+    "id": "elliott-newcastle-2001-02",
+    "name": "Robbie Elliott",
+    "club": "Newcastle United",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 74,
+    "tags": ["robson-era"]
+  },
+
+  {
+    "id": "lauren-arsenal-2001-02",
+    "name": "Lauren",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 84,
+    "tags": ["champions", "double-winners"]
+  },
+  {
+    "id": "keown-arsenal-2001-02",
+    "name": "Martin Keown",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "DEF",
+    "rating": 85,
+    "tags": ["champions", "double-winners"]
+  },
+  {
+    "id": "ljungberg-arsenal-2001-02",
+    "name": "Freddie Ljungberg",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 87,
+    "goals": 12,
+    "tags": ["champions", "double-winners"]
+  },
+  {
+    "id": "parlour-arsenal-2001-02",
+    "name": "Ray Parlour",
+    "club": "Arsenal",
+    "season": "2001-02",
+    "position": "MID",
+    "rating": 83,
+    "tags": ["champions", "double-winners"]
   }
 ]

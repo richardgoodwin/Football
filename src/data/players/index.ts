@@ -55,8 +55,11 @@ export function uniqueClubSeasons(
   return out;
 }
 
-/** Minimum players a club-season must have to appear on the wheel. */
-export const WHEEL_MIN_PLAYERS = 6;
+/**
+ * Minimum players a club-season must have to appear on the wheel. Set to a
+ * full XI so every landing shows a complete team to draft from.
+ */
+export const WHEEL_MIN_PLAYERS = 11;
 
 if (import.meta.env?.DEV) {
   const ids = new Set<string>();
@@ -67,8 +70,23 @@ if (import.meta.env?.DEV) {
     }
     ids.add(p.id);
   }
+  const counts = new Map<string, number>();
+  for (const p of ALL_PLAYERS) {
+    const key = `${p.club} :: ${p.season}`;
+    counts.set(key, (counts.get(key) ?? 0) + 1);
+  }
+  const partial = [...counts.entries()].filter(([, n]) => n > 1 && n < WHEEL_MIN_PLAYERS);
+  if (partial.length) {
+    // eslint-disable-next-line no-console
+    console.warn(
+      '[players] Partial club-seasons (>1 but <full XI, hidden from wheel):',
+      partial.map(([k, n]) => `${k} (${n})`),
+    );
+  }
   // eslint-disable-next-line no-console
   console.info(
-    `[players] Loaded ${ALL_PLAYERS.length} player-seasons across ${uniqueClubSeasons().length} club-seasons`,
+    `[players] Loaded ${ALL_PLAYERS.length} player-seasons · ${
+      uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS).length
+    } full squads on the wheel`,
   );
 }
