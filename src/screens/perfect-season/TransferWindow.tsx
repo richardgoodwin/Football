@@ -7,7 +7,7 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { Wheel } from '@/components/perfect-season/Wheel';
 import { PlayerCard } from '@/components/perfect-season/PlayerCard';
-import { SquadView } from '@/components/perfect-season/SquadView';
+import { PitchView } from '@/components/perfect-season/PitchView';
 import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
 import { deriveDraftState, useDraft } from '@/store/draftStore';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
@@ -228,12 +228,12 @@ export function TransferWindow() {
           )}
         </AnimatePresence>
 
-        {/* Current squad */}
+        {/* Current squad on the pitch */}
         <Card className="p-4 space-y-3">
           <h3 className="text-xs uppercase tracking-wider text-slate-400">
             Your XI · {state.formation.label}
           </h3>
-          <SquadView picks={picks} formation={state.formation} />
+          <PitchView picks={picks} formation={state.formation} />
         </Card>
 
         <div className="text-center">

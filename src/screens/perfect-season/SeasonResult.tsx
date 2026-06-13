@@ -5,7 +5,7 @@ import { Trophy, RotateCw, Home, Share2, FastForward } from 'lucide-react';
 import { Screen } from '@/components/layout/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
-import { SquadView } from '@/components/perfect-season/SquadView';
+import { PitchView } from '@/components/perfect-season/PitchView';
 import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
 import { useDraft, TRANSFER_SPINS_PER_SEASON } from '@/store/draftStore';
 import { FORMATIONS } from '@/game/draft/constraints';
@@ -131,7 +131,7 @@ export function SeasonResult() {
           <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-3">
             Your XI{avgAge > 0 && ` · avg age ${avgAge.toFixed(1)}`}
           </h3>
-          <SquadView picks={r.squad} formation={formation} />
+          <PitchView picks={r.squad} formation={formation} />
         </Card>
 
         {/* Retirement notice */}
