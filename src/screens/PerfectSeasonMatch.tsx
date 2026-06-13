@@ -436,15 +436,17 @@ function MatchSlotTryout({
   const natural = playerRole(player);
   return (
     <div className="space-y-3">
-      <button type="button" onClick={onBack} className="text-xs text-slate-400 hover:text-neon-cyan">
-        <ArrowLeft size={12} className="inline-block mr-1" />
-        Back to players
-      </button>
-      <div className="text-sm">
-        <strong>{player.name}</strong>{' '}
-        <span className="text-slate-400">
-          · natural {natural} · base {player.rating}
-        </span>
+      <div className="flex items-center justify-between flex-wrap gap-2">
+        <div className="text-sm">
+          <strong>{player.name}</strong>{' '}
+          <span className="text-slate-400">
+            · natural {natural} · base {player.rating}
+          </span>
+        </div>
+        <Button variant="secondary" size="sm" onClick={onBack}>
+          <ArrowLeft size={14} className="inline-block mr-1.5" />
+          Choose a different player
+        </Button>
       </div>
       <div className="flex flex-wrap gap-2">
         {openSlotIndices.map((i) => {

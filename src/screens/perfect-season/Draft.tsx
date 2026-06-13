@@ -248,11 +248,6 @@ function SlotTryout({
 
   return (
     <div className="space-y-3">
-      <button type="button" onClick={onBack} className="text-xs text-slate-400 hover:text-neon-cyan">
-        <ArrowLeft size={12} className="inline-block mr-1" />
-        Back to players
-      </button>
-
       <div className="flex items-center justify-between flex-wrap gap-2">
         <div>
           <div className="font-semibold">{player.name}</div>
@@ -260,6 +255,10 @@ function SlotTryout({
             Natural role: {ROLE_LABEL[natural]} ({natural}) · base rating {player.rating}
           </div>
         </div>
+        <Button variant="secondary" size="sm" onClick={onBack}>
+          <ArrowLeft size={14} className="inline-block mr-1.5" />
+          Choose a different player
+        </Button>
       </div>
 
       <p className="text-xs text-slate-400">Try a position — the rating shows how they'd fit:</p>
