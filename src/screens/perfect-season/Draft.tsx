@@ -8,7 +8,8 @@ import { Button } from '@/components/ui/Button';
 import { Wheel } from '@/components/perfect-season/Wheel';
 import { PlayerCard } from '@/components/perfect-season/PlayerCard';
 import { SquadView } from '@/components/perfect-season/SquadView';
-import { deriveDraftState, useDraft } from '@/store/draftStore';
+import { deriveDraftState, useDraft, BENCH_SIZE } from '@/store/draftStore';
+import { BenchManager } from '@/components/perfect-season/BenchManager';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
 import type { WheelLanding } from '@/game/draft/wheel';
 import { MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
@@ -20,7 +21,7 @@ export function Draft() {
   const navigate = useNavigate();
   const audio = useAudio();
   const draftStore = useDraft();
-  const { picks, formationId, addPick } = draftStore;
+  const { picks, bench, formationId, addPick, addBenchPick, swapWithBench } = draftStore;
 
   const state = useMemo(() => deriveDraftState(draftStore), [draftStore]);
   const slots = useMemo(() => uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS), []);
@@ -111,9 +112,24 @@ export function Draft() {
     setTriedSlot(null);
   }, [state, landing, selectedPlayer, triedSlot, addPick, audio]);
 
+  const handleBenchPick = useCallback(
+    (playerId: string) => {
+      if (!landing) return;
+      const player = eligible.find((p) => p.id === playerId);
+      if (!player) return;
+      audio.play('correct');
+      addBenchPick({ player, wheelLanding: landing });
+      setShowResults(false);
+      setSelectedPlayerId(null);
+      setTriedSlot(null);
+    },
+    [landing, eligible, addBenchPick, audio],
+  );
+
   if (!state) return null;
 
-  const complete = picks.length >= 11;
+  const xiComplete = openSlotIndices.length === 0;
+  const benchComplete = bench.length >= BENCH_SIZE;
   const noEligible = showResults && eligible.length === 0;
   const openRoleSummary = openSlotIndices.map((i) => state.formation.roleSlots[i]).join(', ');
 
@@ -123,13 +139,27 @@ export function Draft() {
         {/* Header */}
         <div className="flex items-center justify-between flex-wrap gap-2">
           <div>
-            <div className="text-xs uppercase tracking-wider text-slate-400">Pick</div>
+            <div className="text-xs uppercase tracking-wider text-slate-400">
+              {xiComplete ? 'Bench' : 'Pick'}
+            </div>
             <div className="font-display text-4xl">
-              {Math.min(picks.length + 1, 11)} <span className="text-slate-500">/ 11</span>
+              {xiComplete ? (
+                <>
+                  {bench.length} <span className="text-slate-500">/ {BENCH_SIZE}</span>
+                </>
+              ) : (
+                <>
+                  {Math.min(picks.length + 1, 11)} <span className="text-slate-500">/ 11</span>
+                </>
+              )}
             </div>
           </div>
           <div className="text-right text-xs text-slate-400 max-w-[60%]">
-            <div>Need: {openRoleSummary || 'Squad complete!'}</div>
+            {xiComplete ? (
+              <div>Pick up to {BENCH_SIZE} subs — any position. Bench is optional.</div>
+            ) : (
+              <div>Need: {openRoleSummary || 'Squad complete!'}</div>
+            )}
           </div>
         </div>
 
@@ -142,13 +172,24 @@ export function Draft() {
         />
 
         <div className="flex flex-wrap gap-2 justify-center">
-          {!complete && (
+          {!xiComplete && (
             <Button size="lg" onClick={handleSpin} disabled={spinning || showResults}>
               <Sparkles size={18} className="inline-block mr-2" />
               {spinToken === 0 ? 'Spin the wheel' : 'Spin again'}
             </Button>
           )}
-          {complete && (
+          {xiComplete && !benchComplete && (
+            <Button
+              size="lg"
+              variant="secondary"
+              onClick={handleSpin}
+              disabled={spinning || showResults}
+            >
+              <Sparkles size={18} className="inline-block mr-2" />
+              Spin for a sub ({bench.length}/{BENCH_SIZE})
+            </Button>
+          )}
+          {xiComplete && (
             <Button size="lg" onClick={() => navigate('/perfect-season/simulating')}>
               Simulate the season
             </Button>
@@ -185,6 +226,17 @@ export function Draft() {
                     No available players from this club-season (all picked or club cap reached).
                     Spin again — it's free, and the wheel will land somewhere you can use.
                   </p>
+                ) : xiComplete ? (
+                  <>
+                    <p className="text-xs text-slate-400">
+                      Tap a player to add them to your bench — any position.
+                    </p>
+                    <div className="grid sm:grid-cols-2 gap-2">
+                      {eligible.map((p) => (
+                        <PlayerCard key={p.id} player={p} onClick={() => handleBenchPick(p.id)} />
+                      ))}
+                    </div>
+                  </>
                 ) : !selectedPlayer ? (
                   <>
                     <p className="text-xs text-slate-400">
@@ -223,6 +275,13 @@ export function Draft() {
           </h3>
           <SquadView picks={picks} formation={state.formation} />
         </Card>
+
+        {/* Bench + swap (once the XI is complete and you have subs) */}
+        {xiComplete && bench.length > 0 && (
+          <Card className="p-4">
+            <BenchManager picks={picks} bench={bench} onSwap={swapWithBench} />
+          </Card>
+        )}
       </section>
     </Screen>
   );

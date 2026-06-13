@@ -7,7 +7,7 @@ import { useDraft, deriveDraftState } from '@/store/draftStore';
 import { useProfile } from '@/store/profileStore';
 import { useAuth } from '@/store/authStore';
 import { simulateSeason } from '@/game/draft/simulation';
-import { agedPicks } from '@/game/draft/aging';
+import { agePicksToSeason } from '@/game/draft/aging';
 import { mulberry32 } from '@/utils/rng';
 import { submitScore } from '@/lib/leaderboard';
 import type { SeasonResult } from '@/types/draft';
@@ -31,7 +31,7 @@ export function Simulating() {
     if (!s || s.picks.length < 11) return null;
     const store = useDraft.getState();
     const seasonNumber = store.dynastySeason;
-    const squad = agedPicks(s.picks, seasonNumber - 1);
+    const squad = agePicksToSeason(s.picks, seasonNumber);
     const seed = Math.floor(Math.random() * 1_000_000);
     return {
       ...simulateSeason(squad, s.formation, mulberry32(seed), store.difficulty),

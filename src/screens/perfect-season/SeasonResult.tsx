@@ -8,10 +8,11 @@ import { Button } from '@/components/ui/Button';
 import { SquadView } from '@/components/perfect-season/SquadView';
 import { useDraft } from '@/store/draftStore';
 import { FORMATIONS } from '@/game/draft/constraints';
+import { RETIREMENT_AGE } from '@/game/draft/aging';
 
 export function SeasonResult() {
   const navigate = useNavigate();
-  const { lastResult, clearDraft, continueDynasty } = useDraft();
+  const { lastResult, clearDraft, continueDynasty, applyRetirements } = useDraft();
 
   const formation = useMemo(
     () => (lastResult ? FORMATIONS[lastResult.formationId] : null),
@@ -40,6 +41,9 @@ export function SeasonResult() {
       ? r.squad.reduce((sum, p) => sum + (p.player.age ?? 26), 0) / r.squad.length
       : 0;
 
+  // Players who will turn the retirement age next season.
+  const retiringNext = r.squad.filter((p) => (p.player.age ?? 0) >= RETIREMENT_AGE - 1);
+
   function playAgain() {
     clearDraft();
     navigate('/perfect-season');
@@ -47,7 +51,14 @@ export function SeasonResult() {
 
   function nextSeason() {
     continueDynasty();
-    navigate('/perfect-season/simulating');
+    applyRetirements();
+    // If retirements left holes in the XI, go re-draft replacements first.
+    const st = useDraft.getState();
+    if (st.picks.length < 11) {
+      navigate('/perfect-season/draft');
+    } else {
+      navigate('/perfect-season/simulating');
+    }
   }
 
   function shareText() {
@@ -122,6 +133,20 @@ export function SeasonResult() {
           <SquadView picks={r.squad} formation={formation} />
         </Card>
 
+        {/* Retirement notice */}
+        {retiringNext.length > 0 && (
+          <Card className="p-4 border border-neon-amber/30 bg-neon-amber/5">
+            <h3 className="text-xs uppercase tracking-wider text-neon-amber mb-1">
+              Retiring after this season (age {RETIREMENT_AGE})
+            </h3>
+            <p className="text-sm text-slate-300">
+              {retiringNext.map((p) => p.player.name).join(', ')} — you'll re-spin to draft
+              {retiringNext.length === 1 ? ' a replacement' : ' replacements'} when you start next
+              season.
+            </p>
+          </Card>
+        )}
+
         {/* Match log */}
         <Card className="p-5">
           <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-3">Match log</h3>
@@ -147,7 +172,7 @@ export function SeasonResult() {
         <div className="flex flex-wrap gap-2 justify-center">
           <Button onClick={nextSeason}>
             <FastForward size={16} className="inline-block mr-2" />
-            Next season (squad ages)
+            {retiringNext.length > 0 ? 'Next season (re-spin retirees)' : 'Next season (squad ages)'}
           </Button>
           <Button variant="secondary" onClick={playAgain}>
             <RotateCw size={16} className="inline-block mr-2" />

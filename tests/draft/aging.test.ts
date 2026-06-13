@@ -2,6 +2,10 @@ import { describe, it, expect } from 'vitest';
 import {
   agedPicks,
   agedRating,
+  agePicksToSeason,
+  currentAge,
+  isRetired,
+  RETIREMENT_AGE,
   seasonStartYear,
   snapshotAge,
   yearlyDelta,
@@ -107,5 +111,44 @@ describe('agedPicks', () => {
     agedPicks(squad, 5);
     expect(squad[0].player.rating).toBe(88);
     expect(squad[0].player.age).toBeUndefined();
+  });
+});
+
+describe('per-pick season aging + retirement', () => {
+  function pick(name: string, season: string, draftedInSeason?: number): DraftPick {
+    return {
+      player: player({ id: name, name, season, position: 'FWD', rating: 88 }),
+      wheelLanding: { club: 'Test FC', season },
+      draftedInSeason,
+    };
+  }
+
+  it('currentAge counts from when the player was drafted', () => {
+    // Foden born 2000, 2022-23 snapshot = age 22.
+    const initial = pick('Phil Foden', '2022-23', 1);
+    expect(currentAge(initial, 1)).toBe(22);
+    expect(currentAge(initial, 4)).toBe(25); // 3 seasons later
+
+    // A replacement drafted in season 4 ages only from season 4.
+    const replacement = pick('Phil Foden', '2022-23', 4);
+    expect(currentAge(replacement, 4)).toBe(22);
+    expect(currentAge(replacement, 6)).toBe(24);
+  });
+
+  it('isRetired triggers at the retirement age', () => {
+    // Teddy Sheringham born 1966, 2000-01 snapshot = age 34.
+    const veteran = pick('Teddy Sheringham', '2000-01', 1);
+    expect(currentAge(veteran, 1)).toBe(34);
+    expect(isRetired(veteran, 1)).toBe(false);
+    expect(isRetired(veteran, 2)).toBe(false); // 35
+    expect(currentAge(veteran, 3)).toBe(RETIREMENT_AGE);
+    expect(isRetired(veteran, 3)).toBe(true); // 36 → retired
+  });
+
+  it('agePicksToSeason ages each pick relative to its own draft season', () => {
+    const squad = [pick('Phil Foden', '2022-23', 1), pick('Phil Foden', '2022-23', 3)];
+    const aged = agePicksToSeason(squad, 3);
+    expect(aged[0].player.age).toBe(24); // drafted s1, now s3 → +2
+    expect(aged[1].player.age).toBe(22); // drafted s3, now s3 → +0
   });
 });

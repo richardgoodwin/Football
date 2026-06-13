@@ -70,12 +70,14 @@ export interface Formation {
 export interface DraftPick {
   player: Player;
   wheelLanding: { club: string; season: string };
-  /** Index into formation.roleSlots this player fills. */
+  /** Index into formation.roleSlots this player fills (undefined for bench). */
   slotIndex?: number;
   /** The role of that slot. */
   assignedRole?: Role;
   /** Rating reduction for playing out of their preferred role (0 = perfect fit). */
   rolePenalty?: number;
+  /** Dynasty season the player was drafted in (1 = initial draft). Drives aging. */
+  draftedInSeason?: number;
 }
 
 export interface DraftState {

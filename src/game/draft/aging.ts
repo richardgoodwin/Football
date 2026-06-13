@@ -251,3 +251,34 @@ export function agedPicks(picks: DraftPick[], yearsElapsed: number): DraftPick[]
     };
   });
 }
+
+/** Players retire once they reach this age. */
+export const RETIREMENT_AGE = 36;
+
+/** A pick's age in the given dynasty season, relative to when they were drafted. */
+export function currentAge(pick: DraftPick, dynastySeason: number): number {
+  const drafted = pick.draftedInSeason ?? 1;
+  return snapshotAge(pick.player) + Math.max(0, dynastySeason - drafted);
+}
+
+/** True if the player has reached retirement age in the given season. */
+export function isRetired(pick: DraftPick, dynastySeason: number): boolean {
+  return currentAge(pick, dynastySeason) >= RETIREMENT_AGE;
+}
+
+/**
+ * Age a single pick to the given dynasty season, relative to when the player
+ * was drafted (so a replacement signed in season 4 ages from season 4).
+ */
+export function agePickToSeason(pick: DraftPick, dynastySeason: number): DraftPick {
+  const drafted = pick.draftedInSeason ?? 1;
+  const years = Math.max(0, dynastySeason - drafted);
+  const startAge = snapshotAge(pick.player);
+  const rating = agedRating(pick.player.rating, startAge, years, pick.player.position);
+  return { ...pick, player: { ...pick.player, rating, age: startAge + years } };
+}
+
+/** Age a whole squad to the given dynasty season (per-pick). */
+export function agePicksToSeason(picks: DraftPick[], dynastySeason: number): DraftPick[] {
+  return picks.map((p) => agePickToSeason(p, dynastySeason));
+}
