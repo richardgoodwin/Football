@@ -1,6 +1,6 @@
 import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
-import type { DraftPick, FormationId, SeasonResult } from '@/types/draft';
+import type { DraftPick, FormationId, SeasonDifficulty, SeasonResult } from '@/types/draft';
 import { FORMATIONS } from '@/game/draft/constraints';
 
 interface DraftStore {
@@ -14,6 +14,8 @@ interface DraftStore {
   lastResult: SeasonResult | null;
   /** Dynasty season counter: 1 = first season with this squad, +1 per continue. */
   dynastySeason: number;
+  /** Difficulty for season simulations. */
+  difficulty: SeasonDifficulty;
   /** Lifetime stats — sync layer will pick these up via existing max-of merge. */
   totalAttempts: number;
   bestPoints: number;
@@ -27,6 +29,7 @@ interface DraftStore {
   recordAttempt: (result: SeasonResult) => void;
   /** Advance the dynasty to the next season (squad ages one year). */
   continueDynasty: () => void;
+  setDifficulty: (difficulty: SeasonDifficulty) => void;
 }
 
 export const useDraft = create<DraftStore>()(
@@ -37,6 +40,7 @@ export const useDraft = create<DraftStore>()(
       respinsRemaining: 1,
       lastResult: null,
       dynastySeason: 1,
+      difficulty: 'normal',
       totalAttempts: 0,
       bestPoints: 0,
       perfectSeasons: 0,
@@ -72,16 +76,34 @@ export const useDraft = create<DraftStore>()(
 
       continueDynasty: () =>
         set((s) => ({ dynastySeason: s.dynastySeason + 1 })),
+
+      setDifficulty: (difficulty) => set({ difficulty }),
     }),
     {
       name: 'fq:v1:draft',
-      version: 1,
+      version: 2,
+      // v2 added role-slot picks; in-progress v1 drafts lack slotIndex, so drop them.
+      migrate: (persisted, version) => {
+        const state = persisted as Record<string, unknown>;
+        if (version < 2) {
+          return {
+            ...state,
+            formationId: null,
+            picks: [],
+            respinsRemaining: 1,
+            dynastySeason: 1,
+            difficulty: 'normal',
+          };
+        }
+        return state;
+      },
       partialize: (s) => ({
         formationId: s.formationId,
         picks: s.picks,
         respinsRemaining: s.respinsRemaining,
         lastResult: s.lastResult,
         dynastySeason: s.dynastySeason,
+        difficulty: s.difficulty,
         totalAttempts: s.totalAttempts,
         bestPoints: s.bestPoints,
         perfectSeasons: s.perfectSeasons,

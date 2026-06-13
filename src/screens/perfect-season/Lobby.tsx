@@ -1,19 +1,36 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import { Swords, Crown, Users, User, Trophy, Sparkles, Library } from 'lucide-react';
+import { Swords, Crown, Users, User, Trophy, Sparkles, Library, Shield } from 'lucide-react';
 import { Screen } from '@/components/layout/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useDraft } from '@/store/draftStore';
 import { useProfile } from '@/store/profileStore';
 import { FORMATION_LIST } from '@/game/draft/constraints';
-import type { FormationId } from '@/types/draft';
+import type { FormationId, SeasonDifficulty } from '@/types/draft';
+
+const DIFFICULTIES: { id: SeasonDifficulty; label: string; blurb: string }[] = [
+  { id: 'easy', label: 'Easy', blurb: 'Gentle opposition' },
+  { id: 'normal', label: 'Normal', blurb: 'A real title race' },
+  { id: 'hard', label: 'Hard', blurb: 'Elite opponents' },
+  { id: 'legendary', label: 'Legendary', blurb: '38-0 is near-mythical' },
+];
 
 export function Lobby() {
   const navigate = useNavigate();
   const [chosen, setChosen] = useState<FormationId>('4-3-3');
-  const { formationId, picks, lastResult, totalAttempts, bestPoints, perfectSeasons, startDraft, clearDraft } =
-    useDraft();
+  const {
+    formationId,
+    picks,
+    lastResult,
+    totalAttempts,
+    bestPoints,
+    perfectSeasons,
+    startDraft,
+    clearDraft,
+    difficulty,
+    setDifficulty,
+  } = useDraft();
   const displayName = useProfile((s) => s.displayName);
 
   const inProgress = formationId !== null && picks.length > 0 && picks.length < 11;
@@ -91,6 +108,27 @@ export function Lobby() {
               </button>
             ))}
           </div>
+          <div>
+            <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-2">Difficulty</h3>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+              {DIFFICULTIES.map((d) => (
+                <button
+                  key={d.id}
+                  type="button"
+                  onClick={() => setDifficulty(d.id)}
+                  className={[
+                    'rounded-xl border px-3 py-2.5 text-center transition-colors',
+                    difficulty === d.id
+                      ? 'border-neon-amber bg-neon-amber/15 text-slate-100'
+                      : 'border-white/10 bg-white/5 hover:bg-white/10',
+                  ].join(' ')}
+                >
+                  <div className="font-semibold">{d.label}</div>
+                  <div className="text-[10px] text-slate-400 mt-0.5">{d.blurb}</div>
+                </button>
+              ))}
+            </div>
+          </div>
           <Button size="lg" onClick={startNewDraft} disabled={inProgress}>
             <Swords size={18} className="inline-block mr-2" />
             Start a new draft
@@ -125,6 +163,7 @@ export function Lobby() {
 
         {/* Secondary tiles */}
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-2">
+          <Tile to="/leagues" icon={<Shield size={18} />} title="Friends League" subtitle="Your XIs, one season" accent="amber" />
           <Tile to="/friends" icon={<Users size={18} />} title="Versus a Friend" subtitle="Multiplayer matches" accent="pink" />
           <Tile to="/leaderboard" icon={<Crown size={18} />} title="Leaderboards" subtitle="Global rankings" accent="amber" />
           <Tile to="/profile" icon={<User size={18} />} title="Profile & Stats" subtitle="Your career" accent="cyan" />

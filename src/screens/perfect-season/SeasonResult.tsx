@@ -83,7 +83,7 @@ export function SeasonResult() {
             {r.perfect ? '38-0 PERFECT' : positionLabel}
           </h2>
           <p className="text-xs uppercase tracking-wider text-slate-500 mt-1">
-            Dynasty season {seasonNumber}
+            Dynasty season {seasonNumber} · {r.difficulty ?? 'normal'} difficulty
             {yearsAged > 0 && ` · squad has aged ${yearsAged} year${yearsAged === 1 ? '' : 's'}`}
           </p>
           {!r.perfect && (

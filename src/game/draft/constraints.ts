@@ -1,47 +1,24 @@
-import type { Formation, FormationId, Position } from '@/types/draft';
+import type { Formation, FormationId, Position, Role } from '@/types/draft';
+import { ROLE_FAMILY } from '@/types/draft';
+
+function familyCounts(roleSlots: Role[]): Record<Position, number> {
+  const counts: Record<Position, number> = { GK: 0, DEF: 0, MID: 0, FWD: 0 };
+  for (const role of roleSlots) counts[ROLE_FAMILY[role]]++;
+  return counts;
+}
+
+function formation(id: FormationId, roleSlots: Role[]): Formation {
+  return { id, label: id, roleSlots, slots: familyCounts(roleSlots) };
+}
 
 export const FORMATIONS: Record<FormationId, Formation> = {
-  '4-4-2': {
-    id: '4-4-2',
-    label: '4-4-2',
-    slots: { GK: 1, DEF: 4, MID: 4, FWD: 2 },
-  },
-  '4-3-3': {
-    id: '4-3-3',
-    label: '4-3-3',
-    slots: { GK: 1, DEF: 4, MID: 3, FWD: 3 },
-  },
-  '3-5-2': {
-    id: '3-5-2',
-    label: '3-5-2',
-    slots: { GK: 1, DEF: 3, MID: 5, FWD: 2 },
-  },
-  '4-2-3-1': {
-    id: '4-2-3-1',
-    label: '4-2-3-1',
-    slots: { GK: 1, DEF: 4, MID: 5, FWD: 1 },
-  },
+  '4-4-2': formation('4-4-2', ['GK', 'RB', 'CB', 'CB', 'LB', 'RM', 'CM', 'CM', 'LM', 'ST', 'ST']),
+  '4-3-3': formation('4-3-3', ['GK', 'RB', 'CB', 'CB', 'LB', 'CDM', 'CM', 'CM', 'RW', 'ST', 'LW']),
+  '3-5-2': formation('3-5-2', ['GK', 'CB', 'CB', 'CB', 'RM', 'CDM', 'CM', 'CAM', 'LM', 'ST', 'ST']),
+  '4-2-3-1': formation('4-2-3-1', ['GK', 'RB', 'CB', 'CB', 'LB', 'CDM', 'CDM', 'RW', 'CAM', 'LW', 'ST']),
 };
 
 export const FORMATION_LIST: Formation[] = Object.values(FORMATIONS);
 
 /** Maximum picks allowed from any single club, to encourage variety. */
 export const MAX_PICKS_PER_CLUB = 3;
-
-/** Slots remaining per position given the formation and current picks. */
-export function remainingSlots(
-  formation: Formation,
-  currentPositionCounts: Record<Position, number>,
-): Record<Position, number> {
-  return {
-    GK: Math.max(0, formation.slots.GK - (currentPositionCounts.GK ?? 0)),
-    DEF: Math.max(0, formation.slots.DEF - (currentPositionCounts.DEF ?? 0)),
-    MID: Math.max(0, formation.slots.MID - (currentPositionCounts.MID ?? 0)),
-    FWD: Math.max(0, formation.slots.FWD - (currentPositionCounts.FWD ?? 0)),
-  };
-}
-
-/** Positions that still need at least one more pick. */
-export function openPositions(remaining: Record<Position, number>): Position[] {
-  return (Object.keys(remaining) as Position[]).filter((p) => remaining[p] > 0);
-}

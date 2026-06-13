@@ -1,55 +1,46 @@
 import type { DraftPick, Player, Position } from '@/types/draft';
+import { ROLE_FAMILY } from '@/types/draft';
+import { pickEffectiveRating } from './roles';
 
-/** Position weights for overall squad strength. Balanced across the pitch. */
-const POSITION_WEIGHTS: Record<Position, number> = {
-  GK: 1.0,
-  DEF: 1.0,
-  MID: 1.0,
-  FWD: 1.0,
-};
+/** The position family a pick plays in: its assigned slot, else the player's natural family. */
+function pickFamily(pick: DraftPick): Position {
+  return pick.assignedRole ? ROLE_FAMILY[pick.assignedRole] : pick.player.position;
+}
 
 /**
- * Compute a 0-100ish overall squad strength as the weighted average of player
- * ratings. Returns 0 if no players supplied.
+ * Compute overall squad strength as the average of EFFECTIVE ratings —
+ * role-fit penalties drag a squad down. Returns 0 if no players supplied.
  */
 export function squadStrength(picks: DraftPick[]): number {
   if (picks.length === 0) return 0;
   let total = 0;
-  let weight = 0;
-  for (const { player } of picks) {
-    const w = POSITION_WEIGHTS[player.position];
-    total += player.rating * w;
-    weight += w;
+  for (const pick of picks) {
+    total += pickEffectiveRating(pick);
   }
-  return total / weight;
+  return total / picks.length;
 }
 
-/** Attack strength = average of FWD ratings (with MID half-weight). */
+/** Attack strength = effective ratings of FWDs (with MIDs half-weight). */
 export function squadAttack(picks: DraftPick[]): number {
-  return slice(picks, ['FWD', 'MID'], { FWD: 1, MID: 0.5 });
+  return slice(picks, { FWD: 1, MID: 0.5 });
 }
 
-/** Defence strength = average of DEF + GK (with MID half-weight). */
+/** Defence strength = effective ratings of GK + DEFs (with MIDs partial weight). */
 export function squadDefense(picks: DraftPick[]): number {
-  return slice(picks, ['GK', 'DEF', 'MID'], { GK: 1.2, DEF: 1, MID: 0.4 });
+  return slice(picks, { GK: 1.2, DEF: 1, MID: 0.4 });
 }
 
-function slice(
-  picks: DraftPick[],
-  positions: Position[],
-  weights: Partial<Record<Position, number>>,
-): number {
-  const set = new Set(positions);
-  const relevant = picks.filter((p) => set.has(p.player.position));
-  if (relevant.length === 0) return 0;
+function slice(picks: DraftPick[], weights: Partial<Record<Position, number>>): number {
   let total = 0;
   let weight = 0;
-  for (const { player } of relevant) {
-    const w = weights[player.position] ?? 1;
-    total += player.rating * w;
+  for (const pick of picks) {
+    const w = weights[pickFamily(pick)];
+    if (w === undefined) continue;
+    total += pickEffectiveRating(pick) * w;
     weight += w;
   }
-  return total / Math.max(0.0001, weight);
+  if (weight === 0) return 0;
+  return total / weight;
 }
 
 /** Crude mapping from final points to estimated league position. */

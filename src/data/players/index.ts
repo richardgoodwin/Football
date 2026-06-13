@@ -1,15 +1,22 @@
 import type { Player } from '@/types/draft';
 import iconic from './iconic.json';
 import additional from './additional.json';
+import { DEFAULT_ROLE_BY_POSITION, PLAYER_ROLES } from '@/game/draft/roles';
 
-// Dedupe by id so accidental overlaps between files don't double-count.
+// Dedupe by id so accidental overlaps between files don't double-count,
+// and attach each player's preferred role from the role map.
 const _seenIds = new Set<string>();
 const _allRaw: Player[] = [...(iconic as Player[]), ...(additional as Player[])];
-export const ALL_PLAYERS: Player[] = _allRaw.filter((p) => {
-  if (_seenIds.has(p.id)) return false;
-  _seenIds.add(p.id);
-  return true;
-});
+export const ALL_PLAYERS: Player[] = _allRaw
+  .filter((p) => {
+    if (_seenIds.has(p.id)) return false;
+    _seenIds.add(p.id);
+    return true;
+  })
+  .map((p) => ({
+    ...p,
+    role: p.role ?? PLAYER_ROLES[p.name] ?? DEFAULT_ROLE_BY_POSITION[p.position],
+  }));
 
 /** Map of `${club} :: ${season}` → players in that club/season. */
 export function playersByClubSeason(pool: Player[] = ALL_PLAYERS): Map<string, Player[]> {

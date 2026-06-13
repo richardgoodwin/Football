@@ -17,8 +17,9 @@ import {
   type PerfectSeasonMatchDoc,
 } from '@/lib/matches';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
-import { FORMATIONS, openPositions, remainingSlots } from '@/game/draft/constraints';
-import type { DraftPick, Player, Position } from '@/types/draft';
+import { FORMATIONS, MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
+import { effectiveRating, playerRole, rolePenalty } from '@/game/draft/roles';
+import type { DraftPick, Player, Role } from '@/types/draft';
 import { Link } from 'react-router-dom';
 import { useAudio } from '@/hooks/useAudio';
 
@@ -155,9 +156,9 @@ export function PerfectSeasonMatchView({ match }: Props) {
           <DraftPanel
             match={match}
             uid={me}
-            onPick={async (player, landing) => {
+            onPick={async (pick) => {
               audio.play('correct');
-              await submitDraftPick(match, me, { player, wheelLanding: landing });
+              await submitDraftPick(match, me, pick);
             }}
           />
         )}
@@ -234,19 +235,16 @@ function DraftPanel({
 }: {
   match: PerfectSeasonMatchDoc;
   uid: string;
-  onPick: (player: Player, landing: { club: string; season: string }) => Promise<void>;
+  onPick: (pick: DraftPick) => Promise<void>;
 }) {
   const draft = match.drafts[uid] ?? [];
   const formation = FORMATIONS[match.formationId];
 
-  const positionCounts: Record<Position, number> = useMemo(() => {
-    const c: Record<Position, number> = { GK: 0, DEF: 0, MID: 0, FWD: 0 };
-    for (const p of draft) c[p.player.position]++;
-    return c;
-  }, [draft]);
-
-  const rem = remainingSlots(formation, positionCounts);
-  const openPos = new Set(openPositions(rem));
+  // Open role slots: formation indices not yet filled by a pick.
+  const openSlotIndices = useMemo(() => {
+    const filled = new Set(draft.map((d) => d.slotIndex).filter((i): i is number => i !== undefined));
+    return formation.roleSlots.map((_, i) => i).filter((i) => !filled.has(i));
+  }, [draft, formation]);
 
   // pickedPlayerIds + picksByClub for filtering eligibility.
   const pickedIds = useMemo(() => new Set(draft.map((d) => d.player.id)), [draft]);
@@ -266,6 +264,8 @@ function DraftPanel({
   const [landingIndex, setLandingIndex] = useState<number | null>(null);
   const [showResults, setShowResults] = useState(false);
   const [seqOffset, setSeqOffset] = useState(0);
+  const [selectedPlayerId, setSelectedPlayerId] = useState<string | null>(null);
+  const [triedSlot, setTriedSlot] = useState<number | null>(null);
 
   const doSpin = useCallback(
     (offset: number) => {
@@ -278,6 +278,8 @@ function DraftPanel({
       setLandingIndex(idx >= 0 ? idx : 0);
       setSpinToken((t) => t + 1);
       setShowResults(false);
+      setSelectedPlayerId(null);
+      setTriedSlot(null);
     },
     [draft.length, match.wheelSequence, allSlots],
   );
@@ -298,31 +300,59 @@ function DraftPanel({
     return ALL_PLAYERS.filter((p) => {
       if (p.club !== landing.club || p.season !== landing.season) return false;
       if (pickedIds.has(p.id)) return false;
-      if (!openPos.has(p.position)) return false;
-      if ((picksByClub[p.club] ?? 0) >= 3) return false;
+      if ((picksByClub[p.club] ?? 0) >= MAX_PICKS_PER_CLUB) return false;
       return true;
     });
-  }, [landing, showResults, pickedIds, openPos, picksByClub]);
+  }, [landing, showResults, pickedIds, picksByClub]);
 
-  const handlePick = useCallback(
-    async (player: Player) => {
-      if (!landing) return;
-      await onPick(player, landing);
-      // Hide the player list but keep landingIndex — resetting it would change
-      // the wheel's animate target and auto-animate an unrequested "spin".
-      setShowResults(false);
-      setSeqOffset(0);
+  const selectedPlayer = eligible.find((p) => p.id === selectedPlayerId) ?? null;
+
+  const handleSelectPlayer = useCallback(
+    (playerId: string) => {
+      setSelectedPlayerId(playerId);
+      const player = eligible.find((p) => p.id === playerId);
+      if (!player) return;
+      let best: number | null = null;
+      let bestPenalty = Infinity;
+      for (const i of openSlotIndices) {
+        const pen = rolePenalty(playerRole(player), formation.roleSlots[i]);
+        if (pen < bestPenalty) {
+          bestPenalty = pen;
+          best = i;
+        }
+      }
+      setTriedSlot(best);
     },
-    [landing, onPick],
+    [eligible, openSlotIndices, formation],
   );
+
+  const handleConfirm = useCallback(async () => {
+    if (!landing || !selectedPlayer || triedSlot === null) return;
+    const slotRole = formation.roleSlots[triedSlot];
+    await onPick({
+      player: selectedPlayer,
+      wheelLanding: landing,
+      slotIndex: triedSlot,
+      assignedRole: slotRole,
+      rolePenalty: rolePenalty(playerRole(selectedPlayer), slotRole),
+    });
+    // Hide the player list but keep landingIndex — resetting it would change
+    // the wheel's animate target and auto-animate an unrequested "spin".
+    setShowResults(false);
+    setSeqOffset(0);
+    setSelectedPlayerId(null);
+    setTriedSlot(null);
+  }, [landing, selectedPlayer, triedSlot, formation, onPick]);
+
+  const openRoleSummary = openSlotIndices.map((i) => formation.roleSlots[i]).join(', ');
 
   return (
     <div className="space-y-3">
       <Wheel slots={allSlots} landingIndex={landingIndex ?? 0} spinToken={spinToken} onSpinEnd={handleSpinEnd} />
 
       <div className="flex flex-wrap items-center justify-between gap-2">
-        <div className="text-xs text-slate-400">
-          Need: {[...openPos].map((p) => `${rem[p]} ${p}`).join(', ') || 'Squad complete!'}
+        <div className="text-xs text-slate-400 max-w-[60%]">
+          Need: {openRoleSummary || 'Squad complete!'}
         </div>
         <Button size="lg" onClick={handleSpin} disabled={showResults}>
           <Sparkles size={16} className="inline-block mr-2" />
@@ -353,21 +383,105 @@ function DraftPanel({
                   </Button>
                 )}
               </div>
+
               {eligible.length === 0 ? (
                 <p className="text-sm text-slate-400">
-                  No eligible players from this club for the positions you still need.
+                  No available players from this club-season. Re-spin to move on.
                 </p>
-              ) : (
+              ) : !selectedPlayer ? (
                 <div className="grid sm:grid-cols-2 gap-2">
                   {eligible.map((p) => (
-                    <PlayerCard key={p.id} player={p} onClick={() => void handlePick(p)} />
+                    <PlayerCard key={p.id} player={p} onClick={() => handleSelectPlayer(p.id)} />
                   ))}
                 </div>
+              ) : (
+                <MatchSlotTryout
+                  player={selectedPlayer}
+                  roleSlots={formation.roleSlots}
+                  openSlotIndices={openSlotIndices}
+                  triedSlot={triedSlot}
+                  onTrySlot={setTriedSlot}
+                  onConfirm={() => void handleConfirm()}
+                  onBack={() => {
+                    setSelectedPlayerId(null);
+                    setTriedSlot(null);
+                  }}
+                />
               )}
             </Card>
           </motion.div>
         )}
       </AnimatePresence>
+    </div>
+  );
+}
+
+function MatchSlotTryout({
+  player,
+  roleSlots,
+  openSlotIndices,
+  triedSlot,
+  onTrySlot,
+  onConfirm,
+  onBack,
+}: {
+  player: Player;
+  roleSlots: Role[];
+  openSlotIndices: number[];
+  triedSlot: number | null;
+  onTrySlot: (i: number) => void;
+  onConfirm: () => void;
+  onBack: () => void;
+}) {
+  const natural = playerRole(player);
+  return (
+    <div className="space-y-3">
+      <button type="button" onClick={onBack} className="text-xs text-slate-400 hover:text-neon-cyan">
+        <ArrowLeft size={12} className="inline-block mr-1" />
+        Back to players
+      </button>
+      <div className="text-sm">
+        <strong>{player.name}</strong>{' '}
+        <span className="text-slate-400">
+          · natural {natural} · base {player.rating}
+        </span>
+      </div>
+      <div className="flex flex-wrap gap-2">
+        {openSlotIndices.map((i) => {
+          const role = roleSlots[i];
+          const pen = rolePenalty(natural, role);
+          const eff = effectiveRating(player.rating, pen);
+          return (
+            <button
+              key={i}
+              type="button"
+              onClick={() => onTrySlot(i)}
+              className={[
+                'px-3 py-2 rounded-xl border text-center min-w-[72px]',
+                triedSlot === i
+                  ? 'border-neon-cyan bg-neon-cyan/15'
+                  : 'border-white/10 bg-white/5 hover:bg-white/10',
+              ].join(' ')}
+            >
+              <div className="text-xs font-bold">{role}</div>
+              <div
+                className={[
+                  'font-display text-xl tabular-nums',
+                  pen === 0 ? 'text-correct' : pen <= 4 ? 'text-amber-300' : 'text-wrong',
+                ].join(' ')}
+              >
+                {eff}
+              </div>
+              <div className="text-[10px] text-slate-500">{pen === 0 ? 'natural' : `-${pen}`}</div>
+            </button>
+          );
+        })}
+      </div>
+      {triedSlot !== null && (
+        <Button onClick={onConfirm} fullWidth>
+          Confirm {player.name} at {roleSlots[triedSlot]}
+        </Button>
+      )}
     </div>
   );
 }

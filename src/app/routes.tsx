@@ -19,6 +19,8 @@ import { SignIn } from '@/screens/SignIn';
 import { Leaderboard } from '@/screens/Leaderboard';
 import { Friends } from '@/screens/Friends';
 import { Match } from '@/screens/Match';
+import { Leagues } from '@/screens/Leagues';
+import { LeagueDetail } from '@/screens/LeagueDetail';
 import { AuthGate } from '@/components/AuthGate';
 
 const gated = (el: React.ReactNode) => <AuthGate>{el}</AuthGate>;
@@ -53,6 +55,8 @@ export function AppRoutes() {
       <Route path="/settings" element={gated(<Settings />)} />
       <Route path="/friends" element={gated(<Friends />)} />
       <Route path="/match/:id" element={gated(<Match />)} />
+      <Route path="/leagues" element={gated(<Leagues />)} />
+      <Route path="/league/:id" element={gated(<LeagueDetail />)} />
     </Routes>
   );
 }
