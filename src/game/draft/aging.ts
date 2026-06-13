@@ -255,30 +255,35 @@ export function agedPicks(picks: DraftPick[], yearsElapsed: number): DraftPick[]
 /** Players retire once they reach this age. */
 export const RETIREMENT_AGE = 36;
 
-/** A pick's age in the given dynasty season, relative to when they were drafted. */
-export function currentAge(pick: DraftPick, dynastySeason: number): number {
-  const drafted = pick.draftedInSeason ?? 1;
-  return snapshotAge(pick.player) + Math.max(0, dynastySeason - drafted);
-}
-
-/** True if the player has reached retirement age in the given season. */
-export function isRetired(pick: DraftPick, dynastySeason: number): boolean {
-  return currentAge(pick, dynastySeason) >= RETIREMENT_AGE;
-}
-
 /**
- * Age a single pick to the given dynasty season, relative to when the player
- * was drafted (so a replacement signed in season 4 ages from season 4).
+ * The squad is stored "current": each pick already carries its present age and
+ * rating. A freshly drafted pick starts at its snapshot age; `currentPickAge`
+ * falls back to that when age hasn't been stamped yet.
  */
-export function agePickToSeason(pick: DraftPick, dynastySeason: number): DraftPick {
-  const drafted = pick.draftedInSeason ?? 1;
-  const years = Math.max(0, dynastySeason - drafted);
-  const startAge = snapshotAge(pick.player);
-  const rating = agedRating(pick.player.rating, startAge, years, pick.player.position);
-  return { ...pick, player: { ...pick.player, rating, age: startAge + years } };
+export function currentPickAge(pick: DraftPick): number {
+  return pick.player.age ?? snapshotAge(pick.player);
 }
 
-/** Age a whole squad to the given dynasty season (per-pick). */
-export function agePicksToSeason(picks: DraftPick[], dynastySeason: number): DraftPick[] {
-  return picks.map((p) => agePickToSeason(p, dynastySeason));
+/** True if the player has reached retirement age. */
+export function isRetired(pick: DraftPick): boolean {
+  return currentPickAge(pick) >= RETIREMENT_AGE;
+}
+
+/** Stamp a freshly drafted pick with its current (snapshot) age. */
+export function withCurrentAge(pick: DraftPick): DraftPick {
+  if (pick.player.age !== undefined) return pick;
+  return { ...pick, player: { ...pick.player, age: snapshotAge(pick.player) } };
+}
+
+/** Age one pick by a single year: bump age, shift rating along the curve. */
+export function ageOneYear(pick: DraftPick): DraftPick {
+  const age = currentPickAge(pick);
+  const nextAge = age + 1;
+  const rating = agedRating(pick.player.rating, age, 1, pick.player.position);
+  return { ...pick, player: { ...pick.player, age: nextAge, rating } };
+}
+
+/** Age a whole squad by a single year. */
+export function ageSquadOneYear(picks: DraftPick[]): DraftPick[] {
+  return picks.map(ageOneYear);
 }

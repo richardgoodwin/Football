@@ -3,7 +3,7 @@ import { persist } from 'zustand/middleware';
 import type { DraftPick, FormationId, SeasonDifficulty, SeasonResult } from '@/types/draft';
 import { FORMATIONS } from '@/game/draft/constraints';
 import { playerRole, rolePenalty } from '@/game/draft/roles';
-import { isRetired } from '@/game/draft/aging';
+import { ageSquadOneYear, isRetired, withCurrentAge } from '@/game/draft/aging';
 
 export const BENCH_SIZE = 5;
 
@@ -62,20 +62,20 @@ export const useDraft = create<DraftStore>()(
 
       addPick: (pick) =>
         set((s) => ({
-          picks: [...s.picks, { ...pick, draftedInSeason: pick.draftedInSeason ?? s.dynastySeason }],
+          // Stamp the player's current age so the squad is self-contained.
+          picks: [...s.picks, withCurrentAge(pick)],
         })),
 
       addBenchPick: (pick) =>
         set((s) => {
           if (s.bench.length >= BENCH_SIZE) return s;
           // Bench players carry no slot assignment until swapped in.
-          const benchPick: DraftPick = {
+          const benchPick: DraftPick = withCurrentAge({
             ...pick,
             slotIndex: undefined,
             assignedRole: undefined,
             rolePenalty: undefined,
-            draftedInSeason: pick.draftedInSeason ?? s.dynastySeason,
-          };
+          });
           return { bench: [...s.bench, benchPick] };
         }),
 
@@ -126,20 +126,21 @@ export const useDraft = create<DraftStore>()(
           perfectSeasons: s.perfectSeasons + (result.perfect ? 1 : 0),
         })),
 
+      // Advance one season: age the whole squad + bench by a year in place.
       continueDynasty: () =>
-        set((s) => ({ dynastySeason: s.dynastySeason + 1 })),
+        set((s) => ({
+          dynastySeason: s.dynastySeason + 1,
+          picks: ageSquadOneYear(s.picks),
+          bench: ageSquadOneYear(s.bench),
+        })),
 
       applyRetirements: () => {
         const s = get();
-        const season = s.dynastySeason;
-        const retired = [
-          ...s.picks.filter((p) => isRetired(p, season)),
-          ...s.bench.filter((p) => isRetired(p, season)),
-        ];
+        const retired = [...s.picks.filter(isRetired), ...s.bench.filter(isRetired)];
         if (retired.length === 0) return [];
         set({
-          picks: s.picks.filter((p) => !isRetired(p, season)),
-          bench: s.bench.filter((p) => !isRetired(p, season)),
+          picks: s.picks.filter((p) => !isRetired(p)),
+          bench: s.bench.filter((p) => !isRetired(p)),
         });
         return retired;
       },
@@ -148,19 +149,30 @@ export const useDraft = create<DraftStore>()(
     }),
     {
       name: 'fq:v1:draft',
-      version: 3,
-      // v2 added role slots, v3 added the bench. In-progress older drafts are
-      // structurally incompatible, so reset the active draft (stats are kept).
+      version: 4,
+      // v4 makes the squad self-contained (current age/rating stored per pick).
+      // On upgrade, rebuild the active squad from the last completed season so an
+      // ongoing dynasty survives the change instead of being stranded.
       migrate: (persisted, version) => {
         const state = persisted as Record<string, unknown>;
-        if (version < 3) {
+        if (version < 4) {
+          const lr = state.lastResult as SeasonResult | null | undefined;
+          if (lr && Array.isArray(lr.squad) && lr.squad.length === 11 && lr.formationId) {
+            return {
+              ...state,
+              formationId: lr.formationId,
+              picks: lr.squad,
+              bench: [],
+              difficulty: (state.difficulty as SeasonDifficulty) ?? 'normal',
+            };
+          }
           return {
             ...state,
             formationId: null,
             picks: [],
             bench: [],
             dynastySeason: 1,
-            difficulty: state.difficulty ?? 'normal',
+            difficulty: (state.difficulty as SeasonDifficulty) ?? 'normal',
           };
         }
         return state;

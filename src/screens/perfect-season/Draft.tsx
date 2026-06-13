@@ -16,7 +16,6 @@ import { MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
 import { buildPick, eligiblePlayers, openSlots } from '@/game/draft/draftState';
 import { effectiveRating, playerRole, rolePenalty, ROLE_LABEL } from '@/game/draft/roles';
 import { predictSeason } from '@/game/draft/simulation';
-import { agePicksToSeason } from '@/game/draft/aging';
 import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
 import { useAudio } from '@/hooks/useAudio';
 
@@ -24,8 +23,7 @@ export function Draft() {
   const navigate = useNavigate();
   const audio = useAudio();
   const draftStore = useDraft();
-  const { picks, bench, formationId, addPick, addBenchPick, swapWithBench, dynastySeason, difficulty } =
-    draftStore;
+  const { picks, bench, formationId, addPick, addBenchPick, swapWithBench, difficulty } = draftStore;
 
   const state = useMemo(() => deriveDraftState(draftStore), [draftStore]);
   const slots = useMemo(() => uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS), []);
@@ -137,10 +135,8 @@ export function Draft() {
   const noEligible = showResults && eligible.length === 0;
   const openRoleSummary = openSlotIndices.map((i) => state.formation.roleSlots[i]).join(', ');
 
-  // Once the XI is set, forecast where this squad will finish.
-  const prediction = xiComplete
-    ? predictSeason(agePicksToSeason(picks, dynastySeason), difficulty)
-    : null;
+  // Once the XI is set, forecast where this (current) squad will finish.
+  const prediction = xiComplete ? predictSeason(picks, difficulty) : null;
 
   return (
     <Screen title="Draft">

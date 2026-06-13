@@ -2,12 +2,14 @@ import { describe, it, expect } from 'vitest';
 import {
   agedPicks,
   agedRating,
-  agePicksToSeason,
-  currentAge,
+  ageOneYear,
+  ageSquadOneYear,
+  currentPickAge,
   isRetired,
   RETIREMENT_AGE,
   seasonStartYear,
   snapshotAge,
+  withCurrentAge,
   yearlyDelta,
 } from '@/game/draft/aging';
 import type { DraftPick, Player } from '@/types/draft';
@@ -114,41 +116,51 @@ describe('agedPicks', () => {
   });
 });
 
-describe('per-pick season aging + retirement', () => {
-  function pick(name: string, season: string, draftedInSeason?: number): DraftPick {
+describe('aging in place + retirement', () => {
+  function pick(name: string, season: string): DraftPick {
     return {
       player: player({ id: name, name, season, position: 'FWD', rating: 88 }),
       wheelLanding: { club: 'Test FC', season },
-      draftedInSeason,
     };
   }
 
-  it('currentAge counts from when the player was drafted', () => {
+  it('withCurrentAge stamps the snapshot age once', () => {
     // Foden born 2000, 2022-23 snapshot = age 22.
-    const initial = pick('Phil Foden', '2022-23', 1);
-    expect(currentAge(initial, 1)).toBe(22);
-    expect(currentAge(initial, 4)).toBe(25); // 3 seasons later
-
-    // A replacement drafted in season 4 ages only from season 4.
-    const replacement = pick('Phil Foden', '2022-23', 4);
-    expect(currentAge(replacement, 4)).toBe(22);
-    expect(currentAge(replacement, 6)).toBe(24);
+    const stamped = withCurrentAge(pick('Phil Foden', '2022-23'));
+    expect(stamped.player.age).toBe(22);
+    // Idempotent: a stamped pick keeps its age.
+    const reStamped = withCurrentAge({ ...stamped, player: { ...stamped.player, age: 30 } });
+    expect(reStamped.player.age).toBe(30);
   });
 
-  it('isRetired triggers at the retirement age', () => {
+  it('currentPickAge falls back to the snapshot age', () => {
+    expect(currentPickAge(pick('Phil Foden', '2022-23'))).toBe(22);
+    const aged = { ...pick('Phil Foden', '2022-23'), player: { ...pick('Phil Foden', '2022-23').player, age: 27 } };
+    expect(currentPickAge(aged)).toBe(27);
+  });
+
+  it('ageOneYear bumps age by one and shifts the rating', () => {
+    const young = withCurrentAge(pick('Phil Foden', '2022-23')); // age 22, rating 88
+    const older = ageOneYear(young);
+    expect(older.player.age).toBe(23);
+    expect(older.player.rating).toBeGreaterThanOrEqual(88); // young player still improving
+  });
+
+  it('isRetired triggers at the retirement age after enough years', () => {
     // Teddy Sheringham born 1966, 2000-01 snapshot = age 34.
-    const veteran = pick('Teddy Sheringham', '2000-01', 1);
-    expect(currentAge(veteran, 1)).toBe(34);
-    expect(isRetired(veteran, 1)).toBe(false);
-    expect(isRetired(veteran, 2)).toBe(false); // 35
-    expect(currentAge(veteran, 3)).toBe(RETIREMENT_AGE);
-    expect(isRetired(veteran, 3)).toBe(true); // 36 → retired
+    let veteran = withCurrentAge(pick('Teddy Sheringham', '2000-01'));
+    expect(currentPickAge(veteran)).toBe(34);
+    expect(isRetired(veteran)).toBe(false);
+    veteran = ageOneYear(veteran); // 35
+    expect(isRetired(veteran)).toBe(false);
+    veteran = ageOneYear(veteran); // 36
+    expect(currentPickAge(veteran)).toBe(RETIREMENT_AGE);
+    expect(isRetired(veteran)).toBe(true);
   });
 
-  it('agePicksToSeason ages each pick relative to its own draft season', () => {
-    const squad = [pick('Phil Foden', '2022-23', 1), pick('Phil Foden', '2022-23', 3)];
-    const aged = agePicksToSeason(squad, 3);
-    expect(aged[0].player.age).toBe(24); // drafted s1, now s3 → +2
-    expect(aged[1].player.age).toBe(22); // drafted s3, now s3 → +0
+  it('ageSquadOneYear ages every pick by a year', () => {
+    const squad = [withCurrentAge(pick('Phil Foden', '2022-23'))];
+    const aged = ageSquadOneYear(squad);
+    expect(aged[0].player.age).toBe(23);
   });
 });
