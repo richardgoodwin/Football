@@ -16,6 +16,10 @@ export const FORMATIONS: Record<FormationId, Formation> = {
   '4-3-3': formation('4-3-3', ['GK', 'RB', 'CB', 'CB', 'LB', 'CDM', 'CM', 'CM', 'RW', 'ST', 'LW']),
   '3-5-2': formation('3-5-2', ['GK', 'CB', 'CB', 'CB', 'RM', 'CDM', 'CM', 'CAM', 'LM', 'ST', 'ST']),
   '4-2-3-1': formation('4-2-3-1', ['GK', 'RB', 'CB', 'CB', 'LB', 'CDM', 'CDM', 'RW', 'CAM', 'LW', 'ST']),
+  '3-4-3': formation('3-4-3', ['GK', 'CB', 'CB', 'CB', 'RM', 'CM', 'CM', 'LM', 'RW', 'ST', 'LW']),
+  '5-3-2': formation('5-3-2', ['GK', 'RB', 'CB', 'CB', 'CB', 'LB', 'CDM', 'CM', 'CAM', 'ST', 'ST']),
+  '4-5-1': formation('4-5-1', ['GK', 'RB', 'CB', 'CB', 'LB', 'RM', 'CDM', 'CM', 'CAM', 'LM', 'ST']),
+  '4-1-2-1-2': formation('4-1-2-1-2', ['GK', 'RB', 'CB', 'CB', 'LB', 'CDM', 'CM', 'CM', 'CAM', 'ST', 'ST']),
 };
 
 export const FORMATION_LIST: Formation[] = Object.values(FORMATIONS);
