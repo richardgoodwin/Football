@@ -6,6 +6,7 @@ import { Screen } from '@/components/layout/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { SquadView } from '@/components/perfect-season/SquadView';
+import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
 import { useDraft } from '@/store/draftStore';
 import { FORMATIONS } from '@/game/draft/constraints';
 import { RETIREMENT_AGE } from '@/game/draft/aging';
@@ -109,6 +110,11 @@ export function SeasonResult() {
             </p>
           )}
         </motion.div>
+
+        {/* Prediction vs actual */}
+        {r.predictedPosition !== undefined && (
+          <PredictionBanner predictedPosition={r.predictedPosition} actualPosition={r.position} />
+        )}
 
         {/* Stat block */}
         <Card className="p-6 text-center" glow>

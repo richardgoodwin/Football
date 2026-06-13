@@ -109,6 +109,8 @@ export interface SeasonResult {
   seasonNumber?: number;
   /** Difficulty the season was simulated at. */
   difficulty?: SeasonDifficulty;
+  /** Pre-season predicted finishing position (1 = champions). */
+  predictedPosition?: number;
   played: number;
   wins: number;
   draws: number;

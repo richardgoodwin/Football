@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { simulateSeason } from '@/game/draft/simulation';
+import { predictSeason, simulateSeason } from '@/game/draft/simulation';
 import { FORMATIONS } from '@/game/draft/constraints';
 import { mulberry32 } from '@/utils/rng';
 import type { DraftPick, Player } from '@/types/draft';
@@ -68,5 +68,41 @@ describe('simulateSeason', () => {
     // Calibration: 99-rated squad sees a perfect season at least sometimes; 70-rated should never.
     expect(elitePerfects).toBeGreaterThan(0);
     expect(weakPerfects).toBe(0);
+  });
+});
+
+describe('predictSeason', () => {
+  it('is deterministic and returns a valid position', () => {
+    const a = predictSeason(uniformSquad(88), 'normal');
+    const b = predictSeason(uniformSquad(88), 'normal');
+    expect(a).toEqual(b);
+    expect(a.position).toBeGreaterThanOrEqual(1);
+    expect(a.position).toBeLessThanOrEqual(20);
+  });
+
+  it('predicts a better finish for stronger squads', () => {
+    const elite = predictSeason(uniformSquad(97), 'normal');
+    const weak = predictSeason(uniformSquad(68), 'normal');
+    expect(elite.position).toBeLessThan(weak.position);
+    expect(elite.points).toBeGreaterThan(weak.points);
+  });
+
+  it('harder difficulty predicts a worse finish for the same squad', () => {
+    const easy = predictSeason(uniformSquad(82), 'easy');
+    const legendary = predictSeason(uniformSquad(82), 'legendary');
+    expect(easy.points).toBeGreaterThan(legendary.points);
+  });
+
+  it('roughly tracks the median simulated finish', () => {
+    const squad = uniformSquad(90);
+    const prediction = predictSeason(squad, 'normal');
+    let totalPoints = 0;
+    const RUNS = 40;
+    for (let i = 0; i < RUNS; i++) {
+      totalPoints += simulateSeason(squad, FORMATIONS['4-3-3'], mulberry32(7000 + i), 'normal').points;
+    }
+    const avgPoints = totalPoints / RUNS;
+    // Prediction should be within ~12 points of the simulated average.
+    expect(Math.abs(prediction.points - avgPoints)).toBeLessThan(12);
   });
 });

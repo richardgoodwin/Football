@@ -52,6 +52,48 @@ export function expectedGoals(attack: number, defense: number): number {
   return Math.max(0.2, 1.3 + (attack - defense) * 0.085);
 }
 
+/** Poisson probability mass: P(X = k) for X ~ Poisson(lambda). */
+function poissonPmf(k: number, lambda: number): number {
+  let fact = 1;
+  for (let i = 2; i <= k; i++) fact *= i;
+  return (Math.exp(-lambda) * Math.pow(lambda, k)) / fact;
+}
+
+export interface SeasonPrediction {
+  points: number;
+  position: number;
+}
+
+/**
+ * Deterministic pre-season prediction of where a squad will finish, computed
+ * from expected goals against an average opponent at the chosen difficulty.
+ * No randomness — same squad always predicts the same finish.
+ */
+export function predictSeason(
+  picks: DraftPick[],
+  difficulty: SeasonDifficulty = 'normal',
+): SeasonPrediction {
+  const attack = squadAttack(picks);
+  const defense = squadDefense(picks);
+  const oppMean = OPPOSITION_MEAN[difficulty];
+  const lambdaFor = expectedGoals(attack, oppMean);
+  const lambdaAgainst = expectedGoals(oppMean, defense);
+
+  let pWin = 0;
+  let pDraw = 0;
+  for (let f = 0; f <= 8; f++) {
+    const pf = poissonPmf(f, lambdaFor);
+    for (let a = 0; a <= 8; a++) {
+      const p = pf * poissonPmf(a, lambdaAgainst);
+      if (f > a) pWin += p;
+      else if (f === a) pDraw += p;
+    }
+  }
+  const ppg = 3 * pWin + pDraw;
+  const points = Math.round(ppg * SEASON_LENGTH);
+  return { points, position: pointsToPosition(points) };
+}
+
 /**
  * Simulate one match between two drafted squads (used by friends leagues).
  */
