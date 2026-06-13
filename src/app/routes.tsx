@@ -3,6 +3,7 @@ import { Lobby } from '@/screens/perfect-season/Lobby';
 import { Draft } from '@/screens/perfect-season/Draft';
 import { Simulating } from '@/screens/perfect-season/Simulating';
 import { SeasonResult } from '@/screens/perfect-season/SeasonResult';
+import { TransferWindow } from '@/screens/perfect-season/TransferWindow';
 import { TriviaMenu } from '@/screens/TriviaMenu';
 import { QuickPlay } from '@/screens/QuickPlay';
 import { DailyChallenge } from '@/screens/DailyChallenge';
@@ -35,6 +36,7 @@ export function AppRoutes() {
       <Route path="/perfect-season" element={gated(<Lobby />)} />
       <Route path="/perfect-season/draft" element={gated(<Draft />)} />
       <Route path="/perfect-season/simulating" element={gated(<Simulating />)} />
+      <Route path="/perfect-season/transfers" element={gated(<TransferWindow />)} />
       <Route path="/perfect-season/result" element={gated(<SeasonResult />)} />
 
       {/* Classic Trivia — secondary, nested under /trivia/* */}

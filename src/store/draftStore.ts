@@ -18,6 +18,8 @@ interface DraftStore {
   lastResult: SeasonResult | null;
   /** Dynasty season counter: 1 = first season with this squad, +1 per continue. */
   dynastySeason: number;
+  /** Transfer-window spins remaining at the end of a season (0 when not in a window). */
+  transferSpinsRemaining: number;
   /** Difficulty for season simulations. */
   difficulty: SeasonDifficulty;
   /** Lifetime stats — sync layer will pick these up via existing max-of merge. */
@@ -29,6 +31,8 @@ interface DraftStore {
   addPick: (pick: DraftPick) => void;
   addBenchPick: (pick: DraftPick) => void;
   swapWithBench: (slotIndex: number, benchPlayerId: string) => void;
+  /** Place a pick into a formation slot, replacing whoever was there (or filling a gap). */
+  assignToSlot: (slotIndex: number, pick: DraftPick) => void;
   clearDraft: () => void;
   setLastResult: (result: SeasonResult) => void;
   recordAttempt: (result: SeasonResult) => void;
@@ -36,8 +40,14 @@ interface DraftStore {
   continueDynasty: () => void;
   /** Remove retired players from XI + bench at the current season. Returns the removed picks. */
   applyRetirements: () => DraftPick[];
+  /** Begin the end-of-season transfer window with N spins. */
+  startTransferWindow: (spins: number) => void;
+  /** Consume one transfer-window spin. */
+  useTransferSpin: () => void;
   setDifficulty: (difficulty: SeasonDifficulty) => void;
 }
+
+export const TRANSFER_SPINS_PER_SEASON = 2;
 
 export const useDraft = create<DraftStore>()(
   persist(
@@ -47,6 +57,7 @@ export const useDraft = create<DraftStore>()(
       bench: [],
       lastResult: null,
       dynastySeason: 1,
+      transferSpinsRemaining: 0,
       difficulty: 'normal',
       totalAttempts: 0,
       bestPoints: 0,
@@ -58,6 +69,7 @@ export const useDraft = create<DraftStore>()(
           picks: [],
           bench: [],
           dynastySeason: 1,
+          transferSpinsRemaining: 0,
         }),
 
       addPick: (pick) =>
@@ -113,8 +125,24 @@ export const useDraft = create<DraftStore>()(
           return { picks, bench };
         }),
 
+      assignToSlot: (slotIndex, pick) =>
+        set((s) => {
+          if (!s.formationId) return s;
+          const formation = FORMATIONS[s.formationId];
+          const slotRole = formation.roleSlots[slotIndex];
+          const newPick = withCurrentAge({
+            ...pick,
+            slotIndex,
+            assignedRole: slotRole,
+            rolePenalty: rolePenalty(playerRole(pick.player), slotRole),
+          });
+          // Drop whoever currently holds this slot, then add the new player.
+          const others = s.picks.filter((p) => p.slotIndex !== slotIndex);
+          return { picks: [...others, newPick] };
+        }),
+
       clearDraft: () =>
-        set({ formationId: null, picks: [], bench: [], dynastySeason: 1 }),
+        set({ formationId: null, picks: [], bench: [], dynastySeason: 1, transferSpinsRemaining: 0 }),
 
       setLastResult: (result) => set({ lastResult: result }),
 
@@ -144,6 +172,11 @@ export const useDraft = create<DraftStore>()(
         });
         return retired;
       },
+
+      startTransferWindow: (spins) => set({ transferSpinsRemaining: spins }),
+
+      useTransferSpin: () =>
+        set((s) => ({ transferSpinsRemaining: Math.max(0, s.transferSpinsRemaining - 1) })),
 
       setDifficulty: (difficulty) => set({ difficulty }),
     }),
@@ -183,6 +216,7 @@ export const useDraft = create<DraftStore>()(
         bench: s.bench,
         lastResult: s.lastResult,
         dynastySeason: s.dynastySeason,
+        transferSpinsRemaining: s.transferSpinsRemaining,
         difficulty: s.difficulty,
         totalAttempts: s.totalAttempts,
         bestPoints: s.bestPoints,

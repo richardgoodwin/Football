@@ -7,13 +7,13 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { SquadView } from '@/components/perfect-season/SquadView';
 import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
-import { useDraft } from '@/store/draftStore';
+import { useDraft, TRANSFER_SPINS_PER_SEASON } from '@/store/draftStore';
 import { FORMATIONS } from '@/game/draft/constraints';
 import { RETIREMENT_AGE } from '@/game/draft/aging';
 
 export function SeasonResult() {
   const navigate = useNavigate();
-  const { lastResult, clearDraft, continueDynasty, applyRetirements } = useDraft();
+  const { lastResult, clearDraft, continueDynasty, applyRetirements, startTransferWindow } = useDraft();
 
   const formation = useMemo(
     () => (lastResult ? FORMATIONS[lastResult.formationId] : null),
@@ -51,15 +51,10 @@ export function SeasonResult() {
   }
 
   function nextSeason() {
-    continueDynasty();
-    applyRetirements();
-    // If retirements left holes in the XI, go re-draft replacements first.
-    const st = useDraft.getState();
-    if (st.picks.length < 11) {
-      navigate('/perfect-season/draft');
-    } else {
-      navigate('/perfect-season/simulating');
-    }
+    continueDynasty(); // age the squad a year
+    applyRetirements(); // remove anyone who reached 36
+    startTransferWindow(TRANSFER_SPINS_PER_SEASON); // 2 signings + replace retirees
+    navigate('/perfect-season/transfers');
   }
 
   function shareText() {
