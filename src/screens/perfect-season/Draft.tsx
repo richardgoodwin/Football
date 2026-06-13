@@ -12,7 +12,7 @@ import { OverallRating } from '@/components/perfect-season/OverallRating';
 import { deriveDraftState, useDraft, BENCH_SIZE } from '@/store/draftStore';
 import { BenchManager } from '@/components/perfect-season/BenchManager';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
-import type { WheelLanding } from '@/game/draft/wheel';
+import { weightedPick, type WheelLanding } from '@/game/draft/wheel';
 import { MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
 import { buildPick, eligiblePlayers, openSlots } from '@/game/draft/draftState';
 import { effectiveRating, playerRole, rolePenalty, ROLE_LABEL, sortPlayersForDisplay } from '@/game/draft/roles';
@@ -70,7 +70,7 @@ export function Draft() {
       );
     });
     const pool = usable.length > 0 ? usable : slots;
-    const choice = pool[Math.floor(Math.random() * pool.length)];
+    const choice = weightedPick(Math.random, pool, ALL_PLAYERS);
     const idx = slots.findIndex((s) => s.club === choice.club && s.season === choice.season);
     setLandingIndex(idx >= 0 ? idx : 0);
     setSpinToken((t) => t + 1);

@@ -27,7 +27,7 @@ import { effectiveRating, pickEffectiveRating, playerRole, rolePenalty, sortPlay
 import { Wheel } from '@/components/perfect-season/Wheel';
 import { PlayerCard } from '@/components/perfect-season/PlayerCard';
 import type { DraftPick, Player } from '@/types/draft';
-import type { WheelLanding } from '@/game/draft/wheel';
+import { weightedPick, type WheelLanding } from '@/game/draft/wheel';
 
 function formatKickoff(ms: number): string {
   return new Date(ms).toLocaleString('en-GB', {
@@ -476,7 +476,7 @@ function RespinModal({
   }, [landing, showResults, pickedIds]);
 
   function handleSpin() {
-    const choice = slots[Math.floor(Math.random() * slots.length)];
+    const choice = weightedPick(Math.random, slots, ALL_PLAYERS);
     const idx = slots.findIndex((s) => s.club === choice.club && s.season === choice.season);
     setLandingIndex(idx);
     setSpinToken((t) => t + 1);
