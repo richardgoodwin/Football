@@ -10,7 +10,6 @@ import {
   acceptLeagueInvite,
   createLeague,
   declineLeagueInvite,
-  LEAGUE_SIZES,
   loadLeagueInvites,
   loadMyLeagues,
   type LeagueDoc,
@@ -25,7 +24,6 @@ export function Leagues() {
   const [invites, setInvites] = useState<LeagueDoc[]>([]);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState('');
-  const [size, setSize] = useState<number>(6);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -68,7 +66,7 @@ export function Leagues() {
     setBusy(true);
     setError(null);
     try {
-      const id = await createLeague(user, displayName, name, size);
+      const id = await createLeague(user, displayName, name);
       navigate(`/league/${id}`);
     } catch (err) {
       setError((err as Error).message);
@@ -98,27 +96,10 @@ export function Leagues() {
               placeholder={`${displayName}'s League`}
               className="w-full px-4 py-2.5 rounded-xl bg-stadium-900/70 border border-white/10 focus:outline-none focus:border-neon-cyan/60"
             />
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="text-xs uppercase tracking-wider text-slate-400">Teams:</span>
-              {LEAGUE_SIZES.map((n) => (
-                <button
-                  key={n}
-                  type="button"
-                  onClick={() => setSize(n)}
-                  className={[
-                    'px-4 py-2 rounded-full text-sm font-semibold border',
-                    size === n
-                      ? 'bg-neon-cyan/90 text-stadium-950 border-neon-cyan'
-                      : 'bg-white/5 border-white/10',
-                  ].join(' ')}
-                >
-                  {n}
-                </button>
-              ))}
-              <span className="text-xs text-slate-500">
-                ({size * 2 - 2} games each — empty spots become AI teams)
-              </span>
-            </div>
+            <p className="text-xs text-slate-400">
+              A 38-team division — invite as many friends as you like, AI teams fill the rest.
+              Two games a week (Wed &amp; Sat, 3pm) across a full 38-game season.
+            </p>
             {error && <p className="text-sm text-wrong">{error}</p>}
             <Button type="submit" disabled={busy}>
               <Plus size={16} className="inline-block mr-2" />

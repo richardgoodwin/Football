@@ -10,6 +10,30 @@
  */
 import type { DraftPick, Player, Position, Role } from '@/types/draft';
 
+/** Display order for a position-grouped player list (GK → defence → attack). */
+export const ROLE_ORDER: Record<Role, number> = {
+  GK: 0,
+  RB: 1,
+  CB: 2,
+  LB: 3,
+  CDM: 4,
+  CM: 5,
+  CAM: 6,
+  RM: 7,
+  LM: 8,
+  RW: 9,
+  ST: 10,
+  LW: 11,
+};
+
+/** Sort players by position group (keepers together, centre-backs together…), then rating. */
+export function sortPlayersForDisplay(players: Player[]): Player[] {
+  return [...players].sort((a, b) => {
+    const byRole = ROLE_ORDER[playerRole(a)] - ROLE_ORDER[playerRole(b)];
+    return byRole !== 0 ? byRole : b.rating - a.rating;
+  });
+}
+
 export const ROLE_LABEL: Record<Role, string> = {
   GK: 'Goalkeeper',
   RB: 'Right Back',

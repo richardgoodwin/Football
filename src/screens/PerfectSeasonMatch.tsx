@@ -18,7 +18,7 @@ import {
 } from '@/lib/matches';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
 import { FORMATIONS, MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
-import { effectiveRating, playerRole, rolePenalty } from '@/game/draft/roles';
+import { effectiveRating, playerRole, rolePenalty, sortPlayersForDisplay } from '@/game/draft/roles';
 import type { DraftPick, Player, Role } from '@/types/draft';
 import { Link } from 'react-router-dom';
 import { useAudio } from '@/hooks/useAudio';
@@ -297,12 +297,13 @@ function DraftPanel({
   const landing = landingIndex !== null ? allSlots[landingIndex] : null;
   const eligible = useMemo<Player[]>(() => {
     if (!landing || !showResults) return [];
-    return ALL_PLAYERS.filter((p) => {
+    const list = ALL_PLAYERS.filter((p) => {
       if (p.club !== landing.club || p.season !== landing.season) return false;
       if (pickedIds.has(p.id)) return false;
       if ((picksByClub[p.club] ?? 0) >= MAX_PICKS_PER_CLUB) return false;
       return true;
     });
+    return sortPlayersForDisplay(list);
   }, [landing, showResults, pickedIds, picksByClub]);
 
   const selectedPlayer = eligible.find((p) => p.id === selectedPlayerId) ?? null;

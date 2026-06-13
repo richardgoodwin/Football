@@ -14,7 +14,13 @@ import { deriveDraftState, useDraft } from '@/store/draftStore';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
 import { MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
 import { eligiblePlayers, openSlots } from '@/game/draft/draftState';
-import { effectiveRating, pickEffectiveRating, playerRole, rolePenalty } from '@/game/draft/roles';
+import {
+  effectiveRating,
+  pickEffectiveRating,
+  playerRole,
+  rolePenalty,
+  sortPlayersForDisplay,
+} from '@/game/draft/roles';
 import { predictSeason } from '@/game/draft/simulation';
 import type { Player } from '@/types/draft';
 import type { WheelLanding } from '@/game/draft/wheel';
@@ -47,7 +53,10 @@ export function TransferWindow() {
     landingIndex !== null && slots[landingIndex] ? slots[landingIndex] : null;
 
   const eligible = useMemo(
-    () => (state && landing && showResults ? eligiblePlayers(state, landing, ALL_PLAYERS) : []),
+    () =>
+      state && landing && showResults
+        ? sortPlayersForDisplay(eligiblePlayers(state, landing, ALL_PLAYERS))
+        : [],
     [state, landing, showResults],
   );
 

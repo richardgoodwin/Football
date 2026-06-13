@@ -15,7 +15,7 @@ import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/player
 import type { WheelLanding } from '@/game/draft/wheel';
 import { MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
 import { buildPick, eligiblePlayers, openSlots } from '@/game/draft/draftState';
-import { effectiveRating, playerRole, rolePenalty, ROLE_LABEL } from '@/game/draft/roles';
+import { effectiveRating, playerRole, rolePenalty, ROLE_LABEL, sortPlayersForDisplay } from '@/game/draft/roles';
 import { predictSeason } from '@/game/draft/simulation';
 import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
 import { useAudio } from '@/hooks/useAudio';
@@ -44,7 +44,10 @@ export function Draft() {
     landingIndex !== null && slots[landingIndex] ? slots[landingIndex] : null;
 
   const eligible = useMemo(
-    () => (state && landing && showResults ? eligiblePlayers(state, landing, ALL_PLAYERS) : []),
+    () =>
+      state && landing && showResults
+        ? sortPlayersForDisplay(eligiblePlayers(state, landing, ALL_PLAYERS))
+        : [],
     [state, landing, showResults],
   );
 
