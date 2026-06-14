@@ -8,8 +8,10 @@ import { Button } from '@/components/ui/Button';
 import { PitchView } from '@/components/perfect-season/PitchView';
 import { OverallRating } from '@/components/perfect-season/OverallRating';
 import { PredictionBanner } from '@/components/perfect-season/PredictionBanner';
+import { LeagueTable } from '@/components/perfect-season/LeagueTable';
 import { useDraft, TRANSFER_SPINS_PER_SEASON } from '@/store/draftStore';
 import { FORMATIONS } from '@/game/draft/constraints';
+import { buildSeasonTable } from '@/game/draft/seasonTable';
 import { RETIREMENT_AGE } from '@/game/draft/aging';
 
 export function SeasonResult() {
@@ -20,6 +22,8 @@ export function SeasonResult() {
     () => (lastResult ? FORMATIONS[lastResult.formationId] : null),
     [lastResult],
   );
+
+  const table = useMemo(() => (lastResult ? buildSeasonTable(lastResult) : []), [lastResult]);
 
   if (!lastResult || !formation) {
     return (
@@ -125,6 +129,14 @@ export function SeasonResult() {
           <div className="text-sm text-slate-400 mt-3">
             Goal difference {gd >= 0 ? `+${gd}` : gd} · Squad strength {r.squadStrength.toFixed(1)} · Formation {formation.label}
           </div>
+        </Card>
+
+        {/* Final league table */}
+        <Card className="p-5">
+          <h3 className="text-xs uppercase tracking-wider text-slate-400 mb-3">
+            Final Premier League table
+          </h3>
+          <LeagueTable rows={table} />
         </Card>
 
         {/* Squad */}
