@@ -36,14 +36,25 @@ export function wheelWeight(strength: number): number {
   return 1 / (1 + (strength - 78) * 0.18);
 }
 
-/** Pick a landing from the given slots, weighted to make elite squads rarer. */
+/**
+ * Pick a landing from the given slots. Two adjustments make it feel varied:
+ *  - elite squads are down-weighted (a great team/year is a rarer find);
+ *  - each season's weight is divided by how many seasons its club has, so a
+ *    club with four seasons in the pool doesn't appear four times as often —
+ *    every distinct club gets a roughly equal share.
+ */
 export function weightedPick(
   rng: () => number,
   slots: WheelLanding[],
   pool: Player[],
 ): WheelLanding {
   if (slots.length === 0) throw new Error('Wheel has no slots.');
-  const weights = slots.map((s) => wheelWeight(clubSeasonStrength(s, pool)));
+  const clubCounts = new Map<string, number>();
+  for (const s of slots) clubCounts.set(s.club, (clubCounts.get(s.club) ?? 0) + 1);
+
+  const weights = slots.map(
+    (s) => wheelWeight(clubSeasonStrength(s, pool)) / (clubCounts.get(s.club) ?? 1),
+  );
   const total = weights.reduce((a, b) => a + b, 0);
   let r = rng() * total;
   for (let i = 0; i < slots.length; i++) {

@@ -2,6 +2,9 @@ import type { Player } from '@/types/draft';
 import iconic from './iconic.json';
 import additional from './additional.json';
 import squadDepth from './squad-depth.json';
+import clubsExtra from './clubs-extra.json';
+import titles from './titles.json';
+import notable from './notable.json';
 import { DEFAULT_ROLE_BY_POSITION, PLAYER_ROLES } from '@/game/draft/roles';
 
 // Curated files load first so they win any de-duplication. We drop both exact
@@ -13,6 +16,9 @@ const _allRaw: Player[] = [
   ...(iconic as Player[]),
   ...(additional as Player[]),
   ...(squadDepth as Player[]),
+  ...(clubsExtra as Player[]),
+  ...(titles as Player[]),
+  ...(notable as Player[]),
 ];
 export const ALL_PLAYERS: Player[] = _allRaw
   .filter((p) => {
