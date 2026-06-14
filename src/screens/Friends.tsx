@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { UserPlus, Check, X, Swords, UserMinus, Clock, Trophy } from 'lucide-react';
+import { UserPlus, Check, X, Swords, UserMinus, Clock, Trophy, Users, Search } from 'lucide-react';
 import { Screen } from '@/components/layout/Screen';
 import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
@@ -10,11 +10,13 @@ import { useProfile } from '@/store/profileStore';
 import {
   acceptFriendRequest,
   declineFriendRequest,
+  listAllUsers,
   loadFriendships,
   otherUid,
   removeFriend,
   sendFriendRequest,
   type Friendship,
+  type UserLookupEntry,
 } from '@/lib/friends';
 import {
   cancelMatch,
@@ -46,6 +48,20 @@ export function Friends() {
   const [addError, setAddError] = useState<string | null>(null);
   const [addMsg, setAddMsg] = useState<string | null>(null);
   const [challengeTarget, setChallengeTarget] = useState<Friendship | null>(null);
+  const [directoryOpen, setDirectoryOpen] = useState(false);
+  const [directoryUsers, setDirectoryUsers] = useState<UserLookupEntry[] | null>(null);
+  const [directoryLoading, setDirectoryLoading] = useState(false);
+
+  const openDirectory = useCallback(async () => {
+    setDirectoryOpen(true);
+    if (!user || directoryUsers) return;
+    setDirectoryLoading(true);
+    try {
+      setDirectoryUsers(await listAllUsers(user.uid));
+    } finally {
+      setDirectoryLoading(false);
+    }
+  }, [user, directoryUsers]);
 
   const reload = useCallback(async () => {
     if (!user) return;
@@ -119,6 +135,20 @@ export function Friends() {
     .filter((m) => m.status === 'completed' || m.status === 'declined' || m.status === 'cancelled')
     .slice(0, 10);
 
+  // Relationship status keyed by the other user's uid — drives the directory's
+  // per-row action (Add / Requested / Accept / Friends).
+  const relByUid = new Map<string, { status: 'accepted' | 'outgoing' | 'incoming'; friendshipId: string }>();
+  for (const f of friendships.accepted) relByUid.set(otherUid(f, user.uid), { status: 'accepted', friendshipId: f.id });
+  for (const f of friendships.pendingOutgoing) relByUid.set(otherUid(f, user.uid), { status: 'outgoing', friendshipId: f.id });
+  for (const f of friendships.pendingIncoming) relByUid.set(otherUid(f, user.uid), { status: 'incoming', friendshipId: f.id });
+
+  async function addFromDirectory(entry: UserLookupEntry): Promise<string | null> {
+    if (!user) return 'Not signed in.';
+    const result = await sendFriendRequest(user, displayName, entry.email);
+    await reload();
+    return result.ok ? null : result.reason;
+  }
+
   return (
     <Screen title="Friends & Matches">
       <section className="py-6 space-y-6">
@@ -143,9 +173,15 @@ export function Friends() {
           </form>
           {addError && <p className="text-sm text-wrong">{addError}</p>}
           {addMsg && <p className="text-sm text-correct">{addMsg}</p>}
-          <p className="text-xs text-slate-500">
-            They need to have signed in at least once for you to find them.
-          </p>
+          <div className="flex items-center gap-3 pt-1">
+            <Button type="button" variant="secondary" onClick={openDirectory}>
+              <Users size={16} className="inline-block mr-2" />
+              Browse all players
+            </Button>
+            <p className="text-xs text-slate-500">
+              Or find someone by email — they need to have signed in at least once.
+            </p>
+          </div>
         </Card>
 
         {/* Pending match invites (incoming) */}
@@ -400,6 +436,20 @@ export function Friends() {
           />
         )}
       </AnimatePresence>
+
+      {/* Player directory modal */}
+      <AnimatePresence>
+        {directoryOpen && (
+          <PlayerDirectoryModal
+            users={directoryUsers}
+            loading={directoryLoading}
+            relByUid={relByUid}
+            onAdd={addFromDirectory}
+            onAccept={(id) => acceptFriendRequest(id).then(reload)}
+            onClose={() => setDirectoryOpen(false)}
+          />
+        )}
+      </AnimatePresence>
     </Screen>
   );
 }
@@ -600,6 +650,136 @@ function ChallengeModal({
             <Swords size={16} className="inline-block mr-2" />
             Send challenge
           </Button>
+        </div>
+      </motion.div>
+    </motion.div>
+  );
+}
+
+function PlayerDirectoryModal({
+  users,
+  loading,
+  relByUid,
+  onAdd,
+  onAccept,
+  onClose,
+}: {
+  users: UserLookupEntry[] | null;
+  loading: boolean;
+  relByUid: Map<string, { status: 'accepted' | 'outgoing' | 'incoming'; friendshipId: string }>;
+  onAdd: (entry: UserLookupEntry) => Promise<string | null>;
+  onAccept: (friendshipId: string) => Promise<void>;
+  onClose: () => void;
+}) {
+  const [filter, setFilter] = useState('');
+  const [busyUid, setBusyUid] = useState<string | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
+  const term = filter.trim().toLowerCase();
+  const shown = (users ?? []).filter(
+    (u) =>
+      !term ||
+      (u.displayName ?? '').toLowerCase().includes(term) ||
+      (u.email ?? '').toLowerCase().includes(term),
+  );
+
+  async function handleAdd(entry: UserLookupEntry) {
+    setBusyUid(entry.uid);
+    setError(null);
+    const reason = await onAdd(entry);
+    if (reason) setError(reason);
+    setBusyUid(null);
+  }
+
+  async function handleAccept(friendshipId: string, uid: string) {
+    setBusyUid(uid);
+    setError(null);
+    await onAccept(friendshipId);
+    setBusyUid(null);
+  }
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        className="w-full max-w-md rounded-2xl border border-white/10 bg-stadium-900 p-6 space-y-4 max-h-[85vh] flex flex-col"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between">
+          <h3 className="font-display text-2xl">All players</h3>
+          <button type="button" onClick={onClose} className="text-slate-400 hover:text-slate-100">
+            <X size={20} />
+          </button>
+        </div>
+
+        <div className="relative">
+          <Search size={16} className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-500" />
+          <input
+            type="text"
+            placeholder="Search by name or email…"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+            className="w-full pl-9 pr-4 py-2.5 rounded-xl bg-stadium-950/70 border border-white/10 focus:outline-none focus:border-neon-cyan/60"
+          />
+        </div>
+
+        {error && <p className="text-sm text-wrong">{error}</p>}
+
+        <div className="flex-1 overflow-y-auto -mx-2 px-2 space-y-2">
+          {loading && !users ? (
+            <p className="text-sm text-slate-400 py-6 text-center">Loading players…</p>
+          ) : shown.length === 0 ? (
+            <p className="text-sm text-slate-400 py-6 text-center">
+              {users && users.length === 0
+                ? 'No other players have signed in yet.'
+                : 'No players match that search.'}
+            </p>
+          ) : (
+            shown.map((u) => {
+              const rel = relByUid.get(u.uid);
+              const busy = busyUid === u.uid;
+              return (
+                <div
+                  key={u.uid}
+                  className="flex items-center justify-between gap-3 rounded-xl bg-white/5 border border-white/10 px-3 py-2.5"
+                >
+                  <div className="min-w-0">
+                    <div className="font-semibold truncate">{u.displayName || 'Player'}</div>
+                    <div className="text-xs text-slate-400 truncate">{u.email}</div>
+                  </div>
+                  {rel?.status === 'accepted' ? (
+                    <span className="text-xs text-correct font-semibold flex items-center gap-1 shrink-0">
+                      <Check size={14} /> Friends
+                    </span>
+                  ) : rel?.status === 'outgoing' ? (
+                    <span className="text-xs text-slate-400 shrink-0">Requested</span>
+                  ) : rel?.status === 'incoming' ? (
+                    <Button
+                      size="sm"
+                      disabled={busy}
+                      onClick={() => handleAccept(rel.friendshipId, u.uid)}
+                    >
+                      <Check size={14} className="inline-block mr-1" />
+                      Accept
+                    </Button>
+                  ) : (
+                    <Button size="sm" disabled={busy} onClick={() => handleAdd(u)}>
+                      <UserPlus size={14} className="inline-block mr-1" />
+                      Add
+                    </Button>
+                  )}
+                </div>
+              );
+            })
+          )}
         </div>
       </motion.div>
     </motion.div>

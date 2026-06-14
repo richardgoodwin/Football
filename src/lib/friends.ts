@@ -79,6 +79,23 @@ export async function findUserByEmail(email: string): Promise<UserLookupEntry | 
 }
 
 /**
+ * List every registered player (everyone who has signed in at least once),
+ * excluding the current user. Sorted by display name for the friend directory.
+ */
+export async function listAllUsers(selfUid: string): Promise<UserLookupEntry[]> {
+  if (!db) return [];
+  const snap = await getDocs(collection(db, 'userLookup'));
+  return snap.docs
+    .map((d) => d.data() as UserLookupEntry)
+    .filter((u) => u.uid && u.uid !== selfUid)
+    .sort((a, b) =>
+      (a.displayName || a.email).localeCompare(b.displayName || b.email, undefined, {
+        sensitivity: 'base',
+      }),
+    );
+}
+
+/**
  * Send a friend request. Creates the friendship doc with status='pending'.
  */
 export async function sendFriendRequest(
