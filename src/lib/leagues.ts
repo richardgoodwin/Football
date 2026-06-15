@@ -62,6 +62,8 @@ export interface LeagueMember {
   ready: boolean;
   formationId?: FormationId;
   squad?: DraftPick[];
+  /** Team name chosen by the member when they finish their draft. */
+  teamName?: string;
   /** Saturday-week key of the member's most recent re-spin. */
   lastRespinWeek?: string;
 }
@@ -160,10 +162,17 @@ export async function setLeagueSquad(
   displayName: string,
   squad: DraftPick[],
   formationId: FormationId,
+  teamName?: string,
 ): Promise<void> {
   if (!db) return;
   await updateDoc(doc(db, 'leagues', leagueId), {
-    [`members.${uid}`]: { displayName, ready: true, squad, formationId },
+    [`members.${uid}`]: {
+      displayName,
+      ready: true,
+      squad,
+      formationId,
+      teamName: teamName?.trim() || displayName,
+    },
   });
 }
 
@@ -180,7 +189,7 @@ export async function startLeague(league: LeagueDoc): Promise<void> {
     .filter(([, m]) => m.ready && m.squad && m.squad.length === 11 && m.formationId)
     .map(([uid, m]) => ({
       id: uid,
-      name: m.displayName,
+      name: m.teamName?.trim() || m.displayName,
       isAI: false,
       formationId: m.formationId!,
       squad: m.squad!,

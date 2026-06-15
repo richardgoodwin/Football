@@ -7,7 +7,6 @@ import { Card } from '@/components/ui/Card';
 import { Button } from '@/components/ui/Button';
 import { useAuth } from '@/store/authStore';
 import { useProfile } from '@/store/profileStore';
-import { useDraft } from '@/store/draftStore';
 import {
   canRespinThisWeek,
   catchUpLeague,
@@ -21,12 +20,20 @@ import {
   type LeagueDoc,
 } from '@/lib/leagues';
 import { loadFriendships, otherUid, type Friendship } from '@/lib/friends';
-import { FORMATIONS } from '@/game/draft/constraints';
+import { FORMATIONS, FORMATION_LIST, MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
 import { uniqueClubSeasons, WHEEL_MIN_PLAYERS, ALL_PLAYERS } from '@/data/players';
 import { effectiveRating, pickEffectiveRating, playerRole, rolePenalty, sortPlayersForDisplay } from '@/game/draft/roles';
+import {
+  applyPick,
+  buildPick,
+  createDraft,
+  eligiblePlayers,
+  isComplete,
+  openSlots,
+} from '@/game/draft/draftState';
 import { Wheel } from '@/components/perfect-season/Wheel';
 import { PlayerCard } from '@/components/perfect-season/PlayerCard';
-import type { DraftPick, Player } from '@/types/draft';
+import type { DraftPick, DraftState, Formation, Player } from '@/types/draft';
 import { weightedPick, type WheelLanding } from '@/game/draft/wheel';
 
 function formatKickoff(ms: number): string {
@@ -43,12 +50,12 @@ export function LeagueDetail() {
   const { id } = useParams();
   const user = useAuth((s) => s.user);
   const displayName = useProfile((s) => s.displayName);
-  const draftStore = useDraft();
   const [league, setLeague] = useState<LeagueDoc | null | undefined>(undefined);
   const [friends, setFriends] = useState<Friendship[]>([]);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [showRespin, setShowRespin] = useState(false);
+  const [showDraft, setShowDraft] = useState(false);
   const catchingUp = useRef(false);
 
   useEffect(() => {
@@ -75,29 +82,6 @@ export function LeagueDetail() {
       catchingUp.current = false;
     });
   }, [league]);
-
-  const mySquad = useMemo(() => {
-    if (draftStore.picks.length === 11 && draftStore.formationId) {
-      return { squad: draftStore.picks, formationId: draftStore.formationId };
-    }
-    if (draftStore.lastResult) {
-      return { squad: draftStore.lastResult.squad, formationId: draftStore.lastResult.formationId };
-    }
-    return null;
-  }, [draftStore.picks, draftStore.formationId, draftStore.lastResult]);
-
-  const handleEnterSquad = useCallback(async () => {
-    if (!user || !league || !mySquad) return;
-    setBusy(true);
-    setError(null);
-    try {
-      await setLeagueSquad(league.id, user.uid, displayName, mySquad.squad, mySquad.formationId);
-    } catch (err) {
-      setError((err as Error).message);
-    } finally {
-      setBusy(false);
-    }
-  }, [user, league, mySquad, displayName]);
 
   const handleStart = useCallback(async () => {
     if (!league) return;
@@ -156,21 +140,18 @@ export function LeagueDetail() {
             {me?.ready ? (
               <p className="text-sm">
                 <Check size={14} className="inline-block mr-1 text-correct" />
-                Squad entered ({me.formationId}). You can re-enter to update it before kick-off.
+                <strong>{me.teamName ?? displayName}</strong> entered ({me.formationId}). You can
+                re-draft to change it before kick-off.
               </p>
             ) : (
-              <p className="text-sm text-slate-300">Enter your most recent drafted XI to take your spot.</p>
-            )}
-            {mySquad ? (
-              <Button onClick={handleEnterSquad} disabled={busy}>
-                {me?.ready ? 'Update squad' : 'Enter my XI'} ({mySquad.formationId})
-              </Button>
-            ) : (
-              <p className="text-sm text-amber-300">
-                You don't have a drafted XI yet —{' '}
-                <Link to="/perfect-season" className="underline">draft one first</Link>.
+              <p className="text-sm text-slate-300">
+                Spin the wheel, draft your XI, then name your team to take your spot.
               </p>
             )}
+            <Button onClick={() => setShowDraft(true)} disabled={busy}>
+              <Sparkles size={16} className="inline-block mr-2" />
+              {me?.ready ? 'Re-draft my team' : 'Draft my XI'}
+            </Button>
           </Card>
 
           <Card className="p-5 space-y-2">
@@ -179,6 +160,9 @@ export function LeagueDetail() {
               <div key={uid} className="flex items-center justify-between text-sm py-1">
                 <span>
                   {m.displayName}
+                  {m.ready && m.teamName && m.teamName !== m.displayName && (
+                    <span className="text-slate-400"> · {m.teamName}</span>
+                  )}
                   {uid === league.createdBy && (
                     <span className="ml-2 text-[10px] uppercase text-slate-500">creator</span>
                   )}
@@ -243,6 +227,18 @@ export function LeagueDetail() {
             </Link>
           </div>
         </section>
+
+        <AnimatePresence>
+          {showDraft && (
+            <LeagueDraftModal
+              league={league}
+              uid={user.uid}
+              displayName={displayName}
+              initialName={me?.teamName}
+              onClose={() => setShowDraft(false)}
+            />
+          )}
+        </AnimatePresence>
       </Screen>
     );
   }
@@ -579,6 +575,211 @@ function RespinModal({
                     </button>
                   );
                 })}
+            </div>
+          </div>
+        )}
+
+        {error && <p className="text-sm text-wrong">{error}</p>}
+      </motion.div>
+    </motion.div>
+  );
+}
+
+/**
+ * Self-contained league entry draft: pick a formation, spin & draft 11 players,
+ * then name your team. Writes the squad + team name to the league on confirm.
+ */
+function LeagueDraftModal({
+  league,
+  uid,
+  displayName,
+  initialName,
+  onClose,
+}: {
+  league: LeagueDoc;
+  uid: string;
+  displayName: string;
+  initialName?: string;
+  onClose: () => void;
+}) {
+  const slots = useMemo(() => uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS), []);
+  const [formation, setFormation] = useState<Formation | null>(null);
+  const [state, setState] = useState<DraftState | null>(null);
+  const [landingIndex, setLandingIndex] = useState<number | null>(null);
+  const [spinToken, setSpinToken] = useState(0);
+  const [showResults, setShowResults] = useState(false);
+  const [teamName, setTeamName] = useState(initialName || `${displayName}'s XI`);
+  const [busy, setBusy] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const landing: WheelLanding | null = landingIndex !== null ? slots[landingIndex] ?? null : null;
+  const complete = state ? isComplete(state) : false;
+
+  const eligible = useMemo<Player[]>(() => {
+    if (!state || !landing || !showResults) return [];
+    return sortPlayersForDisplay(eligiblePlayers(state, landing, ALL_PLAYERS));
+  }, [state, landing, showResults]);
+
+  function chooseFormation(f: Formation) {
+    setFormation(f);
+    setState(createDraft(f));
+  }
+
+  function handleSpin() {
+    if (!state) return;
+    const usable = slots.filter((s) => {
+      if ((state.picksByClub[s.club] ?? 0) >= MAX_PICKS_PER_CLUB) return false;
+      return ALL_PLAYERS.some(
+        (p) => p.club === s.club && p.season === s.season && !state.pickedPlayerIds.has(p.id),
+      );
+    });
+    const pool = usable.length > 0 ? usable : slots;
+    const choice = weightedPick(Math.random, pool, ALL_PLAYERS);
+    const idx = slots.findIndex((s) => s.club === choice.club && s.season === choice.season);
+    setLandingIndex(idx >= 0 ? idx : 0);
+    setSpinToken((t) => t + 1);
+    setShowResults(false);
+  }
+
+  function pickPlayer(player: Player) {
+    if (!state || !landing) return;
+    // Slot the player into their lowest-penalty open position.
+    const open = openSlots(state);
+    let best = open[0];
+    let bestPen = Infinity;
+    for (const i of open) {
+      const pen = rolePenalty(playerRole(player), state.formation.roleSlots[i]);
+      if (pen < bestPen) {
+        bestPen = pen;
+        best = i;
+      }
+    }
+    setState(applyPick(state, buildPick(state.formation, player, landing, best)));
+    setLandingIndex(null);
+    setShowResults(false);
+  }
+
+  async function confirm() {
+    if (!state || !formation || !isComplete(state)) return;
+    setBusy(true);
+    setError(null);
+    try {
+      await setLeagueSquad(league.id, uid, displayName, state.picks, formation.id, teamName);
+      onClose();
+    } catch (err) {
+      setError((err as Error).message);
+      setBusy(false);
+    }
+  }
+
+  const orderedPicks = state
+    ? [...state.picks].sort((a, b) => (a.slotIndex ?? 0) - (b.slotIndex ?? 0))
+    : [];
+
+  return (
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      className="fixed inset-0 z-30 flex items-center justify-center p-4 bg-black/60 backdrop-blur-sm overflow-y-auto"
+      onClick={onClose}
+    >
+      <motion.div
+        initial={{ y: 20, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        exit={{ y: 20, opacity: 0 }}
+        className="w-full max-w-lg my-8 rounded-2xl border border-white/10 bg-stadium-900 p-5 space-y-4"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <div className="flex items-center justify-between">
+          <h3 className="font-display text-2xl">
+            {!formation ? 'Pick a formation' : complete ? 'Name your team' : `Draft your XI (${state!.picks.length}/11)`}
+          </h3>
+          <button type="button" onClick={onClose} className="p-1 text-slate-400 hover:text-white">
+            <X size={18} />
+          </button>
+        </div>
+
+        {/* Step 1: formation */}
+        {!formation && (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
+            {FORMATION_LIST.map((f) => (
+              <button
+                key={f.id}
+                type="button"
+                onClick={() => chooseFormation(f)}
+                className="rounded-xl border border-white/10 bg-white/5 hover:bg-white/10 px-2 py-3 text-center"
+              >
+                <div className="font-display tracking-wide">{f.label}</div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Step 2: draft */}
+        {formation && state && !complete && (
+          <>
+            <Wheel
+              slots={slots}
+              landingIndex={landingIndex ?? 0}
+              spinToken={spinToken}
+              onSpinEnd={() => setShowResults(true)}
+            />
+            <Button onClick={handleSpin} fullWidth>
+              <Sparkles size={16} className="inline-block mr-2" />
+              {spinToken === 0 ? 'Spin the wheel' : 'Spin again'}
+            </Button>
+
+            {showResults && landing && (
+              <div className="space-y-2">
+                <div className="text-sm text-slate-400">
+                  {landing.club} · {landing.season} — tap a player to sign:
+                </div>
+                <div className="grid sm:grid-cols-2 gap-2 max-h-56 overflow-y-auto">
+                  {eligible.map((p) => (
+                    <PlayerCard key={p.id} player={p} onClick={() => pickPlayer(p)} />
+                  ))}
+                  {eligible.length === 0 && (
+                    <p className="text-sm text-slate-400">No new players here — spin again.</p>
+                  )}
+                </div>
+              </div>
+            )}
+
+            {orderedPicks.length > 0 && (
+              <div className="text-xs text-slate-400">
+                <span className="uppercase tracking-wider">Drafted:</span>{' '}
+                {orderedPicks
+                  .map((p) => `${p.assignedRole} ${p.player.name}`)
+                  .join(' · ')}
+              </div>
+            )}
+          </>
+        )}
+
+        {/* Step 3: name */}
+        {complete && (
+          <div className="space-y-3">
+            <p className="text-sm text-slate-300">
+              <Check size={14} className="inline-block mr-1 text-correct" />
+              Your XI is set. Give your team a name for the league table.
+            </p>
+            <input
+              type="text"
+              maxLength={28}
+              value={teamName}
+              onChange={(e) => setTeamName(e.target.value)}
+              placeholder={`${displayName}'s XI`}
+              className="w-full px-4 py-2.5 rounded-xl bg-stadium-950/70 border border-white/10 focus:outline-none focus:border-neon-cyan/60"
+            />
+            <div className="flex justify-end gap-2">
+              <Button variant="ghost" onClick={onClose} disabled={busy}>
+                Cancel
+              </Button>
+              <Button onClick={confirm} disabled={busy || !teamName.trim()}>
+                <Check size={16} className="inline-block mr-2" />
+                Enter team
+              </Button>
             </div>
           </div>
         )}
