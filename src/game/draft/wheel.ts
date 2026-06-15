@@ -64,6 +64,59 @@ export function weightedPick(
   return slots[slots.length - 1];
 }
 
+/** Highest single-player rating in a club-season (cached). */
+const _topRatingCache = new Map<string, number>();
+export function clubSeasonTopRating(landing: WheelLanding, pool: Player[]): number {
+  const key = `${landing.club} :: ${landing.season}`;
+  const cached = _topRatingCache.get(key);
+  if (cached !== undefined) return cached;
+  let top = 0;
+  for (const p of pool) {
+    if (p.club === landing.club && p.season === landing.season && p.rating > top) top = p.rating;
+  }
+  _topRatingCache.set(key, top);
+  return top;
+}
+
+/** A club-season counts as "elite" for the easy-mode bias if any player is this good. */
+export const EASY_ELITE_THRESHOLD = 87;
+/** Easy mode lands on an elite club-season this often. */
+export const EASY_ELITE_PROBABILITY = 0.75;
+
+/** Does this club-season contain at least one player rated >= threshold? */
+export function hasElitePlayer(
+  landing: WheelLanding,
+  pool: Player[],
+  threshold: number = EASY_ELITE_THRESHOLD,
+): boolean {
+  return clubSeasonTopRating(landing, pool) >= threshold;
+}
+
+/**
+ * Easy-mode pick: with `probability`, land on a club-season that has at least
+ * one player rated >= `threshold`; otherwise land on the rest. Within each group
+ * the normal weighting (strength down-weight + club balance) still applies, so
+ * you still get variety — you're just much more likely to be handed a squad with
+ * a genuine star. Falls back to the whole pool if either group is empty.
+ */
+export function eliteBiasedPick(
+  rng: () => number,
+  slots: WheelLanding[],
+  pool: Player[],
+  probability: number = EASY_ELITE_PROBABILITY,
+  threshold: number = EASY_ELITE_THRESHOLD,
+): WheelLanding {
+  if (slots.length === 0) throw new Error('Wheel has no slots.');
+  const elite: WheelLanding[] = [];
+  const rest: WheelLanding[] = [];
+  for (const s of slots) {
+    (hasElitePlayer(s, pool, threshold) ? elite : rest).push(s);
+  }
+  if (elite.length === 0 || rest.length === 0) return weightedPick(rng, slots, pool);
+  const group = rng() < probability ? elite : rest;
+  return weightedPick(rng, group, pool);
+}
+
 /**
  * Spin the wheel and return a single (club, season) landing. Only club-seasons
  * with `minPlayers` or more entries can be landed on, and stronger squads are

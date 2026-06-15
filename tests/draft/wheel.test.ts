@@ -2,6 +2,9 @@ import { describe, it, expect } from 'vitest';
 import {
   buildWheelSequence,
   clubSeasonStrength,
+  clubSeasonTopRating,
+  eliteBiasedPick,
+  EASY_ELITE_THRESHOLD,
   spinWheel,
   weightedPick,
   wheelWeight,
@@ -65,5 +68,34 @@ describe('wheel weighting', () => {
       if (pick.club === mid.club && pick.season === mid.season) midHits++;
     }
     expect(midHits).toBeGreaterThan(eliteHits);
+  });
+});
+
+describe('eliteBiasedPick (easy mode)', () => {
+  it('lands on a team with a player >= 87 about 75% of the time', () => {
+    const slots = uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS);
+    const rng = mulberry32(2024);
+    const RUNS = 6000;
+    let eliteHits = 0;
+    for (let i = 0; i < RUNS; i++) {
+      const pick = eliteBiasedPick(rng, slots, ALL_PLAYERS);
+      if (clubSeasonTopRating(pick, ALL_PLAYERS) >= EASY_ELITE_THRESHOLD) eliteHits++;
+    }
+    const ratio = eliteHits / RUNS;
+    expect(ratio).toBeGreaterThan(0.72);
+    expect(ratio).toBeLessThan(0.78);
+  });
+
+  it('still lands on non-elite teams the rest of the time (variety preserved)', () => {
+    const slots = uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS);
+    const rng = mulberry32(5);
+    const seen = new Set<string>();
+    for (let i = 0; i < 500; i++) {
+      const pick = eliteBiasedPick(rng, slots, ALL_PLAYERS);
+      if (clubSeasonTopRating(pick, ALL_PLAYERS) < EASY_ELITE_THRESHOLD) {
+        seen.add(`${pick.club} :: ${pick.season}`);
+      }
+    }
+    expect(seen.size).toBeGreaterThan(0);
   });
 });
