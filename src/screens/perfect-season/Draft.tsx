@@ -12,7 +12,11 @@ import { OverallRating } from '@/components/perfect-season/OverallRating';
 import { deriveDraftState, useDraft, BENCH_SIZE } from '@/store/draftStore';
 import { BenchManager } from '@/components/perfect-season/BenchManager';
 import { ALL_PLAYERS, uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
-import { weightedPick, eliteBiasedPick, type WheelLanding } from '@/game/draft/wheel';
+import {
+  eliteBiasedPick,
+  ELITE_PROBABILITY_BY_DIFFICULTY,
+  type WheelLanding,
+} from '@/game/draft/wheel';
 import { MAX_PICKS_PER_CLUB } from '@/game/draft/constraints';
 import { buildPick, eligiblePlayers, openSlots } from '@/game/draft/draftState';
 import { effectiveRating, playerRole, rolePenalty, ROLE_LABEL, sortPlayersForDisplay } from '@/game/draft/roles';
@@ -70,11 +74,10 @@ export function Draft() {
       );
     });
     const pool = usable.length > 0 ? usable : slots;
-    // Easy mode hands you a squad with a genuine star (>=87) 75% of the time.
-    const choice =
-      difficulty === 'easy'
-        ? eliteBiasedPick(Math.random, pool, ALL_PLAYERS)
-        : weightedPick(Math.random, pool, ALL_PLAYERS);
+    // Chance of landing on a squad with a genuine star (>=87) scales with
+    // difficulty: easy 75%, normal 50%, hard 25%, legendary 10%.
+    const eliteProb = ELITE_PROBABILITY_BY_DIFFICULTY[difficulty] ?? 0.5;
+    const choice = eliteBiasedPick(Math.random, pool, ALL_PLAYERS, eliteProb);
     const idx = slots.findIndex((s) => s.club === choice.club && s.season === choice.season);
     setLandingIndex(idx >= 0 ? idx : 0);
     setSpinToken((t) => t + 1);

@@ -1,4 +1,4 @@
-import type { Player } from '@/types/draft';
+import type { Player, SeasonDifficulty } from '@/types/draft';
 import { uniqueClubSeasons, WHEEL_MIN_PLAYERS } from '@/data/players';
 
 export interface WheelLanding {
@@ -78,10 +78,22 @@ export function clubSeasonTopRating(landing: WheelLanding, pool: Player[]): numb
   return top;
 }
 
-/** A club-season counts as "elite" for the easy-mode bias if any player is this good. */
+/** A club-season counts as "elite" for the difficulty bias if any player is this good. */
 export const EASY_ELITE_THRESHOLD = 87;
-/** Easy mode lands on an elite club-season this often. */
+/** Default elite-landing probability (easy mode) when none is supplied. */
 export const EASY_ELITE_PROBABILITY = 0.75;
+
+/**
+ * How often each difficulty lands on a club-season with a genuine star (a
+ * player rated >= EASY_ELITE_THRESHOLD). Harder = rarer. Legendary isn't a
+ * user-set figure — it's pitched below hard so the difficulty stays monotonic.
+ */
+export const ELITE_PROBABILITY_BY_DIFFICULTY: Record<SeasonDifficulty, number> = {
+  easy: 0.75,
+  normal: 0.5,
+  hard: 0.25,
+  legendary: 0.1,
+};
 
 /** Does this club-season contain at least one player rated >= threshold? */
 export function hasElitePlayer(

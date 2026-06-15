@@ -5,6 +5,7 @@ import {
   clubSeasonTopRating,
   eliteBiasedPick,
   EASY_ELITE_THRESHOLD,
+  ELITE_PROBABILITY_BY_DIFFICULTY,
   spinWheel,
   weightedPick,
   wheelWeight,
@@ -97,5 +98,23 @@ describe('eliteBiasedPick (easy mode)', () => {
       }
     }
     expect(seen.size).toBeGreaterThan(0);
+  });
+
+  it('honours the supplied probability per difficulty', () => {
+    const slots = uniqueClubSeasons(ALL_PLAYERS, WHEEL_MIN_PLAYERS);
+    const RUNS = 6000;
+    for (const [prob, seed] of [
+      [ELITE_PROBABILITY_BY_DIFFICULTY.normal, 11],
+      [ELITE_PROBABILITY_BY_DIFFICULTY.hard, 22],
+      [ELITE_PROBABILITY_BY_DIFFICULTY.legendary, 33],
+    ] as const) {
+      const rng = mulberry32(seed);
+      let eliteHits = 0;
+      for (let i = 0; i < RUNS; i++) {
+        const pick = eliteBiasedPick(rng, slots, ALL_PLAYERS, prob);
+        if (clubSeasonTopRating(pick, ALL_PLAYERS) >= EASY_ELITE_THRESHOLD) eliteHits++;
+      }
+      expect(Math.abs(eliteHits / RUNS - prob)).toBeLessThan(0.04);
+    }
   });
 });
