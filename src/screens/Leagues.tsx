@@ -98,7 +98,7 @@ export function Leagues() {
             />
             <p className="text-xs text-slate-400">
               A 38-team division — invite as many friends as you like, AI teams fill the rest.
-              Two games a week (Wed &amp; Sat, 3pm) across a full 38-game season.
+              One game every day at 12pm UK time across a full 38-game season.
             </p>
             {error && <p className="text-sm text-wrong">{error}</p>}
             <Button type="submit" disabled={busy}>

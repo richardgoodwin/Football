@@ -115,18 +115,48 @@ describe('generateSchedule', () => {
 });
 
 describe('scheduleKickoffs', () => {
-  it('returns 38 kickoffs, all on Wednesday or Saturday at 3pm', () => {
-    const start = new Date('2026-06-15T09:00:00').getTime(); // a Monday
+  const londonHourMinute = (ms: number) => {
+    const parts = new Intl.DateTimeFormat('en-GB', {
+      timeZone: 'Europe/London',
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: false,
+    }).formatToParts(new Date(ms));
+    return {
+      hour: parts.find((p) => p.type === 'hour')!.value,
+      minute: parts.find((p) => p.type === 'minute')!.value,
+    };
+  };
+
+  it('returns 38 daily kickoffs at 12:00 UK time', () => {
+    const start = new Date('2026-06-15T09:00:00Z').getTime();
     const kickoffs = scheduleKickoffs(start);
     expect(kickoffs).toHaveLength(SEASON_MATCHDAYS);
     for (const k of kickoffs) {
-      const d = new Date(k);
-      expect([3, 6]).toContain(d.getDay()); // Wed or Sat
-      expect(d.getHours()).toBe(15);
+      const { hour, minute } = londonHourMinute(k);
+      expect(hour).toBe('12');
+      expect(minute).toBe('00');
     }
-    // strictly increasing
+    // strictly increasing, ~24h apart (allow 23–25h around DST changes)
     for (let i = 1; i < kickoffs.length; i++) {
       expect(kickoffs[i]).toBeGreaterThan(kickoffs[i - 1]);
+      const gapHours = (kickoffs[i] - kickoffs[i - 1]) / 3_600_000;
+      expect(gapHours).toBeGreaterThanOrEqual(23);
+      expect(gapHours).toBeLessThanOrEqual(25);
+    }
+  });
+
+  it('first kickoff is on or after the start time', () => {
+    const start = new Date('2026-06-15T09:00:00Z').getTime();
+    expect(scheduleKickoffs(start)[0]).toBeGreaterThanOrEqual(start);
+  });
+
+  it('handles a season that crosses the autumn DST change (BST → GMT)', () => {
+    // UK clocks go back on 2026-10-25. A late-October start spans the switch.
+    const start = new Date('2026-10-20T09:00:00Z').getTime();
+    const kickoffs = scheduleKickoffs(start);
+    for (const k of kickoffs) {
+      expect(londonHourMinute(k).hour).toBe('12');
     }
   });
 });

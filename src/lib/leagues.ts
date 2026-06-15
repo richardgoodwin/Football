@@ -4,7 +4,7 @@
  * Flow:
  *  - Create a league and invite friends. Every member enters their drafted XI.
  *  - The leader starts the league: a Premier-League-style fixture list is
- *    generated (38 matchdays, two a week — Wed & Sat at 3pm), AI teams fill any
+ *    generated (38 matchdays, one every day at 12pm UK time), AI teams fill any
  *    unclaimed spots up to 38, and per-matchday kickoff times are stamped.
  *  - Matchdays simulate deterministically as their kickoff passes. Any member's
  *    client "catches up" due matchdays and writes the results (idempotent —

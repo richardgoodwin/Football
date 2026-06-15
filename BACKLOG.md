@@ -2,16 +2,16 @@
 
 Ideas captured for later — not yet started.
 
-## Scheduled league simulation (true 3pm kick-offs)
+## Scheduled league simulation (true daily kick-offs)
 
 **Why:** Today, friends-league matchdays simulate *when a member next opens the
-league* after the 3pm Wed/Sat kickoff has passed. Results are correct and
+league* after the 12pm UK kickoff has passed. Results are correct and
 deterministic, but they only materialise on view — there's no server to run
 them at the exact time, and no notification if nobody opens the app.
 
 **What to build:**
 - A scheduled **Firebase Cloud Function** (Cloud Scheduler / pub-sub cron) that
-  runs at 15:00 on Wednesdays and Saturdays.
+  runs daily at 12:00 UK time (Europe/London).
 - It loads running leagues, simulates any due matchday using the same
   deterministic seed (`seed + matchday * 7919`) and current team squads, and
   writes the locked results — identical to the client-side `catchUpLeague`.

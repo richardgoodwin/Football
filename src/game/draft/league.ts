@@ -39,9 +39,10 @@ export interface LeagueStanding {
 
 /** A friends league always fields a full 38-team division (humans + AI fill). */
 export const LEAGUE_SIZE = 38;
-/** A 38-game season, two matchdays a week (Wed + Sat). */
+/** A 38-game season, one matchday every day. */
 export const SEASON_MATCHDAYS = 38;
-export const KICKOFF_HOUR = 15; // 3pm
+/** Daily kickoff time, in UK (Europe/London) wall-clock hours. */
+export const KICKOFF_HOUR_UK = 12; // 12pm UK time
 
 const AI_TEAM_NAMES = [
   'Robo Rovers', 'The Algorithms', 'Silicon City', 'Neural Nets',
@@ -117,35 +118,56 @@ export function generateSchedule(teamIds: string[], rng: () => number): Schedule
   return rounds.slice(0, SEASON_MATCHDAYS);
 }
 
-/** Local Date for a given day-of-week (0=Sun…6=Sat) at the kickoff hour, on/after `from`. */
-function nextKickoff(from: Date, days: number[]): Date {
-  const d = new Date(from);
-  for (let i = 0; i < 14; i++) {
-    if (days.includes(d.getDay())) {
-      const k = new Date(d);
-      k.setHours(KICKOFF_HOUR, 0, 0, 0);
-      if (k.getTime() > from.getTime()) return k;
-    }
-    d.setDate(d.getDate() + 1);
-    d.setHours(0, 0, 0, 0);
-  }
-  // Fallback (shouldn't happen): a week out.
-  return new Date(from.getTime() + 7 * 86400000);
+/** The Europe/London calendar date (Y, 0-based month, D) of an instant. */
+function londonYMD(ms: number): { year: number; month: number; day: number } {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone: 'Europe/London',
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+  }).formatToParts(new Date(ms));
+  const get = (t: string) => Number(parts.find((p) => p.type === t)!.value);
+  return { year: get('year'), month: get('month') - 1, day: get('day') };
+}
+
+/** Minutes Europe/London is ahead of UTC at the given instant (0 = GMT, 60 = BST). */
+function londonOffsetMinutes(ms: number): number {
+  const d = new Date(ms);
+  const utc = new Date(d.toLocaleString('en-US', { timeZone: 'UTC' }));
+  const lon = new Date(d.toLocaleString('en-US', { timeZone: 'Europe/London' }));
+  return Math.round((lon.getTime() - utc.getTime()) / 60_000);
 }
 
 /**
- * 38 kickoff timestamps (ms): Wednesday & Saturday at 3pm, starting from the
- * next such slot after `startMs`.
+ * UTC timestamp (ms) for KICKOFF_HOUR_UK:00 London time on the given London
+ * calendar date. DST switches happen overnight, so the offset is stable around
+ * midday and a single correction is exact.
+ */
+function kickoffUtcForLondonDate(year: number, month: number, day: number): number {
+  const guess = Date.UTC(year, month, day, KICKOFF_HOUR_UK, 0, 0, 0);
+  return guess - londonOffsetMinutes(guess) * 60_000;
+}
+
+/**
+ * 38 kickoff timestamps (ms): one per day at 12:00 UK time (Europe/London,
+ * DST-aware), starting from the next noon-UK slot on/after `startMs`.
  */
 export function scheduleKickoffs(startMs: number): number[] {
-  const SAT = 6;
-  const WED = 3;
+  // Calendar date of `startMs` in London; if today's noon has passed, begin tomorrow.
+  let { year, month, day } = londonYMD(startMs);
+  if (kickoffUtcForLondonDate(year, month, day) <= startMs) {
+    ({ year, month, day } = londonYMD(Date.UTC(year, month, day, 12) + 86_400_000));
+  }
+
+  // Step a noon-UTC-anchored cursor one calendar day at a time (a +24h step
+  // never drifts across a date boundary even when the clocks change).
+  const cursor = new Date(Date.UTC(year, month, day, 12, 0, 0, 0));
   const out: number[] = [];
-  let cursor = new Date(startMs);
   for (let i = 0; i < SEASON_MATCHDAYS; i++) {
-    const next = nextKickoff(cursor, [WED, SAT]);
-    out.push(next.getTime());
-    cursor = new Date(next.getTime() + 60_000); // step just past this kickoff
+    out.push(
+      kickoffUtcForLondonDate(cursor.getUTCFullYear(), cursor.getUTCMonth(), cursor.getUTCDate()),
+    );
+    cursor.setUTCDate(cursor.getUTCDate() + 1);
   }
   return out;
 }
